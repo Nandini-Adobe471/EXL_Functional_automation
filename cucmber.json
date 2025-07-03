@@ -1,0 +1,17 @@
+{
+    "default":{
+        "formateOptions":{
+            "SnippentInterface": "async-await"
+        },
+
+        "path":[
+            "tests/features/*.feature"
+        ],
+        "publishQuite": true,
+        "dryRun": false,
+        "require" : [
+            "tests/steps/*.js"
+        ]
+
+    }
+}
