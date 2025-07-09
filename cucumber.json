@@ -1,13 +1,13 @@
 {
     "default":{
-        "formateOptions":{
+        "formatOptions":{
             "SnippentInterface": "async-await"
         },
+        "format": ["node_modules/allure-cucumberjs", "progress"],
 
-        "path":[
+        "paths":[
             "tests/features/*.feature"
         ],
-        "publishQuite": true,
         "dryRun": false,
         "require" : [
             "tests/steps/*.js"

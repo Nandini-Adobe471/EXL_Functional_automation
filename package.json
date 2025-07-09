@@ -11,11 +11,15 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
     "@playwright/test": "^1.53.2",
     "@types/node": "^24.0.7",
+    "allure-commandline": "^2.34.1",
+    "allure-playwright": "^3.3.0",
     "cucumber": "^6.0.7"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^11.3.0"
+    "allure-cucumberjs": "^3.3.0",
+    "allure-js-commons": "^3.3.0"
   }
 }
