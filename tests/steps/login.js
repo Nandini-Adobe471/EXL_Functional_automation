@@ -1,17 +1,23 @@
-const { Given, When, Then } = require('@cucumber/cucumber');
+const { Given, When, Then, After } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { launchBrowser } = require('../commonFunctions/launchbrowser');
+const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 
-let page; 
+let page, browser, context; 
 
 const { chromium } = require('playwright');
 
 Given('the user is on the landing page', async function () {
-  page = await launchBrowser();
-  /*browser = await chromium.launch({ headless: false }); 
-  context = await browser.newContext();
-  page = await context.newPage();
-  await page.goto('https://experienceleague-dev.adobe.com/en'); */
+  const result = await launchBrowser();
+  page = result.page;
+  browser = result.browser;
+  context = result.context;
+});
+
+After(async function() {
+  // Close the browser after each scenario
+  if (browser) {
+    await browser.close();
+  }
 });
 
 When('the user clicks the CTA to begin login', async function () {

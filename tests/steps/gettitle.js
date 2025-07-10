@@ -10,13 +10,16 @@ setDefaultTimeout(90 * 1000);
 // let this.page, browser;
 
 Before(async function () {
+  this.browser = await chromium.launch({ headless: false });
+  this.context = await this.browser.newContext();
+  this.page = await this.context.newPage();
+});
 
-this.browser = await chromium.launch({ headless: false });
-
-this.context = await this.browser.newContext();
-
-this.page = await this.context.newPage();
-
+After(async function () {
+  // Close the browser after each scenario
+  if (this.browser) {
+    await this.browser.close();
+  }
 });
 
 
@@ -57,7 +60,3 @@ Then('print page launched successfully', async function () {
   // await this.page.click('button[data-id="Passwordthis.page-ContinueButton"]');
  
 });
-
-
-
-

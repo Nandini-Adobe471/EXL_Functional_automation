@@ -6,7 +6,13 @@ async function launchBrowser() {
   const page = await context.newPage();
   await page.goto('https://experienceleague-dev.adobe.com/en');
 
-  return page;
+  return { page, browser, context };
 }
 
-module.exports = { launchBrowser };
+async function closeBrowser(browser) {
+  if (browser) {
+    await browser.close();
+  }
+}
+
+module.exports = { launchBrowser, closeBrowser };
