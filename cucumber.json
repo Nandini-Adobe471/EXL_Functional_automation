@@ -1,17 +1,24 @@
 {
-    "default":{
-        "formatOptions":{
-            "SnippentInterface": "async-await"
+    "default": {
+        "formatOptions": {
+            "snippetInterface": "async-await"
         },
-        "format": ["node_modules/allure-cucumberjs", "progress"],
-
-        "paths":[
+        "format": [
+            "progress",
+            "json:reports/cucumber-report.json",
+            "html:reports/cucumber-report.html",
+            "@cucumber/pretty-formatter",
+            "./tests/support/custom-formatter.js:reports/custom-report.txt"
+        ],
+        "paths": [
             "tests/features/*.feature"
         ],
         "dryRun": false,
-        "require" : [
-            "tests/steps/*.js"
-        ]
-
+        "require": [
+            "tests/steps/*.js",
+            "tests/support/*.js"
+        ],
+        "parallel": 1,
+        "tags": "not @skip"
     }
 }

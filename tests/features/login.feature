@@ -1,5 +1,6 @@
 Feature: Launch Adobe Experience League URL and login
-Scenario: Print page launched successfully and user logs in
+
+Scenario Outline: PHP page launched successfully and user logs in
     Given the user is on the landing page
     When the user clicks the CTA to begin login
     And the user enters their email address "<email>"
@@ -8,13 +9,11 @@ Scenario: Print page launched successfully and user logs in
     And the user submits the password form
     Then the user should be logged in successfully
 
-   
+Examples:
+  | email                                    | password  |
+  | gsnair+US+Team+VISA+hello+1@adobetest.com | Bap@d0be |
 
-
+Scenario: Bookmark content on Experience League
     Given user is on Experience League home
     When user bookmarks the first content card
     Then ensure bookmarked card appears in bookmarks page
-
- Examples:
-  | email               | password  |
-  | gsnair+US+Team+VISA+hello+1@adobetest.com    | Bap@d0be   |

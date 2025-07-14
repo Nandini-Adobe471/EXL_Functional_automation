@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cucumber Test Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 5px solid #4CAF50;
+        }
+        h1 {
+            color: #4CAF50;
+            margin: 0;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .summary-box {
+            flex: 1;
+            margin: 0 10px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .passed {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4CAF50;
+        }
+        .failed {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+        .skipped {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196F3;
+        }
+        .feature {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .feature-header {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .feature-name {
+            margin: 0;
+            color: #333;
+        }
+        .scenario {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .scenario:last-child {
+            border-bottom: none;
+        }
+        .scenario-name {
+            margin-top: 0;
+            color: #333;
+        }
+        .steps {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        .step {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .step-passed::before {
+            content: "✅";
+            margin-right: 10px;
+        }
+        .step-failed::before {
+            content: "❌";
+            margin-right: 10px;
+        }
+        .step-skipped::before {
+            content: "⏭️";
+            margin-right: 10px;
+        }
+        .step-pending::before {
+            content: "⏳";
+            margin-right: 10px;
+        }
+        .error-message {
+            background-color: #ffebee;
+            padding: 10px;
+            border-left: 5px solid #f44336;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .screenshot {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cucumber Test Report</h1>
+        <p>Generated on <span id="report-date"></span></p>
+    </header>
+
+    <div class="summary">
+        <div class="summary-box passed">
+            <h2>Passed</h2>
+            <p id="passed-count">0</p>
+        </div>
+        <div class="summary-box failed">
+            <h2>Failed</h2>
+            <p id="failed-count">0</p>
+        </div>
+        <div class="summary-box skipped">
+            <h2>Skipped</h2>
+            <p id="skipped-count">0</p>
+        </div>
+        <div class="summary-box">
+            <h2>Total</h2>
+            <p id="total-count">0</p>
+        </div>
+    </div>
+
+    <div id="features-container">
+        <!-- Features will be inserted here by JavaScript -->
+    </div>
+
+    <footer>
+        <p>EXL Automation Report - Powered by Cucumber.js</p>
+    </footer>
+
+    <script>
+        // This script will be replaced with actual data when the report is generated
+        document.getElementById('report-date').textContent = new Date().toLocaleString();
+        
+        // Sample data structure - will be replaced with actual test results
+        const testResults = {
+            features: []
+        };
+        
+        function renderReport(data) {
+            const featuresContainer = document.getElementById('features-container');
+            let passedCount = 0;
+            let failedCount = 0;
+            let skippedCount = 0;
+            let totalCount = 0;
+            
+            data.features.forEach(feature => {
+                const featureElement = document.createElement('div');
+                featureElement.className = 'feature';
+                
+                const featureHeader = document.createElement('div');
+                featureHeader.className = 'feature-header';
+                featureHeader.innerHTML = `<h2 class="feature-name">${feature.name}</h2>`;
+                
+                featureElement.appendChild(featureHeader);
+                
+                feature.scenarios.forEach(scenario => {
+                    totalCount++;
+                    
+                    if (scenario.status === 'passed') passedCount++;
+                    else if (scenario.status === 'failed') failedCount++;
+                    else skippedCount++;
+                    
+                    const scenarioElement = document.createElement('div');
+                    scenarioElement.className = `scenario scenario-${scenario.status}`;
+                    
+                    let scenarioContent = `<h3 class="scenario-name">${scenario.name}</h3>`;
+                    scenarioContent += '<ul class="steps">';
+                    
+                    scenario.steps.forEach(step => {
+                        scenarioContent += `<li class="step step-${step.status}">${step.keyword} ${step.text}</li>`;
+                        
+                        if (step.status === 'failed' && step.error_message) {
+                            scenarioContent += `<div class="error-message">${step.error_message}</div>`;
+                        }
+                        
+                        // Screenshots are disabled as per user request
+                    });
+                    
+                    scenarioContent += '</ul>';
+                    scenarioElement.innerHTML = scenarioContent;
+                    featureElement.appendChild(scenarioElement);
+                });
+                
+                featuresContainer.appendChild(featureElement);
+            });
+            
+            document.getElementById('passed-count').textContent = passedCount;
+            document.getElementById('failed-count').textContent = failedCount;
+            document.getElementById('skipped-count').textContent = skippedCount;
+            document.getElementById('total-count').textContent = totalCount;
+        }
+        
+        // This will be replaced with actual data when the report is generated
+        renderReport(testResults);
+    </script>
+</body>
+</html>
