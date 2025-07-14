@@ -48,15 +48,15 @@ Then('print page launched successfully', async function () {
   await this.page.click('button',{name:'Continue'});
   await this.page.waitForSelector('button',{name:'Continue'}, { state: 'detached' });
   await this.page.waitForTimeout(4000);
- // await this.page.waitForLoadState('networkidle');
+  await this.page.waitForLoadState('networkidle');
  
   // Wait for the input to become visible and enabled (interactable)
-  // const password = this.page.locator('input[id="Passwordthis.page-PasswordField"]');
-  // await password.waitFor({ state: 'visible' }); // Optional: Add 'attached' or 'enabled' as needed
+  const password = this.page.locator('.PasswordField input[id="PasswordPage-PasswordField"]');
+  await password.waitFor({ state: 'visible',timeout: 15000  }); // Optional: Add 'attached' or 'enabled' as needed
  
   // Now safely fill the input
-  // await password.fill('Bap@d0be');
-  // //await this.page.getByRole('button',{name:'Continue'}).highlight(); 
-  // await this.page.click('button[data-id="Passwordthis.page-ContinueButton"]');
+  await password.fill('Bap@d0be');
+  await this.page.getByRole('button',{name:'Continue'}); 
+  await this.page.click('button[data-id="PasswordPage-ContinueButton"]');
  
 });
