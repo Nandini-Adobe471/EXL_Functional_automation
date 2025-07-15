@@ -15,11 +15,11 @@
             "line": 5,
             "name": "the user is on the landing page",
             "match": {
-              "location": "tests\\steps\\login.js:21"
+              "location": "tests\\steps\\bookmark.js:21"
             },
             "result": {
               "status": "passed",
-              "duration": 3058263999
+              "duration": 2124526600
             }
           },
           {
@@ -28,11 +28,11 @@
             "line": 6,
             "name": "the user clicks the CTA to begin login",
             "match": {
-              "location": "tests\\steps\\login.js:43"
+              "location": "tests\\steps\\bookmark.js:43"
             },
             "result": {
               "status": "passed",
-              "duration": 8672156800
+              "duration": 8617560700
             }
           },
           {
@@ -41,11 +41,11 @@
             "line": 7,
             "name": "the user enters their email address \"gsnair+US+Team+VISA+hello+1@adobetest.com\"",
             "match": {
-              "location": "tests\\steps\\login.js:57"
+              "location": "tests\\steps\\bookmark.js:57"
             },
             "result": {
               "status": "passed",
-              "duration": 8086041600
+              "duration": 8076777000
             }
           },
           {
@@ -54,11 +54,11 @@
             "line": 8,
             "name": "the user clicks the Continue button",
             "match": {
-              "location": "tests\\steps\\login.js:73"
+              "location": "tests\\steps\\bookmark.js:73"
             },
             "result": {
               "status": "passed",
-              "duration": 4125095499
+              "duration": 4118597600
             }
           },
           {
@@ -67,11 +67,11 @@
             "line": 9,
             "name": "the user enters their password \"Bap@d0be\"",
             "match": {
-              "location": "tests\\steps\\login.js:87"
+              "location": "tests\\steps\\bookmark.js:87"
             },
             "result": {
               "status": "passed",
-              "duration": 49614999
+              "duration": 44167699
             }
           },
           {
@@ -80,11 +80,11 @@
             "line": 10,
             "name": "the user submits the password form",
             "match": {
-              "location": "tests\\steps\\login.js:100"
+              "location": "tests\\steps\\bookmark.js:100"
             },
             "result": {
               "status": "passed",
-              "duration": 68227500
+              "duration": 58052800
             }
           },
           {
@@ -93,11 +93,11 @@
             "line": 11,
             "name": "the user should be logged in successfully",
             "match": {
-              "location": "tests\\steps\\login.js:109"
+              "location": "tests\\steps\\bookmark.js:109"
             },
             "result": {
               "status": "passed",
-              "duration": 6420617200
+              "duration": 5776964700
             }
           },
           {
@@ -105,7 +105,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 222399
+              "duration": 792800
             }
           }
         ],
@@ -129,7 +129,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 26957520899
+              "duration": 27802965000
             }
           },
           {
@@ -138,11 +138,11 @@
             "line": 18,
             "name": "user is on Experience League home",
             "match": {
-              "location": "tests\\steps\\login.js:123"
+              "location": "tests\\steps\\bookmark.js:123"
             },
             "result": {
               "status": "passed",
-              "duration": 4010902200
+              "duration": 4008122200
             }
           },
           {
@@ -151,12 +151,11 @@
             "line": 19,
             "name": "user bookmarks the first content card",
             "match": {
-              "location": "tests\\steps\\login.js:129"
+              "location": "tests\\steps\\bookmark.js:129"
             },
             "result": {
-              "status": "failed",
-              "duration": 50178651300,
-              "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first()\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:152:127)"
+              "status": "passed",
+              "duration": 22264583400
             }
           },
           {
@@ -165,11 +164,11 @@
             "line": 20,
             "name": "ensure bookmarked card appears in bookmarks page",
             "match": {
-              "location": "tests\\steps\\login.js:165"
+              "location": "tests\\steps\\bookmark.js:165"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 4434245999
             }
           },
           {
@@ -177,7 +176,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 232875100
+              "duration": 260899
             }
           }
         ],
@@ -190,7 +189,7 @@
     "keyword": "Feature",
     "name": "Launch Adobe Experience League URL and login",
     "tags": [],
-    "uri": "tests\\features\\login.feature"
+    "uri": "tests\\features\\bookmark.feature"
   },
   {
     "description": "",
@@ -212,7 +211,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 31374333899
+              "duration": 30636246600
             }
           },
           {
@@ -225,7 +224,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5454890799
+              "duration": 4977927700
             }
           },
           {
@@ -238,7 +237,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 175138799
+              "duration": 20013799
             }
           },
           {
@@ -247,11 +246,11 @@
             "line": 8,
             "name": "user clicks the See More Recommendations button",
             "match": {
-              "location": "tests\\steps\\recommendations.js:36"
+              "location": "tests\\steps\\recommendations.js:42"
             },
             "result": {
               "status": "passed",
-              "duration": 2864299
+              "duration": 2925700
             }
           },
           {
@@ -260,11 +259,11 @@
             "line": 9,
             "name": "waits for additional recommendations to load",
             "match": {
-              "location": "tests\\steps\\recommendations.js:48"
+              "location": "tests\\steps\\recommendations.js:70"
             },
             "result": {
               "status": "passed",
-              "duration": 2804100
+              "duration": 3440699
             }
           },
           {
@@ -273,11 +272,11 @@
             "line": 10,
             "name": "verifies that See Less Recommendations is displayed",
             "match": {
-              "location": "tests\\steps\\recommendations.js:61"
+              "location": "tests\\steps\\recommendations.js:86"
             },
             "result": {
               "status": "passed",
-              "duration": 321200799
+              "duration": 410167600
             }
           },
           {
@@ -285,7 +284,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 158400
+              "duration": 184399
             }
           }
         ],
