@@ -127,6 +127,7 @@ Given('user is on Experience League home',async function() {
 })
 
 When('user bookmarks the first content card', async function() {
+   await this.page.waitForTimeout(4000);
     //Locate firstcard
     const firstCard = await this.page.locator('.browse-card-content').first();
     // Uncomment and use the assertion
