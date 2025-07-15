@@ -160,60 +160,11 @@
         const testResults = {
     "features": [
         {
-            "name": "Demo testing information",
-            "description": "",
-            "scenarios": [
-                {
-                    "name": "Demo steps creating",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "Checking demo",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "When",
-                            "text": "print some message",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "result values",
-                            "status": "passed"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Launch Adobe Experience League URL",
-            "description": "",
-            "scenarios": [
-                {
-                    "name": "Open Adobe Experience League homepage",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "I open the Adobe Experience League homepage",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "print page launched successfully",
-                            "status": "passed"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "Launch Adobe Experience League URL and login",
             "description": "",
             "scenarios": [
                 {
-                    "name": "Print page launched successfully and user logs in",
+                    "name": "PHP page launched successfully and user logs in",
                     "status": "passed",
                     "steps": [
                         {
@@ -260,13 +211,13 @@
                         {
                             "keyword": "Given",
                             "text": "user is on Experience League home",
-                            "status": "failed",
-                            "error_message": "page.waitForTimeout: Target page, context or browser has been closed\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:62:16)"
+                            "status": "passed"
                         },
                         {
                             "keyword": "When",
                             "text": "user bookmarks the first content card",
-                            "status": "skipped"
+                            "status": "failed",
+                            "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first()\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:105:127)"
                         },
                         {
                             "keyword": "Then",

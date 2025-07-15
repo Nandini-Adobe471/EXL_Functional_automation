@@ -1,5 +1,6 @@
 Feature: Launch Adobe Experience League URL and login
 
+@skip-login
 Scenario Outline: PHP page launched successfully and user logs in
     Given the user is on the landing page
     When the user clicks the CTA to begin login
