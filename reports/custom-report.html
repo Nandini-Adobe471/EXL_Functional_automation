@@ -217,12 +217,54 @@
                             "keyword": "When",
                             "text": "user bookmarks the first content card",
                             "status": "failed",
-                            "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first()\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:105:127)"
+                            "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first()\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:152:127)"
                         },
                         {
                             "keyword": "Then",
                             "text": "ensure bookmarked card appears in bookmarks page",
                             "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Recommendations functionality on Adobe Experience League",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Check and interact with See More Recommendations button",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user checks if See More Recommendations button is available",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks the See More Recommendations button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "waits for additional recommendations to load",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "verifies that See Less Recommendations is displayed",
+                            "status": "passed"
                         }
                     ]
                 }

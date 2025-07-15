@@ -23,6 +23,10 @@ Given('the user is on the landing page', async function () {
   this.page = result.page;
   this.browser = result.browser;
   this.context = result.context;
+  
+  // Add assertion to verify we're on the landing page
+  await expect(this.page).toHaveURL(/.*experienceleague-dev.adobe.com/);
+  await expect(this.page.locator('.marquee')).toBeVisible();
 });
 
 // After hook to close browser after each scenario
@@ -39,38 +43,80 @@ Given('the user is on the landing page', async function () {
 When('the user clicks the CTA to begin login', async function () {
   await this.page.waitForTimeout(4000);
   await this.page.waitForSelector('.marquee .marquee-cta a', { state: 'visible' });
+  
+  // Assert that the CTA button is visible before clicking
+  await expect(this.page.locator('.marquee .marquee-cta a')).toBeVisible();
+  
   await this.page.click('.marquee .marquee-cta a');
   await this.page.waitForTimeout(4000);
+  
+  // Assert that we've navigated to the login page
+  await expect(this.page).toHaveURL(/.*adobe.com/);
 });
 
 When('the user enters their email address {string}', async function (email) {
   //await this.page.waitForTimeout(4000);
   const emailInput = this.page.locator('input[aria-label="Email address"]');
   await emailInput.waitFor({ state: 'visible' });
+  
+  // Assert that the email input is visible
+  await expect(emailInput).toBeVisible();
+  
   await this.page.waitForTimeout(4000);
   await emailInput.fill(email);
   await this.page.waitForTimeout(4000);
+  
+  // Assert that the email input has the correct value
+  await expect(emailInput).toHaveValue(email);
 });
 
 When('the user clicks the Continue button', async function () {
-  await this.page.getByRole('button', { name: 'Continue' }); 
+  const continueButton = this.page.getByRole('button', { name: 'Continue' });
+  
+  // Assert that the Continue button is visible
+  await expect(continueButton).toBeVisible();
+  
   await this.page.click('button', { name: 'Continue' });
   await this.page.waitForSelector('button', { name: 'Continue' }, { state: 'detached' });
   await this.page.waitForTimeout(4000);
+  
+  // Assert that we've moved to the password page
+  await expect(this.page.locator('input[id="PasswordPage-PasswordField"]')).toBeVisible({ timeout: 10000 });
 });
 
 When('the user enters their password {string}', async function (password) {
   const passwordInput = this.page.locator('input[id="PasswordPage-PasswordField"]');
   await passwordInput.waitFor({ state: 'visible' });
-  await passwordInput.fill(password); 
+  
+  // Assert that the password input is visible
+  await expect(passwordInput).toBeVisible();
+  
+  await passwordInput.fill(password);
+  
+  // Assert that the password input has a value (not checking exact value for security)
+  await expect(passwordInput).not.toBeEmpty();
 });
 
 When('the user submits the password form', async function () {
+  const submitButton = this.page.locator('button[data-id="PasswordPage-ContinueButton"]');
+  
+  // Assert that the submit button is visible
+  await expect(submitButton).toBeVisible();
+  
   await this.page.click('button[data-id="PasswordPage-ContinueButton"]');
 });
 
 Then('the user should be logged in successfully', async function () {
   await this.page.waitForTimeout(4000);
+  
+  // Assert that we're logged in by checking for elements that should be visible after login
+  // This could be a profile icon, username display, or any element that indicates successful login
+  await expect(this.page).not.toHaveURL(/.*signin.*/);
+  
+  // Check for a common element that appears after login
+  // Adjust the selector based on the actual page structure
+  await expect(this.page.locator('header')).toBeVisible();
+  
   //await this.browser.close();
 });
 
@@ -83,7 +129,8 @@ Given('user is on Experience League home',async function() {
 When('user bookmarks the first content card', async function() {
     //Locate firstcard
     const firstCard = await this.page.locator('.browse-card-content').first();
-    //await expect(firstCard).toBeVisible();
+    // Uncomment and use the assertion
+    await expect(firstCard).toBeVisible();
     const firstCardTitle = await firstCard.locator('.browse-card-title-text').textContent();
     console.log(firstCardTitle);
     await this.page.waitForTimeout(4000);
@@ -103,11 +150,10 @@ When('user bookmarks the first content card', async function() {
 
     // remove the bookmark of a card from bookmark page
     const bookmarkedCardTitle = await this.page.locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first().textContent();
-    if (bookmarkedCardTitle == firstCardTitle) {
-      console.log("bookmark Successful");
-    } else {
-      console.log("bookmark unsuccessful");
-    }
+    
+    // Replace the if/else with an assertion
+    await expect(bookmarkedCardTitle).toBe(firstCardTitle);
+    console.log("bookmark Successful");
 
     //remove bookmark
     const bookmarkedIcon = await this.page.locator('.browse-card-options .bookmark').first();
@@ -118,7 +164,12 @@ When('user bookmarks the first content card', async function() {
 
 Then('ensure bookmarked card appears in bookmarks page', async function() {
     await this.page.waitForTimeout(4000);
+    
+    // Assert that we're on the bookmarks page and it contains at least one card
+    await expect(this.page.locator('.bookmarks-content')).toBeVisible();
+    await expect(this.page.locator('.bookmarks-card')).toBeVisible();
+    
     if (this.browser) {
-    await this.browser.close();
+      await this.browser.close();
     }
 });

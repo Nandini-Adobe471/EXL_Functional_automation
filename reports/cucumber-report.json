@@ -19,7 +19,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4684773199
+              "duration": 3058263999
             }
           },
           {
@@ -28,11 +28,11 @@
             "line": 6,
             "name": "the user clicks the CTA to begin login",
             "match": {
-              "location": "tests\\steps\\login.js:39"
+              "location": "tests\\steps\\login.js:43"
             },
             "result": {
               "status": "passed",
-              "duration": 9494389600
+              "duration": 8672156800
             }
           },
           {
@@ -41,11 +41,11 @@
             "line": 7,
             "name": "the user enters their email address \"gsnair+US+Team+VISA+hello+1@adobetest.com\"",
             "match": {
-              "location": "tests\\steps\\login.js:46"
+              "location": "tests\\steps\\login.js:57"
             },
             "result": {
               "status": "passed",
-              "duration": 8121122399
+              "duration": 8086041600
             }
           },
           {
@@ -54,11 +54,11 @@
             "line": 8,
             "name": "the user clicks the Continue button",
             "match": {
-              "location": "tests\\steps\\login.js:55"
+              "location": "tests\\steps\\login.js:73"
             },
             "result": {
               "status": "passed",
-              "duration": 4128602199
+              "duration": 4125095499
             }
           },
           {
@@ -67,11 +67,11 @@
             "line": 9,
             "name": "the user enters their password \"Bap@d0be\"",
             "match": {
-              "location": "tests\\steps\\login.js:62"
+              "location": "tests\\steps\\login.js:87"
             },
             "result": {
               "status": "passed",
-              "duration": 32417100
+              "duration": 49614999
             }
           },
           {
@@ -80,11 +80,11 @@
             "line": 10,
             "name": "the user submits the password form",
             "match": {
-              "location": "tests\\steps\\login.js:68"
+              "location": "tests\\steps\\login.js:100"
             },
             "result": {
               "status": "passed",
-              "duration": 70746100
+              "duration": 68227500
             }
           },
           {
@@ -93,11 +93,11 @@
             "line": 11,
             "name": "the user should be logged in successfully",
             "match": {
-              "location": "tests\\steps\\login.js:72"
+              "location": "tests\\steps\\login.js:109"
             },
             "result": {
               "status": "passed",
-              "duration": 4012512399
+              "duration": 6420617200
             }
           },
           {
@@ -105,7 +105,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 401599
+              "duration": 222399
             }
           }
         ],
@@ -129,7 +129,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 27267450999
+              "duration": 26957520899
             }
           },
           {
@@ -138,11 +138,11 @@
             "line": 18,
             "name": "user is on Experience League home",
             "match": {
-              "location": "tests\\steps\\login.js:77"
+              "location": "tests\\steps\\login.js:123"
             },
             "result": {
               "status": "passed",
-              "duration": 4015603499
+              "duration": 4010902200
             }
           },
           {
@@ -151,12 +151,12 @@
             "line": 19,
             "name": "user bookmarks the first content card",
             "match": {
-              "location": "tests\\steps\\login.js:83"
+              "location": "tests\\steps\\login.js:129"
             },
             "result": {
               "status": "failed",
-              "duration": 46881034200,
-              "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first()\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:105:127)"
+              "duration": 50178651300,
+              "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first()\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\login.js:152:127)"
             }
           },
           {
@@ -165,7 +165,7 @@
             "line": 20,
             "name": "ensure bookmarked card appears in bookmarks page",
             "match": {
-              "location": "tests\\steps\\login.js:119"
+              "location": "tests\\steps\\login.js:165"
             },
             "result": {
               "status": "skipped",
@@ -177,7 +177,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 30021372400
+              "duration": 232875100
             }
           }
         ],
@@ -191,5 +191,118 @@
     "name": "Launch Adobe Experience League URL and login",
     "tags": [],
     "uri": "tests\\features\\login.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "recommendations-functionality-on-adobe-experience-league;check-and-interact-with-see-more-recommendations-button",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "Check and interact with See More Recommendations button",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user is logged in to Experience League",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31374333899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "the page loads completely",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5454890799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "user checks if See More Recommendations button is available",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 175138799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "user clicks the See More Recommendations button",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2864299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "waits for additional recommendations to load",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2804100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "verifies that See Less Recommendations is displayed",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:61"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 321200799
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 158400
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "recommendations-functionality-on-adobe-experience-league",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Recommendations functionality on Adobe Experience League",
+    "tags": [],
+    "uri": "tests\\features\\recommendations.feature"
   }
 ]
