@@ -5,6 +5,7 @@ const { performLogin } = require('../commonFunctions/login');
 const { chromium } = require('playwright');
 
 setDefaultTimeout(90 * 1000);
+let bookmarkedCardTitle
 
 // Define a custom World class
 class CustomWorld {
@@ -148,7 +149,7 @@ When('user bookmarks the first content card', async function() {
     await this.page.waitForTimeout(4000);
 
     // remove the bookmark of a card from bookmark page
-    const bookmarkedCardTitle = await this.page.locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first().textContent();
+     bookmarkedCardTitle = await this.page.locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first().textContent();
     
     // Replace the if/else with an assertion
     await expect(bookmarkedCardTitle).toBe(firstCardTitle);

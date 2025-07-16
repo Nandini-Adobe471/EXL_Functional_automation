@@ -228,6 +228,43 @@
             ]
         },
         {
+            "name": "Browse and filter content on Adobe Experience League",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Filter content by type and product and validate first card",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the PHP page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects content type as \"Community\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects product as \"analytics\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "verify first card displays with selected content type and product tag",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Recommendations functionality on Adobe Experience League",
             "description": "",
             "scenarios": [
