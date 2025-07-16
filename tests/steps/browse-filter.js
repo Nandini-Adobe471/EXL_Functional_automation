@@ -21,9 +21,9 @@ When('user selects content type as {string}', async function(contentType) {
   // Click on Content Type button
   await this.page.getByRole('button', { name: 'Content Type' }).click();
   await this.page.waitForTimeout(2000);
+  
   // Wait for dropdown and select the specified content type
-
-  await this.page.locator('form').getByText('Community').click();
+  await this.page.locator('form').getByText(contentType).click();
   await this.page.waitForTimeout(2000);
 
   // Store the selected content type for verification
@@ -32,21 +32,22 @@ When('user selects content type as {string}', async function(contentType) {
 
 When('user selects product as {string}', async function(product) {
   // Click on Product button
- /* await this.page.click('button:has-text("Product")');
-  
-  // Wait for dropdown and select the specified product
-  await this.page.click(`li:has-text("${product}")`);*/
-
   await this.page.getByRole('button', { name: 'Product' }).click();
   await this.page.waitForTimeout(2000);
-  // Wait for dropdown and select the specified content type
-
-  await this.page.locator('span').filter({ hasText: /^Analytics$/ }).click();
-  await this.page.waitForTimeout(2000);
-
   
-  // Store the selected product for verification
-  this.selectedProduct = product;
+  // Check if product contains regex pattern indicators
+  if (product.startsWith('^') || product.endsWith('$')) {
+    // Handle regex pattern
+    const regex = new RegExp(product);
+    await this.page.locator('span').filter({ hasText: regex }).click();
+  } else {
+    // Handle plain text
+    await this.page.locator('span').filter({ hasText: product }).click();
+  }
+  await this.page.waitForTimeout(2000);
+  
+  // Store the selected product for verification (without regex symbols)
+  this.selectedProduct = product.replace(/[\^\$]/g, '');
 });
 
 Then('verify first card displays with selected content type and product tag', async function() {
@@ -54,6 +55,6 @@ Then('verify first card displays with selected content type and product tag', as
   await this.page.waitForTimeout(2000);
   
   // Assert that the form contains both the content type and product
-  await expect(this.page.locator('form')).toContainText('Community');
-  await expect(this.page.locator('form')).toContainText('Analytics');
+  await expect(this.page.locator('form')).toContainText(this.selectedContentType);
+  await expect(this.page.locator('form')).toContainText(this.selectedProduct);
 });
