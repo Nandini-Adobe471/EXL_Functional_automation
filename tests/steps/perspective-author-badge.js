@@ -9,7 +9,7 @@ Given('user logs in and lands on PHP page', async function() {
   // Use the common login function to log in
   await performLogin(this);
   // Wait for the page to fully load after login
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
 });
 
 When('user navigates to the perspective page', async function() {
@@ -17,7 +17,7 @@ When('user navigates to the perspective page', async function() {
   await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
   
   // Wait for the page to load completely
-  await this.page.waitForTimeout(2000);
+  await this.page.waitForTimeout(4000);
   
   // Wait for the perspective cards to load
   await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 30000 });
@@ -31,12 +31,12 @@ When('user selects author type as {string}', async function(authorType) {
   await authorTypeButton.click();*/
   
   // Wait for dropdown to appear and select the author type
- /* const authorOption = this.page.locator('main').getByText(authorType, { exact: true });
+  const authorOption = this.page.locator('main').getByText(authorType, { exact: true });
   await authorOption.waitFor({ state: 'visible' });
-  await authorOption.click();*/
+  await authorOption.click();
  // await this.page.locator('form').getByText(authorType).click();
- await page.getByRole('main').getByText('Adobe', { exact: true }).click();
-  await this.page.waitForTimeout(2000);
+ //await page.getByRole('main').getByText('Adobe', { exact: true }).click();
+  //await this.page.waitForTimeout(2000);
   
   // Store the selected author type for verification
   /*this.selectedAuthorType = authorType;

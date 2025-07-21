@@ -24,21 +24,21 @@ async function performLogin(world, email = 'gsnair+US+Team+VISA+hello+1@adobetes
     // Click the CTA to begin login
     await page.waitForSelector('.marquee .marquee-cta a', { state: 'visible' });
     await page.click('.marquee .marquee-cta a');
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(2000);
 
     // Enter email address
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(2000);
     const emailInput = page.locator('input[aria-label="Email address"]');
     await emailInput.waitFor({ state: 'visible' });
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(2000);
     await emailInput.fill(email);
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(2000);
 
     // Click Continue button
     await page.getByRole('button', { name: 'Continue' });
     await page.click('button', { name: 'Continue' });
     await page.waitForSelector('button', { name: 'Continue' }, { state: 'detached' });
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(2000);
 
     // Enter password
     const passwordInput = page.locator('input[id="PasswordPage-PasswordField"]');
@@ -49,7 +49,7 @@ async function performLogin(world, email = 'gsnair+US+Team+VISA+hello+1@adobetes
     await page.click('button[data-id="PasswordPage-ContinueButton"]');
     
     // Wait for login to complete
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(2000);
     
     console.log('Login successful');
     return { page, browser, context };
@@ -60,4 +60,38 @@ async function performLogin(world, email = 'gsnair+US+Team+VISA+hello+1@adobetes
   }
 }
 
-module.exports = { performLogin };
+/**
+ * Performs logout from Adobe Experience League
+ * @param {Object} page - The Playwright page object
+ * @returns {Promise<void>}
+ */
+async function performLogout(page) {
+  if (!page) {
+    console.error('Cannot logout: Page object is not provided');
+    return;
+  }
+
+  try {
+    // Navigate to the home page
+    await page.goto('https://experienceleague-stage.adobe.com/en');
+    await page.waitForTimeout(2000);
+    
+    // Click on user profile icon to open menu
+    const profileButton = page.locator('.profile-button');
+    await profileButton.waitFor({ state: 'visible' });
+    await profileButton.click();
+    await page.waitForTimeout(1000);
+    
+    // Click on Sign Out option
+    const signOutButton = page.locator('text=Sign Out');
+    await signOutButton.waitFor({ state: 'visible' });
+    await signOutButton.click();
+    await page.waitForTimeout(2000);
+    
+    console.log('Logout completed successfully');
+  } catch (error) {
+    console.error('Logout failed:', error.message);
+  }
+}
+
+module.exports = { performLogin, performLogout };

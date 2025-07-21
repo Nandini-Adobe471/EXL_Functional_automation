@@ -9,19 +9,19 @@ Given('user is logged in to Experience League', async function() {
   const result = await performLogin(this);
   
   // Wait for the page to stabilize
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
 });
 
 When('the page loads completely', async function() {
   // Wait for the main content to be visible
   await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 40000 });
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
 });
 
 Then('user checks if See More Recommendations button is available', async function() {
   // Try to locate the See More Recommendations button with exact text match
   // Using capital 'M' in "More" as that's a common capitalization
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   const seeMoreButton = this.page.locator('.recommendation-marquee-see-more-btn button:text("See More recommendations"), a:text("See More recommendations")');
  /* await seeMoreButton.focus();
   await seeMoreButton.click();

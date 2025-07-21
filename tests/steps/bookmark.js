@@ -42,30 +42,30 @@ Given('the user is on the landing page', async function () {
 });*/
 
 When('the user clicks the CTA to begin login', async function () {
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   await this.page.waitForSelector('.marquee .marquee-cta a', { state: 'visible' });
   
   // Assert that the CTA button is visible before clicking
   await expect(this.page.locator('.marquee .marquee-cta a')).toBeVisible();
   
   await this.page.click('.marquee .marquee-cta a');
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   
   // Assert that we've navigated to the login page
   await expect(this.page).toHaveURL(/.*adobe.com/);
 });
 
 When('the user enters their email address {string}', async function (email) {
-  //await this.page.waitForTimeout(4000);
+  //await this.page.waitForTimeout(2000);
   const emailInput = this.page.locator('input[aria-label="Email address"]');
   await emailInput.waitFor({ state: 'visible' });
   
   // Assert that the email input is visible
   await expect(emailInput).toBeVisible();
   
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   await emailInput.fill(email);
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   
   // Assert that the email input has the correct value
   await expect(emailInput).toHaveValue(email);
@@ -79,7 +79,7 @@ When('the user clicks the Continue button', async function () {
   
   await this.page.click('button', { name: 'Continue' });
   await this.page.waitForSelector('button', { name: 'Continue' }, { state: 'detached' });
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   
   // Assert that we've moved to the password page
   await expect(this.page.locator('input[id="PasswordPage-PasswordField"]')).toBeVisible({ timeout: 10000 });
@@ -108,7 +108,7 @@ When('the user submits the password form', async function () {
 });
 
 Then('the user should be logged in successfully', async function () {
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
   
   // Assert that we're logged in by checking for elements that should be visible after login
   // This could be a profile icon, username display, or any element that indicates successful login
@@ -124,29 +124,29 @@ Then('the user should be logged in successfully', async function () {
 Given('user is on Experience League home',async function() {
   // Use the common login function instead of just launching the browser
  // const result = await performLogin(this);
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(2000);
 })
 
 When('user bookmarks the first content card', async function() {
-   await this.page.waitForTimeout(4000);
+   await this.page.waitForTimeout(2000);
     //Locate firstcard
     const firstCard = await this.page.locator('.browse-card-content').first();
     // Uncomment and use the assertion
     await expect(firstCard).toBeVisible();
     const firstCardTitle = await firstCard.locator('.browse-card-title-text').textContent();
     console.log(firstCardTitle);
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(2000);
 
     //click on bookmark icon of first card
     const bookmarkIcon = await this.page.locator('.browse-card-options .bookmark').first();
     console.log(bookmarkIcon);
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(2000);
     await bookmarkIcon.click({ force: true });  
-     await this.page.waitForTimeout(4000);
+     await this.page.waitForTimeout(2000);
     const bookmarPage = await this.page.locator('.profile-rail-links a[title="Bookmarks"]');
     console.log(bookmarPage);
     await bookmarPage.click(); 
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(2000);
 
     // remove the bookmark of a card from bookmark page
      bookmarkedCardTitle = await this.page.locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first().textContent();
@@ -158,7 +158,7 @@ When('user bookmarks the first content card', async function() {
     //remove bookmark
     const bookmarkedIcon = await this.page.locator('.browse-card-options .bookmark').first();
     console.log(bookmarkedIcon);
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(2000);
     await bookmarkedIcon.click({ force: true });
 
    
@@ -168,7 +168,7 @@ Then('ensure bookmarked card appears in bookmarks page', async function() {
      //Navigate to Bookmark page
    
 
-    await this.page.waitForTimeout(4000);
+    await this.page.waitForTimeout(2000);
     
     // Assert that we're on the bookmarks page and it contains at least one card
    // await expect(this.page.locator('.bookmarks-content')).toBeVisible();

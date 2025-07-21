@@ -19,7 +19,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1936496400
+              "duration": 1887895200
             }
           },
           {
@@ -32,7 +32,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8681961200
+              "duration": 4665727300
             }
           },
           {
@@ -45,7 +45,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8082154099
+              "duration": 4066814399
             }
           },
           {
@@ -58,7 +58,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4132170100
+              "duration": 2123905600
             }
           },
           {
@@ -71,7 +71,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 45993399
+              "duration": 43803100
             }
           },
           {
@@ -84,7 +84,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 68791299
+              "duration": 320301599
             }
           },
           {
@@ -97,7 +97,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4017138699
+              "duration": 2014965099
             }
           },
           {
@@ -105,7 +105,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 604299
+              "duration": 582899
             }
           }
         ],
@@ -129,7 +129,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 27276352600
+              "duration": 14854534600
             }
           },
           {
@@ -142,7 +142,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4009381499
+              "duration": 2020635000
             }
           },
           {
@@ -155,7 +155,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 24296834900
+              "duration": 17028268299
             }
           },
           {
@@ -168,7 +168,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4387883600
+              "duration": 2397650900
             }
           },
           {
@@ -176,7 +176,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 245399
+              "duration": 257700
             }
           }
         ],
@@ -211,7 +211,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 26739604000
+              "duration": 15341234499
             }
           },
           {
@@ -224,7 +224,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8938743099
+              "duration": 8707310599
             }
           },
           {
@@ -237,20 +237,20 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4173023300
+              "duration": 4272891499
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 9,
-            "name": "user selects product as \"analytics\"",
+            "name": "user selects product as \"^Analytics$\"",
             "match": {
               "location": "tests\\steps\\browse-filter.js:33"
             },
             "result": {
               "status": "passed",
-              "duration": 4143534500
+              "duration": 4166331500
             }
           },
           {
@@ -259,11 +259,11 @@
             "line": 10,
             "name": "verify first card displays with selected content type and product tag",
             "match": {
-              "location": "tests\\steps\\browse-filter.js:52"
+              "location": "tests\\steps\\browse-filter.js:53"
             },
             "result": {
               "status": "passed",
-              "duration": 2031723899
+              "duration": 2038458699
             }
           },
           {
@@ -271,7 +271,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 249599
+              "duration": 189700
             }
           }
         ],
@@ -296,6 +296,93 @@
     "uri": "tests\\features\\browse-filter.feature"
   },
   {
+    "description": "  As a user\n  I want to filter perspectives by author type\n  So that I can view perspectives authored by Adobe",
+    "elements": [
+      {
+        "description": "",
+        "id": "perspective-page-author-badge;filter-perspectives-by-author-type-'&nbsp;adobe'-and-verify-badge",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Filter perspectives by author type '&nbsp;Adobe' and verify badge",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "user logs in and lands on PHP page",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16557840899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to the perspective page",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4142330900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "user selects author type as \"Adobe\"",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 185259499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "verify first card displays with \"By Adobe\" badge",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1361721499
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 186000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 5
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "perspective-page-author-badge",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Perspective Page Author Badge",
+    "tags": [],
+    "uri": "tests\\features\\perspective-author-badge.feature"
+  },
+  {
     "description": "",
     "elements": [
       {
@@ -315,7 +402,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 30766025300
+              "duration": 17741818199
             }
           },
           {
@@ -328,7 +415,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7439207999
+              "duration": 7984822799
             }
           },
           {
@@ -341,7 +428,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4042564799
+              "duration": 2026814600
             }
           },
           {
@@ -354,7 +441,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 10216971699
+              "duration": 10132015400
             }
           },
           {
@@ -367,7 +454,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5009571100
+              "duration": 5019447700
             }
           },
           {
@@ -380,7 +467,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 487641000
+              "duration": 428381900
             }
           },
           {
@@ -388,7 +475,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 63899
+              "duration": 275200
             }
           }
         ],
