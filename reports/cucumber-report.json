@@ -19,7 +19,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1887895200
+              "duration": 1997439699
             }
           },
           {
@@ -32,7 +32,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4665727300
+              "duration": 4692594699
             }
           },
           {
@@ -45,7 +45,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4066814399
+              "duration": 4072440200
             }
           },
           {
@@ -58,7 +58,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2123905600
+              "duration": 2105504699
             }
           },
           {
@@ -71,7 +71,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 43803100
+              "duration": 56451900
             }
           },
           {
@@ -84,7 +84,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 320301599
+              "duration": 69395000
             }
           },
           {
@@ -97,7 +97,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2014965099
+              "duration": 2017594800
             }
           },
           {
@@ -105,7 +105,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 582899
+              "duration": 596800
             }
           }
         ],
@@ -129,7 +129,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 14854534600
+              "duration": 15523247100
             }
           },
           {
@@ -142,7 +142,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2020635000
+              "duration": 2022039600
             }
           },
           {
@@ -155,7 +155,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 17028268299
+              "duration": 17277527200
             }
           },
           {
@@ -168,7 +168,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2397650900
+              "duration": 2419573900
             }
           },
           {
@@ -176,7 +176,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 257700
+              "duration": 128799
             }
           }
         ],
@@ -211,7 +211,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 15341234499
+              "duration": 15060469000
             }
           },
           {
@@ -224,7 +224,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8707310599
+              "duration": 9453243799
             }
           },
           {
@@ -237,7 +237,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4272891499
+              "duration": 4218795500
             }
           },
           {
@@ -250,7 +250,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4166331500
+              "duration": 4146239399
             }
           },
           {
@@ -263,7 +263,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2038458699
+              "duration": 2038691900
             }
           },
           {
@@ -271,7 +271,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 189700
+              "duration": 192800
             }
           }
         ],
@@ -296,6 +296,970 @@
     "uri": "tests\\features\\browse-filter.feature"
   },
   {
+    "description": "  As a user of Adobe Experience League\n  I want to ensure the home page functions correctly\n  So that I can access learning resources and personalized content",
+    "elements": [
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;verify-essential-ui-elements-on-the-home-page",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Verify essential UI elements on the home page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 14808499100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6067384700
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Element"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Header navigation"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Search bar"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Hero banner/marquee"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Content cards"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Footer"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "verify the following elements are displayed",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5092376200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "verify the page title is correct",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:206"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6360399
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 195900
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 6
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;validate-search-functionality-from-home-page",
+        "keyword": "Scenario",
+        "line": 19,
+        "name": "Validate search functionality from home page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 15483444199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 20,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6306672399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 21,
+            "name": "user enters \"Analytics\" in the search bar",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:233"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 78110631300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "user submits the search",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:289"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2325034600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "search results page should display",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:348"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 50077563000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 24,
+            "name": "search results should contain items related to \"Analytics\"",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:422"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 68521500
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 166099
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 18
+          },
+          {
+            "name": "@search",
+            "line": 18
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;verify-main-navigation-links-functionality",
+        "keyword": "Scenario",
+        "line": 27,
+        "name": "Verify main navigation links functionality",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 16021539999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 28,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6456729799
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Link Name"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Browse"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Perspectives"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Events"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "When ",
+            "line": 29,
+            "name": "user clicks on each main navigation link",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:481"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 48024345199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 34,
+            "name": "each page should load successfully",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:639"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7337499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 35,
+            "name": "each page should display relevant content",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:646"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4975460100
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 193100
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 26
+          },
+          {
+            "name": "@navigation",
+            "line": 26
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;validate-content-card-interaction-and-details",
+        "keyword": "Scenario",
+        "line": 38,
+        "name": "Validate content card interaction and details",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 15054444100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 39,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6346269400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 40,
+            "name": "user hovers over a content card",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:660"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 79542856399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 41,
+            "name": "card should display hover state",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:804"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3200599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 42,
+            "name": "user clicks on a content card",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:810"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5426102499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 43,
+            "name": "the corresponding content detail page should open",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:854"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 60053114100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 44,
+            "name": "content details should match the card information",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:894"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 33010099
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 179699
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 37
+          },
+          {
+            "name": "@content-cards",
+            "line": 37
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;verify-personalized-content-recommendations-for-logged-in-user",
+        "keyword": "Scenario",
+        "line": 47,
+        "name": "Verify personalized content recommendations for logged-in user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 15453360700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 48,
+            "name": "user is logged in to Experience League",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16920659500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 49,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6509583300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 50,
+            "name": "personalized recommendations section should be visible",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:952"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 78255952900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "recommended content should be relevant to user's profile or history",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1031"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 66519800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 52,
+            "name": "user should be able to interact with recommendation controls",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1127"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8352799
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 205399
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 46
+          },
+          {
+            "name": "@personalization",
+            "line": 46
+          },
+          {
+            "name": "@login-required",
+            "line": 46
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;validate-responsive-behavior-of-home-page",
+        "keyword": "Scenario",
+        "line": 55,
+        "name": "Validate responsive behavior of home page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 15491863299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 56,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6984382099
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Device",
+                      "Width",
+                      "Height"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Mobile",
+                      "375",
+                      "667"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Tablet",
+                      "768",
+                      "1024"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Desktop",
+                      "1440",
+                      "900"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "When ",
+            "line": 57,
+            "name": "viewport size is changed to the following dimensions",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1160"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 84925546099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 62,
+            "name": "page layout should adapt appropriately to each viewport",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1227"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7863399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 63,
+            "name": "all critical elements should remain accessible",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1235"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8586700799
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 157099
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 54
+          },
+          {
+            "name": "@responsive",
+            "line": 54
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;verify-home-page-performance-metrics",
+        "keyword": "Scenario",
+        "line": 66,
+        "name": "Verify home page performance metrics",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 14694351499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 67,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6311903799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 68,
+            "name": "page should load within acceptable time threshold",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1308"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 60087314000
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Metric",
+                      "Threshold"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "First Contentful Paint",
+                      "< 2.5s"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Largest Contentful Paint",
+                      "< 4.0s"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Cumulative Layout Shift",
+                      "< 0.1"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "First Input Delay",
+                      "< 100ms"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 69,
+            "name": "core web vitals should meet performance standards",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1360"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7735799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 75,
+            "name": "images should be properly optimized",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1372"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 494173299
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 80500
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 65
+          },
+          {
+            "name": "@performance",
+            "line": 65
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "adobe-experience-league-home-page-validation;verify-data-source-switching-based-on-cookie-preferences",
+        "keyword": "Scenario",
+        "line": 78,
+        "name": "Verify data source switching based on cookie preferences",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 15002866899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 79,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6378794800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 80,
+            "name": "user opens cookie preferences from footer",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1394"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 81511873400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 81,
+            "name": "cookie preference options should be displayed",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1449"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 51258499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 82,
+            "name": "user enables all cookie options",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1503"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16403399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 83,
+            "name": "user saves cookie preferences",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1523"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3053486499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 84,
+            "name": "content should be served from Target",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1563"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7500491199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 85,
+            "name": "user opens cookie preferences from footer",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1394"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 82620976400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 86,
+            "name": "user disables all cookie options",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1483"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 14892299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 87,
+            "name": "user saves cookie preferences",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1523"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3069250599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 88,
+            "name": "content should be served from Coveo",
+            "match": {
+              "location": "tests\\steps\\home-page-validation.js:1630"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6420378399
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 81800
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 77
+          },
+          {
+            "name": "@cookies",
+            "line": 77
+          },
+          {
+            "name": "@analytics",
+            "line": 77
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "adobe-experience-league-home-page-validation",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Adobe Experience League Home Page Validation",
+    "tags": [],
+    "uri": "tests\\features\\home-page-validation.feature"
+  },
+  {
     "description": "  As a user\n  I want to filter perspectives by author type\n  So that I can view perspectives authored by Adobe",
     "elements": [
       {
@@ -315,7 +1279,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 16557840899
+              "duration": 17525892200
             }
           },
           {
@@ -328,7 +1292,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4142330900
+              "duration": 4224707799
             }
           },
           {
@@ -341,7 +1305,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 185259499
+              "duration": 138186299
             }
           },
           {
@@ -354,7 +1318,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1361721499
+              "duration": 1371412400
             }
           },
           {
@@ -362,7 +1326,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 186000
+              "duration": 61100
             }
           }
         ],
@@ -402,7 +1366,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 17741818199
+              "duration": 17162675300
             }
           },
           {
@@ -415,7 +1379,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 7984822799
+              "duration": 9155981499
             }
           },
           {
@@ -428,7 +1392,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2026814600
+              "duration": 2048665500
             }
           },
           {
@@ -441,7 +1405,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 10132015400
+              "duration": 10201074899
             }
           },
           {
@@ -454,7 +1418,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5019447700
+              "duration": 5023397899
             }
           },
           {
@@ -467,7 +1431,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 428381900
+              "duration": 437165299
             }
           },
           {
@@ -475,7 +1439,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 275200
+              "duration": 96600
             }
           }
         ],
