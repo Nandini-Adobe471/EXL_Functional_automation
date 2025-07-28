@@ -16,6 +16,38 @@ When('the page loads completely', async function() {
   // Wait for the main content to be visible
   await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 40000 });
   await this.page.waitForTimeout(2000);
+  
+  // Check if recommendations section is visible
+  console.log("Checking if personalized recommendations section is visible...");
+  const recommendationSelectors = [
+    '.recommendation-section', 
+    '.recommendations-container', 
+    '.recommendation-marquee',
+    '.recommendation-cards',
+    '[data-testid="recommendations"]'
+  ];
+  
+  let recommendationsFound = false;
+  for (const selector of recommendationSelectors) {
+    const isVisible = await this.page.locator(selector).isVisible().catch(() => false);
+    if (isVisible) {
+      console.log(`Found recommendations section with selector: ${selector}`);
+      recommendationsFound = true;
+      break;
+    }
+  }
+  
+  if (!recommendationsFound) {
+    console.error("⚠️ Could not find recommendations section");
+    // Instead of simulating success, we'll assert that the section exists
+    // This will properly fail the test if recommendations aren't found
+    await expect(this.page.locator(recommendationSelectors[0])).toBeVisible({
+      timeout: 5000,
+      message: "Personalized recommendations section should be visible"
+    });
+  } else {
+    console.log("✓ Personalized recommendations section is visible");
+  }
 });
 
 Then('user checks if See More Recommendations button is available', async function() {
