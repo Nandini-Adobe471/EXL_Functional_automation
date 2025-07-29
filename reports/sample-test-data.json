@@ -1,0 +1,244 @@
+{
+  "features": [
+    {
+      "name": "Recently viewed block functionality",
+      "description": "Test the recently viewed block functionality",
+      "scenarios": [
+        {
+          "name": "Verify Recently viewed block disappears when cookies are disabled",
+          "status": "failed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user is logged in to Experience League application",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "the home page loads completely",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "user checks if Recently viewed block is available",
+              "status": "failed",
+              "error_message": "Timed out 10000ms waiting for expect(locator).toBeVisible()"
+            },
+            {
+              "keyword": "When",
+              "text": "user clicks on Cookie preferences in the footer",
+              "status": "skipped"
+            },
+            {
+              "keyword": "And",
+              "text": "user disables cookies in the preferences modal",
+              "status": "skipped"
+            },
+            {
+              "keyword": "And",
+              "text": "user refreshes the page",
+              "status": "skipped"
+            },
+            {
+              "keyword": "Then",
+              "text": "the Recently viewed block should not be visible",
+              "status": "skipped"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Validate homepage essential",
+      "description": "Test the essential UI elements on the homepage",
+      "scenarios": [
+        {
+          "name": "Verify essential UI elements on the home page",
+          "status": "passed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "I navigate to the Experience League homepage",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "the header navigation should be visible",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "the search bar should be visible and enabled",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "the marquee section should be displayed",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "the footer should be visible",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "name": "Validate search functionality from home page",
+          "status": "passed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user navigates to Experience League home page",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "user enters \"Analytics\" in the search bar",
+              "status": "passed"
+            },
+            {
+              "keyword": "And",
+              "text": "user submits the search",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bookmark functionality",
+      "description": "Test the bookmark functionality",
+      "scenarios": [
+        {
+          "name": "Add and remove bookmarks",
+          "status": "passed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user is on the article page",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "user clicks on the bookmark icon",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "the article should be added to bookmarks",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "user clicks on the bookmark icon again",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "the article should be removed from bookmarks",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Browse filter functionality",
+      "description": "Test the browse filter functionality",
+      "scenarios": [
+        {
+          "name": "Filter content by category",
+          "status": "passed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user is on the browse page",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "user selects a category filter",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "only content from that category should be displayed",
+              "status": "passed"
+            }
+          ]
+        },
+        {
+          "name": "Clear all filters",
+          "status": "skipped",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user has applied multiple filters",
+              "status": "skipped"
+            },
+            {
+              "keyword": "When",
+              "text": "user clicks on clear all filters",
+              "status": "skipped"
+            },
+            {
+              "keyword": "Then",
+              "text": "all filters should be removed",
+              "status": "skipped"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Recommendations functionality",
+      "description": "Test the recommendations functionality",
+      "scenarios": [
+        {
+          "name": "View personalized recommendations",
+          "status": "failed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user is logged in",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "user navigates to recommendations page",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "personalized recommendations should be displayed",
+              "status": "failed",
+              "error_message": "Expected to find personalized recommendations but none were found"
+            }
+          ]
+        },
+        {
+          "name": "Refresh recommendations",
+          "status": "passed",
+          "steps": [
+            {
+              "keyword": "Given",
+              "text": "user is on the recommendations page",
+              "status": "passed"
+            },
+            {
+              "keyword": "When",
+              "text": "user clicks on refresh button",
+              "status": "passed"
+            },
+            {
+              "keyword": "Then",
+              "text": "recommendations should be updated",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

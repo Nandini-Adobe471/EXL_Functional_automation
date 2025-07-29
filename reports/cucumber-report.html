@@ -1,43 +1,678 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Cucumber</title>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAuMDYgMC41NiAzMi41IDM3LjEzIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZD0iTS00LTFoNDB2NDBILTR6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iIzAwYTgxOCIKICAgICAgICAgICAgICBkPSJNMTYuNDM4LjU2M0M3LjM4Ni41NjMuMDYzIDcuODg2LjA2MyAxNi45MzhjMCA3Ljk2OCA1LjcxMiAxNC41ODkgMTMuMjUgMTYuMDYydjQuNjg4YzkuOC0xLjQ3OCAxOC40NzctOS4yNTcgMTkuMTI0LTE5LjQ3LjM5LTYuMTQ2LTIuNjc0LTEyLjQyMS03Ljg0My0xNS40NjhhMTMuNjIgMTMuNjIgMCAwIDAtMS44NzUtLjkzOGwtLjMxMy0uMTI1Yy0uMjg3LS4xMDYtLjU3Ny0uMjI1LS44NzUtLjMxMmExNi4yNDYgMTYuMjQ2IDAgMCAwLTUuMDkzLS44MTN2LjAwMXoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZmZmIgogICAgICAgICAgICAgIGQ9Ik0xOS44MTMgNi42MjVhMS43ODcgMS43ODcgMCAwIDAtMS41NjMuNjI1Yy0uMy40LS40ODguNzg3LS42ODggMS4xODgtLjYgMS40LS40IDIuOS41IDQgMS40LS4zIDIuNTg4LTEuMTk0IDMuMTg4LTIuNTk0LjItLjQuMzEzLS45MTMuMzEzLTEuMzEzLjA2Mi0xLjA2Mi0uODE3LTEuODEtMS43NS0xLjkwNnptLTcuMjgyLjA5NGMtLjkxMy4wODctMS43ODEuODEyLTEuNzgxIDEuODEyIDAgLjQuMTEzLjkxMy4zMTMgMS4zMTMuNiAxLjQgMS44OCAyLjI5MyAzLjI4IDIuNTk0LjgtMS4xIDEuMDA3LTIuNi40MDctNC0uMi0uNC0uMzg3LS43OTQtLjY4OC0xLjA5NGExLjc1NyAxLjc1NyAwIDAgMC0xLjUzLS42MjVoLS4wMDF6TTcuNjI1IDExLjUzYy0xLjU3Ny4wODEtMi4yODEgMi4wNjMtLjk2OSAzLjA5NC40LjMuNzg4LjUxOSAxLjE4OC43MTkgMS40LjYgMy4wMTkuMzk0IDQuMjE4LS40MDYtLjMtMS4zLTEuMzE4LTIuNDk0LTIuNzE4LTMuMDk0LS41LS4yLS45MDYtLjMxMy0xLjQwNi0uMzEzLS4xMTMtLjAxMi0uMjA4LS4wMDUtLjMxMyAwem0xNS40MDYgNi4wNjNhNC41NzQgNC41NzQgMCAwIDAtMi41OTMuNzVjLjMgMS4zIDEuMzE4IDIuNDkzIDIuNzE4IDMuMDkzLjUuMi45MDcuMzEzIDEuNDA3LjMxMyAxLjguMSAyLjY4LTIuMTI1IDEuMjgtMy4xMjUtLjQtLjMtLjc4Ny0uNDg4LTEuMTg3LS42ODhhNC4zMiA0LjMyIDAgMCAwLTEuNjI1LS4zNDN6bS0xMy42NTYuMDkzYy0uNTUuMDExLTEuMS4xMi0xLjYyNS4zNDQtLjUuMi0uODg4LjQxOS0xLjE4OC43MTktMS4zIDEuMS0uNDI1IDMuMTk0IDEuMzc1IDMuMDk0LjUgMCAxLjAwNy0uMTEzIDEuNDA3LS4zMTMgMS40LS42IDIuMzk0LTEuNzkzIDIuNTk0LTMuMDkzYTQuNDc1IDQuNDc1IDAgMCAwLTIuNTYzLS43NXYtLjAwMXptNS4wNjMgMy4wNjNjLTEuNC4zLTIuNTg4IDEuMTk0LTMuMTg4IDIuNTk0LS4yLjQtLjMxMy44ODEtLjMxMyAxLjI4MS0uMSAxLjcgMi4yMiAyLjYxMyAzLjIyIDEuMzEzLjMtLjQuNDg3LS43ODguNjg3LTEuMTg4LjYtMS4zLjM5NC0yLjgtLjQwNi00em0zLjcxOC4wOTRjLS44IDEuMS0xLjAwNiAyLjYtLjQwNiA0IC4yLjQuMzg3Ljc5My42ODggMS4wOTMgMS4xIDEuMiAzLjQxMi4zMTMgMy4zMTItMS4xODcgMC0uNC0uMTEzLS45MTMtLjMxMy0xLjMxMy0uNi0xLjQtMS44OC0yLjI5My0zLjI4LTIuNTkzaC0uMDAxeiIvPgogICAgPC9nPgo8L3N2Zz4K">
-	<style>
-body{padding:0;margin:0}.html-formatter{max-width:1600px;min-height:100vh;margin:0 auto}
-.XR3QM0DC8dUJX1FPQBu_{background-color:var(--cucumber-panel-accent-color, #e8e8e8);border:1px solid rgba(0,0,0,0)}.jjG3rnQfHnX9wBgX_idP{display:grid;grid-template-columns:repeat(12, 1fr);grid-template-rows:1fr 1fr;gap:1px;margin:0;text-align:center}.rfv832DGvJuGyzFuMjXC{grid-column-end:span 4;display:flex;flex-direction:column-reverse;justify-content:center;padding:1.5em;background-color:var(--cucumber-background-color, white);color:var(--cucumber-text-color, #222)}.ZObJrdGWGYZYqvRPTO7x,.ZObJrdGWGYZYqvRPTO7x~.rfv832DGvJuGyzFuMjXC{grid-column-end:span 3}.OFz0nWrlbIgqinwc4usO{font-weight:bold;font-size:1.25em;margin:0}.OFz0nWrlbIgqinwc4usO svg{display:inline-block;max-width:2em}.xmSDOQ_c8MimWxT035vV{font-size:1em;margin-top:.25em;color:var(--cucumber-code-text-color, #666)}.PUJ_q_3Y8RQhAcXxakiL{display:inline-flex;gap:.25em}.PUJ_q_3Y8RQhAcXxakiL+.PUJ_q_3Y8RQhAcXxakiL{margin-left:1em}.PUJ_q_3Y8RQhAcXxakiL a{color:var(--cucumber-anchor-color, #297bde)}
-.E4mSCqTkr4getx0W9smB{margin-bottom:1.5em}.E4mSCqTkr4getx0W9smB>*{border-top:0 !important}
-.gUbOxW8Yux5FNeSfsI2O{position:relative;display:flex;align-items:center}.AEvAM9M_0ZxmJghPdVQs{color:var(--cucumber-anchor-color, #297bde);opacity:0;transition:all .35s ease-in-out;position:absolute;font-size:.75em;left:var(--cucumber-anchor-offset, -1.1em)}.gUbOxW8Yux5FNeSfsI2O:hover .AEvAM9M_0ZxmJghPdVQs{opacity:1}
-.gXG0xG1TJk_4pdoSxoAf{white-space:pre-wrap;font-family:var(--cucumber-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);font-size:.875em;padding:.666em .75em;border-radius:.25em;margin:0;overflow-x:auto;background-color:var(--cucumber-error-background-color, #fff0f0);color:var(--cucumber-error-text-color, #bd0a2b)}
-.J2h_F2WM3WVOOjWSISvA{position:relative;white-space:pre-wrap;font-family:var(--cucumber-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);font-size:.875em;padding:.666em .75em;border-radius:.25em;margin:0;overflow-x:auto;background-color:var(--cucumber-code-background-color, #f6f8fa);color:var(--cucumber-code-text-color, #666)}.Csls2DZsTVl5_RDKgLID{padding-left:3.25em}.Csls2DZsTVl5_RDKgLID::before{content:"Log";position:absolute;top:.666em;left:.75em;text-transform:uppercase;font-weight:bold;color:var(--cucumber-parameter-color, #297bde);opacity:.75}.BL_UrJNG5vfwcNU6hhPj{margin-right:.75em;opacity:.333}.zKWxtTmik48Yw6hm6NJT{max-width:100%;margin-top:.5em}.Kwg8ACzZ14UJrwu6pQDG{list-style:none;display:flex;flex-direction:column;align-items:flex-start;padding:0;margin:0}.Kwg8ACzZ14UJrwu6pQDG a{text-decoration:none;color:var(--cucumber-anchor-color, #297bde)}.Kwg8ACzZ14UJrwu6pQDG svg{margin-right:.5em}
-.pzfx7tCRXyytC6g9SDxg{display:flex;align-items:center;gap:4px;background-color:rgba(0,0,0,0);color:var(--cucumber-anchor-color, #297bde);font-family:inherit;font-size:inherit;padding:0;border:0;margin:0 0 .5em 0;cursor:pointer}.pzfx7tCRXyytC6g9SDxg:hover,.pzfx7tCRXyytC6g9SDxg:focus{text-decoration:underline}
-.IWgpmOz8r6Wj2YWzioT1{padding:0;margin:1em}.IWgpmOz8r6Wj2YWzioT1 a{color:var(--cucumber-anchor-color, #297bde)}
-.MNkrrVMCDeB7mTXs5do4{border-collapse:collapse;margin:0}.MNkrrVMCDeB7mTXs5do4 thead tr{border-bottom:6px solid rgba(0,0,0,0)}.MNkrrVMCDeB7mTXs5do4 tr+tr{border-top:6px solid rgba(0,0,0,0)}.MNkrrVMCDeB7mTXs5do4 th,.MNkrrVMCDeB7mTXs5do4 td{padding:.4em .6em;border-width:2px;border-style:solid;border-top:none;border-bottom:none;border-color:var(--cucumber-keyword-color, #000080);color:var(--cucumber-parameter-color, #297bde)}
-.buWCECLHpnDfpwKwugOX{font-family:var(--cucumber-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);color:var(--cucumber-docstring-color, #008080);padding-bottom:.25em;margin:0;overflow-x:auto}.buWCECLHpnDfpwKwugOX::before,.buWCECLHpnDfpwKwugOX::after{content:'"""';display:block;transform:translateY(0.25em)}.buWCECLHpnDfpwKwugOX::before{padding-bottom:.25em}.buWCECLHpnDfpwKwugOX::after{padding-top:.25em}
-.KqWCaxcpp4sxz7A20RLA{font-weight:bold;color:var(--cucumber-keyword-color, #000080);margin-right:.5em}
-.jraSbOu3Xpk7mbUgodqc{font-weight:normal;color:var(--cucumber-parameter-color, #297bde)}
-.j0ln79cSlRB4hNiHeXjH[data-status=PASSED]{color:rgba(44,177,74,.667)}.j0ln79cSlRB4hNiHeXjH[data-status=SKIPPED]{color:rgba(0,160,204,.667)}.j0ln79cSlRB4hNiHeXjH[data-status=PENDING]{color:rgba(255,173,51,.667)}.j0ln79cSlRB4hNiHeXjH[data-status=UNDEFINED]{color:rgba(255,173,51,.667)}.j0ln79cSlRB4hNiHeXjH[data-status=AMBIGUOUS]{color:rgba(244,235,253,.667)}.j0ln79cSlRB4hNiHeXjH[data-status=FAILED]{color:rgba(187,0,0,.667)}.j0ln79cSlRB4hNiHeXjH[data-status=UNKNOWN]{color:rgba(182,190,203,.667)}
-.UXBAOOwgLjqbpb8XD1WL{display:flex;--cucumber-anchor-offset: -3.25em}.kDEmgsysGXM7DgTGCWfs{width:1.5em;padding-top:.1em}.rIuf66pcn5inse3YjseZ{flex-grow:1;max-width:calc(100% - 1.5em)}.rIuf66pcn5inse3YjseZ>*+*{margin-top:.25em !important}
-.vf7CPB8kAcns60tKI7vY{display:inline-block;font-weight:normal;padding:0;margin:0}h1.vf7CPB8kAcns60tKI7vY,h2.vf7CPB8kAcns60tKI7vY{font-size:1.5em}h3.vf7CPB8kAcns60tKI7vY,h4.vf7CPB8kAcns60tKI7vY{font-size:1.125em}
-.bbjk27OORIAhv9IbGaBL{padding:0;margin:.875em 1em}.bbjk27OORIAhv9IbGaBL>li{list-style:none}.bbjk27OORIAhv9IbGaBL>li:not(:empty){padding:.125em 0}
-.vIGVFeZhSpvtjMv28qFg{padding:0;margin:1em}
-.R_7odAGRh9ZWASbUwK3j{margin-left:1rem}
-.Fdmm0s4soB2pkvNYXQbv{border-collapse:collapse;margin:0}.Fdmm0s4soB2pkvNYXQbv thead tr{border-bottom:6px solid rgba(0,0,0,0)}.Fdmm0s4soB2pkvNYXQbv tr+tr{border-top:6px solid rgba(0,0,0,0)}.Fdmm0s4soB2pkvNYXQbv th,.Fdmm0s4soB2pkvNYXQbv td{padding:.4em .6em;border-width:2px;border-style:solid;border-top:none;border-bottom:none;border-color:var(--cucumber-keyword-color, #000080);color:var(--cucumber-parameter-color, #297bde)}.Fdmm0s4soB2pkvNYXQbv th:first-child,.Fdmm0s4soB2pkvNYXQbv td:first-child{border-left:none}.Fdmm0s4soB2pkvNYXQbv tbody tr{cursor:pointer}
-.FbgC7RSK7PrGGsNDRAl2{padding:0;margin:0}.QRN0XyDjb8RR6B4I3C5w{display:inline;list-style-type:none;padding:8px 0;color:var(--cucumber-tag-color, #808000)}.QRN0XyDjb8RR6B4I3C5w:not(:last-child){margin-right:10px}
-.ETQctlyGyWWjcMYVPHxW{transform:rotate(45deg)}
-.X9zF5mRApmhkNHKRv89A{padding:0;margin:1em}.X9zF5mRApmhkNHKRv89A>li{list-style:none}.X9zF5mRApmhkNHKRv89A>li+li{margin-top:.25em}
-.aNBioFoTxXGy8fl89aVN{padding-top:.35em;padding-left:.5em;padding-right:.5em}.uH0tV61h4vEwGIdnLhmB{border:1px solid var(--cucumber-panel-accent-color, #e8e8e8);border-radius:2px}.tIbY7PZ2bzsj9dKjbfxb+.tIbY7PZ2bzsj9dKjbfxb{border-top:1px solid var(--cucumber-panel-accent-color, #e8e8e8)}.oxCzU1rC8VLhLfVMMrX2{box-sizing:border-box;width:100%;padding:.75em 1em;border:none;background-color:var(--cucumber-panel-background-color, #f4f4f4);color:var(--cucumber-panel-text-color, #444);cursor:pointer;text-align:left}.oxCzU1rC8VLhLfVMMrX2:hover{background-color:var(--cucumber-panel-accent-color, #e8e8e8)}.g2StHf8iOGfwMQe5f9rk{transform-origin:center center;transition:transform .2s linear}.oxCzU1rC8VLhLfVMMrX2[aria-expanded=true] .g2StHf8iOGfwMQe5f9rk,.oxCzU1rC8VLhLfVMMrX2[aria-selected=true] .g2StHf8iOGfwMQe5f9rk{transform:rotate(90deg)}.aSGVb3Tv5B8Nz24vToKW{padding:1.25em}
-.rioeqbTEi_lL8FESsJqA{display:flex;flex-direction:column;align-items:center;gap:.5em;padding-bottom:1.5em;text-align:center}.xvCoYo7NPDqD900sFMjr{font-size:3em;opacity:.125}
-.qCGgrwvVkkINDRfqpvsj{box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;width:100%;padding:1em;border:1px solid var(--cucumber-panel-accent-color, #e8e8e8);background-color:var(--cucumber-panel-background-color, #f4f4f4);color:var(--cucumber-panel-text-color, #444)}.bnRegjcAB_MU3kCnU0eO{position:relative;margin-top:-0.5em}.DnlYJBmP1_AfFSU3KSgD{position:absolute;left:0;margin-left:.4em;top:.5em;opacity:.666}.XhufRLVTP4kJj55pWlZQ{box-sizing:border-box;width:100%;padding:.5em 0 .5em 1.5em;font-family:inherit;font-size:inherit;background-color:rgba(0,0,0,0);color:var(--cucumber-text-color, #222);border:1px solid #ced4da;border-radius:.3em}.Pj6CVtDA4EslW8OfcTI9{display:block;font-size:.75em;line-height:1em;margin-top:.3em}.Pj6CVtDA4EslW8OfcTI9 a{color:var(--cucumber-anchor-color, #297bde)}.JPICQf5NjLq2IqfrDM06{display:flex;align-items:center;gap:.5em}.i7Lu8mj6UiHXs3uZahvK{display:flex;align-items:center;gap:.5em;list-style:none;padding:0;margin:0}.di7wOxuS_2Y1X70JnH4C{opacity:.666}.ue2HaGqIjpPqXt_Q__wa{display:flex;align-items:center;gap:1px;accent-color:var(--cucumber-anchor-color, #297bde)}
-.jGf5f1r0vW6ApPrFIznv{list-style:none;display:flex;width:100%;padding:0;margin:0}.VlpRuYBlXtcShawgxgzA{box-sizing:border-box;flex-grow:1;min-width:11em;padding:.333em 2.5em;background-color:#000;color:#fff;white-space:nowrap;text-align:center;text-transform:uppercase}.VlpRuYBlXtcShawgxgzA[data-status=PASSED]{background-color:#2cb14a}.VlpRuYBlXtcShawgxgzA[data-status=SKIPPED]{background-color:#00a0cc}.VlpRuYBlXtcShawgxgzA[data-status=PENDING]{background-color:#ffad33}.VlpRuYBlXtcShawgxgzA[data-status=UNDEFINED]{background-color:#ffad33}.VlpRuYBlXtcShawgxgzA[data-status=AMBIGUOUS]{background-color:#f4ebfd}.VlpRuYBlXtcShawgxgzA[data-status=FAILED]{background-color:#b00}.VlpRuYBlXtcShawgxgzA[data-status=UNKNOWN]{background-color:#b6becb}
-.g84sy6xgJUyJIzpsyG5S{font-size:14px;font-family:var(--cucumber-sans-font-family, "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");color:var(--cucumber-text-color, #222);background:var(--cucumber-background-color, white)}.S07ZPK5i38Whpt0ARQ6p{--cucumber-background-color: #1d1d26;--cucumber-text-color: #c9c9d1;--cucumber-anchor-color: #4caaee;--cucumber-keyword-color: #d89077;--cucumber-parameter-color: #4caaee;--cucumber-tag-color: #85a658;--cucumber-docstring-color: #66a565;--cucumber-error-background-color: #cf6679;--cucumber-error-text-color: #222;--cucumber-code-background-color: #282a36;--cucumber-code-text-color: #f8f8f2;--cucumber-panel-background-color: #282a36;--cucumber-panel-accent-color: #313442;--cucumber-panel-text-color: #f8f8f2}@media all and (prefers-color-scheme: dark){.pPHXjw4HiiEZ76UmW2np{--cucumber-background-color: #1d1d26;--cucumber-text-color: #c9c9d1;--cucumber-anchor-color: #4caaee;--cucumber-keyword-color: #d89077;--cucumber-parameter-color: #4caaee;--cucumber-tag-color: #85a658;--cucumber-docstring-color: #66a565;--cucumber-error-background-color: #cf6679;--cucumber-error-text-color: #222;--cucumber-code-background-color: #282a36;--cucumber-code-text-color: #f8f8f2;--cucumber-panel-background-color: #282a36;--cucumber-panel-accent-color: #313442;--cucumber-panel-text-color: #f8f8f2}}
-
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cucumber Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .chart-box {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .chart-title {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+        header {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 5px solid #4CAF50;
+        }
+        h1 {
+            color: #4CAF50;
+            margin: 0;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .summary-box {
+            flex: 1;
+            margin: 0 10px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .passed {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4CAF50;
+        }
+        .failed {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+        .skipped {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196F3;
+        }
+        .feature {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .feature-header {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .feature-name {
+            margin: 0;
+            color: #333;
+        }
+        .scenario {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .scenario:last-child {
+            border-bottom: none;
+        }
+        .scenario-name {
+            margin-top: 0;
+            color: #333;
+        }
+        .steps {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        .step {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .step-passed::before {
+            content: "✅";
+            margin-right: 10px;
+        }
+        .step-failed::before {
+            content: "❌";
+            margin-right: 10px;
+        }
+        .step-skipped::before {
+            content: "⏭️";
+            margin-right: 10px;
+        }
+        .step-pending::before {
+            content: "⏳";
+            margin-right: 10px;
+        }
+        .error-message {
+            background-color: #ffebee;
+            padding: 10px;
+            border-left: 5px solid #f44336;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .screenshot {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-<div id="content">
-</div>
-<script>
-window.CUCUMBER_MESSAGES = [{"meta":{"protocolVersion":"27.2.0","implementation":{"version":"11.3.0","name":"cucumber-js"},"cpu":{"name":"x64"},"os":{"name":"win32","version":"10.0.26100"},"runtime":{"name":"node.js","version":"22.15.0"}}},{"source":{"data":"Feature: Recently viewed block functionality on Adobe Experience League\r\n\r\n@skip-login\r\nScenario: Verify Recently viewed block disappears when cookies are disabled\r\n    Given user is logged in to Experience League application\r\n    When the home page loads completely\r\n    Then user checks if Recently viewed block is available\r\n    When user clicks on Cookie preferences in the footer\r\n    And user disables cookies in the preferences modal\r\n    And user refreshes the page\r\n    Then the Recently viewed block should not be visible\r\n","uri":"tests\\features\\a.feature","mediaType":"text\/x.cucumber.gherkin+plain"}},{"gherkinDocument":{"feature":{"tags":[],"location":{"line":1,"column":1},"language":"en","keyword":"Feature","name":"Recently viewed block functionality on Adobe Experience League","description":"","children":[{"scenario":{"id":"8c882362-069d-44f7-b6e3-df5feec8fb33","tags":[{"location":{"line":3,"column":1},"name":"@skip-login","id":"3c9a1de6-75e2-4bb2-993d-6f3bb3056244"}],"location":{"line":4,"column":1},"keyword":"Scenario","name":"Verify Recently viewed block disappears when cookies are disabled","description":"","steps":[{"id":"e61cadfd-82b0-4605-ad66-d57bf018e2c0","location":{"line":5,"column":5},"keyword":"Given ","keywordType":"Context","text":"user is logged in to Experience League application"},{"id":"d20d498a-5857-4702-ad91-b4a068896694","location":{"line":6,"column":5},"keyword":"When ","keywordType":"Action","text":"the home page loads completely"},{"id":"daa0c3cb-d31a-4431-a37f-b19e9016b7e3","location":{"line":7,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"user checks if Recently viewed block is available"},{"id":"08b6d8ef-7b10-45f2-87bb-80ab42b22454","location":{"line":8,"column":5},"keyword":"When ","keywordType":"Action","text":"user clicks on Cookie preferences in the footer"},{"id":"99411594-bd9c-4779-a3d7-15faedd0c5c6","location":{"line":9,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"user disables cookies in the preferences modal"},{"id":"22fa617f-8eb4-4f66-8100-b38bb0d41ec6","location":{"line":10,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"user refreshes the page"},{"id":"1cae5586-af38-4648-957d-fa10766dbccb","location":{"line":11,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"the Recently viewed block should not be visible"}],"examples":[]}}]},"comments":[],"uri":"tests\\features\\a.feature"}},{"pickle":{"id":"2ad97493-6822-4be1-83f7-14458fd99e29","uri":"tests\\features\\a.feature","astNodeIds":["8c882362-069d-44f7-b6e3-df5feec8fb33"],"tags":[{"name":"@skip-login","astNodeId":"3c9a1de6-75e2-4bb2-993d-6f3bb3056244"}],"name":"Verify Recently viewed block disappears when cookies are disabled","language":"en","steps":[{"id":"d86e27bb-c34c-482c-aeb3-7793bc2cbed7","text":"user is logged in to Experience League application","type":"Context","astNodeIds":["e61cadfd-82b0-4605-ad66-d57bf018e2c0"]},{"id":"fbfbac06-6808-40af-bdd6-72389f027ba2","text":"the home page loads completely","type":"Action","astNodeIds":["d20d498a-5857-4702-ad91-b4a068896694"]},{"id":"38d29c4f-19aa-4d06-9274-e98592cd917c","text":"user checks if Recently viewed block is available","type":"Outcome","astNodeIds":["daa0c3cb-d31a-4431-a37f-b19e9016b7e3"]},{"id":"d87cb684-f954-4a57-a923-f2bfb5c9eb9b","text":"user clicks on Cookie preferences in the footer","type":"Action","astNodeIds":["08b6d8ef-7b10-45f2-87bb-80ab42b22454"]},{"id":"cb73128b-66fc-4cf5-8231-80641f5c8c6a","text":"user disables cookies in the preferences modal","type":"Action","astNodeIds":["99411594-bd9c-4779-a3d7-15faedd0c5c6"]},{"id":"60c39343-e573-430e-b6be-794b62e1fa43","text":"user refreshes the page","type":"Action","astNodeIds":["22fa617f-8eb4-4f66-8100-b38bb0d41ec6"]},{"id":"6cff1445-48a1-4855-94ea-ec8f068b1d17","text":"the Recently viewed block should not be visible","type":"Outcome","astNodeIds":["1cae5586-af38-4648-957d-fa10766dbccb"]}]}},{"source":{"data":"Feature: validate homepage essential\r\n\r\n@skip-login\r\n Scenario: verify essential UI elements on the home page\r\n    \r\n    Given I navigate to the Experience League homepage\r\n    Then the header navigation should be visible\r\n    Then the search bar should be visible and enabled\r\n     Then the marquee section should be displayed\r\n     Then the footer should be visible\r\n   \r\n   \r\n@home-page @search @skip-login\r\nScenario: Validate search functionality from home page\r\n  Given user navigates to Experience League home page\r\n  When user enters \"Analytics\" in the search bar\r\n  And user submits the search\r\n  Then search results page should display\r\n  Then search results should contain items related to \"Analytics\"\r\n\r\n  @home-page @navigation @skip-login\r\nScenario: Verify main navigation links functionality\r\n  Given user navigates to Experience League home page\r\n  When user clicks on each main navigation link\r\n    | Link Name    |\r\n    | Tutorials       |\r\n    | Documentation   |\r\n    | Perspective       |\r\n  Then each page should load successfully\r\n  And each page should display relevant content\r\n\r\n  @home-page @responsive @skip-login\r\nScenario: Validate responsive behavior of home page\r\n  Given user navigates to EX League home page \r\n    When viewport size is changed to the following dimensions\r\n    | Device      | Width | Height |\r\n    | Mobile      | 375   | 667    |\r\n    | Tablet      | 768   | 1024   |\r\n    | Desktop     | 1440  | 900    |\r\n  Then page layout should adapt appropriately to each viewport\r\n\r\n  @home-page @personalization @skip-login\r\nScenario: Verify personalized content recommendations for logged-in user\r\n  Given user is logged in to Experience League to verify\r\n  When user navigates to Experience League home page\r\n  Then personalized recommendations section should be visible\r\n\r\n  @home-page @performance @skip-login\r\nScenario: Verify home page performance metrics\r\n  Given user navigates to Experience League home page to verify performsnce metrics\r\n  Then page should load within acceptable time threshold\r\n  And core web vitals should meet performance standards\r\n    | Metric                    | Threshold |\r\n    | First Contentful Paint    | < 2.5s    |\r\n    | Largest Contentful Paint  | < 4.0s    |\r\n    | Cumulative Layout Shift   | < 0.1     |\r\n    | First Input Delay         | < 100ms   |\r\n  And images should be properly optimized","uri":"tests\\features\\aa.feature","mediaType":"text\/x.cucumber.gherkin+plain"}},{"gherkinDocument":{"feature":{"tags":[],"location":{"line":1,"column":1},"language":"en","keyword":"Feature","name":"validate homepage essential","description":"","children":[{"scenario":{"id":"3ec82387-5990-4cab-877f-748022a026b8","tags":[{"location":{"line":3,"column":1},"name":"@skip-login","id":"be93ac4e-249f-49f4-9c50-2d19062b868d"}],"location":{"line":4,"column":2},"keyword":"Scenario","name":"verify essential UI elements on the home page","description":"","steps":[{"id":"bc3803ae-6320-426d-a187-fb5ed241dd2b","location":{"line":6,"column":5},"keyword":"Given ","keywordType":"Context","text":"I navigate to the Experience League homepage"},{"id":"3ab88649-6b45-4e36-98f5-9e09fb0d267a","location":{"line":7,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"the header navigation should be visible"},{"id":"e267b60e-7938-477f-aabc-fe34b2ae1aa1","location":{"line":8,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"the search bar should be visible and enabled"},{"id":"434d7e1f-19c1-48cb-8690-65034b48eed0","location":{"line":9,"column":6},"keyword":"Then ","keywordType":"Outcome","text":"the marquee section should be displayed"},{"id":"021a39e5-67c0-41be-9188-2c04bb65c681","location":{"line":10,"column":6},"keyword":"Then ","keywordType":"Outcome","text":"the footer should be visible"}],"examples":[]}},{"scenario":{"id":"60e6b4e2-b818-43fa-b1ce-1bfbf0f7768f","tags":[{"location":{"line":13,"column":1},"name":"@home-page","id":"3a4a7946-f823-41f2-a389-b2bada7ea8f3"},{"location":{"line":13,"column":12},"name":"@search","id":"701f7536-7325-4a1b-82ea-8541b9e977ea"},{"location":{"line":13,"column":20},"name":"@skip-login","id":"a4000614-7dcf-4106-9c65-187ec9ed90cb"}],"location":{"line":14,"column":1},"keyword":"Scenario","name":"Validate search functionality from home page","description":"","steps":[{"id":"c815016a-e725-4543-a97a-78affe07e06e","location":{"line":15,"column":3},"keyword":"Given ","keywordType":"Context","text":"user navigates to Experience League home page"},{"id":"505fc616-094b-47e1-a38b-be4b21e8d6f7","location":{"line":16,"column":3},"keyword":"When ","keywordType":"Action","text":"user enters \"Analytics\" in the search bar"},{"id":"9bc48f3e-bc44-4bb2-9853-2b185ad02bcc","location":{"line":17,"column":3},"keyword":"And ","keywordType":"Conjunction","text":"user submits the search"},{"id":"16e3c4c2-cec8-4622-bb8e-879b14bffc34","location":{"line":18,"column":3},"keyword":"Then ","keywordType":"Outcome","text":"search results page should display"},{"id":"079e3c78-23a5-4f16-b5e0-bec4a55da392","location":{"line":19,"column":3},"keyword":"Then ","keywordType":"Outcome","text":"search results should contain items related to \"Analytics\""}],"examples":[]}},{"scenario":{"id":"cd173496-7109-449e-ae81-6eda8990e82c","tags":[{"location":{"line":21,"column":3},"name":"@home-page","id":"ef48f43d-c87a-41dd-9b99-5cc799544660"},{"location":{"line":21,"column":14},"name":"@navigation","id":"ece83acd-afc6-4c5a-b064-0512140ae05c"},{"location":{"line":21,"column":26},"name":"@skip-login","id":"e0d7af38-d853-4b05-a107-be8ff5764003"}],"location":{"line":22,"column":1},"keyword":"Scenario","name":"Verify main navigation links functionality","description":"","steps":[{"id":"7101d763-a037-4bd5-a142-002c624a92af","location":{"line":23,"column":3},"keyword":"Given ","keywordType":"Context","text":"user navigates to Experience League home page"},{"id":"d5f68c6a-afdf-41f7-8dab-4bd5edf2f24e","location":{"line":24,"column":3},"keyword":"When ","keywordType":"Action","text":"user clicks on each main navigation link","dataTable":{"location":{"line":25,"column":5},"rows":[{"id":"9360bd5f-0a40-4dd9-8a3d-87cf3a7ceda0","location":{"line":25,"column":5},"cells":[{"location":{"line":25,"column":7},"value":"Link Name"}]},{"id":"3aa4575d-c23f-40ed-8552-442bcbde6ab3","location":{"line":26,"column":5},"cells":[{"location":{"line":26,"column":7},"value":"Tutorials"}]},{"id":"9fd6fefb-f50e-4d70-b7bb-3fbeaa5a73e1","location":{"line":27,"column":5},"cells":[{"location":{"line":27,"column":7},"value":"Documentation"}]},{"id":"d5e1e1f5-b3ea-43bc-8a19-aa365f2b19bc","location":{"line":28,"column":5},"cells":[{"location":{"line":28,"column":7},"value":"Perspective"}]}]}},{"id":"00d07e9a-6918-49b8-a4c9-2d47b3ddb400","location":{"line":29,"column":3},"keyword":"Then ","keywordType":"Outcome","text":"each page should load successfully"},{"id":"3b5af3b5-141d-4898-bbfa-76c3de2fd9c2","location":{"line":30,"column":3},"keyword":"And ","keywordType":"Conjunction","text":"each page should display relevant content"}],"examples":[]}},{"scenario":{"id":"768eb0e1-38ca-4d91-98b9-1d16a9508aef","tags":[{"location":{"line":32,"column":3},"name":"@home-page","id":"4b3c6699-6d8c-458b-b6e2-2eeb86b2a327"},{"location":{"line":32,"column":14},"name":"@responsive","id":"6785c5e0-8885-4e9c-aa2e-125b71da82f6"},{"location":{"line":32,"column":26},"name":"@skip-login","id":"1d5a668e-39d7-4e47-9e24-b678a1bc16d1"}],"location":{"line":33,"column":1},"keyword":"Scenario","name":"Validate responsive behavior of home page","description":"","steps":[{"id":"a193a3cb-3b51-4a52-82b8-3c2033a373e5","location":{"line":34,"column":3},"keyword":"Given ","keywordType":"Context","text":"user navigates to EX League home page"},{"id":"52d615c4-11cb-472b-88c9-877595ffac5b","location":{"line":35,"column":5},"keyword":"When ","keywordType":"Action","text":"viewport size is changed to the following dimensions","dataTable":{"location":{"line":36,"column":5},"rows":[{"id":"5dff8c37-5a4f-4f9b-914e-812da9bed1a0","location":{"line":36,"column":5},"cells":[{"location":{"line":36,"column":7},"value":"Device"},{"location":{"line":36,"column":21},"value":"Width"},{"location":{"line":36,"column":29},"value":"Height"}]},{"id":"1d71b93d-991d-4915-9125-6011b79c2c51","location":{"line":37,"column":5},"cells":[{"location":{"line":37,"column":7},"value":"Mobile"},{"location":{"line":37,"column":21},"value":"375"},{"location":{"line":37,"column":29},"value":"667"}]},{"id":"dc11d643-d53d-41c8-8ac7-b16a42b1cf11","location":{"line":38,"column":5},"cells":[{"location":{"line":38,"column":7},"value":"Tablet"},{"location":{"line":38,"column":21},"value":"768"},{"location":{"line":38,"column":29},"value":"1024"}]},{"id":"1ded4f13-d147-469f-aec7-40d8e57577e7","location":{"line":39,"column":5},"cells":[{"location":{"line":39,"column":7},"value":"Desktop"},{"location":{"line":39,"column":21},"value":"1440"},{"location":{"line":39,"column":29},"value":"900"}]}]}},{"id":"2a64eed5-457e-4cd2-ab9e-2a9ffc6e351d","location":{"line":40,"column":3},"keyword":"Then ","keywordType":"Outcome","text":"page layout should adapt appropriately to each viewport"}],"examples":[]}},{"scenario":{"id":"b2a3129a-e194-4e50-9264-0a2e88a3448f","tags":[{"location":{"line":42,"column":3},"name":"@home-page","id":"12897335-61e2-405e-a4b9-d1fbcebd5c9e"},{"location":{"line":42,"column":14},"name":"@personalization","id":"dea75c0d-8088-4e5b-87ea-308214e1bc84"},{"location":{"line":42,"column":31},"name":"@skip-login","id":"2e497cd3-d011-4532-bcfb-386f5fe66610"}],"location":{"line":43,"column":1},"keyword":"Scenario","name":"Verify personalized content recommendations for logged-in user","description":"","steps":[{"id":"734e015e-484a-41d8-83ee-0c19bddce2c7","location":{"line":44,"column":3},"keyword":"Given ","keywordType":"Context","text":"user is logged in to Experience League to verify"},{"id":"2aa0eff1-3e17-4480-bf04-28837ae8069d","location":{"line":45,"column":3},"keyword":"When ","keywordType":"Action","text":"user navigates to Experience League home page"},{"id":"97f0b2d1-1874-4203-b0a2-2c07d8bc05fb","location":{"line":46,"column":3},"keyword":"Then ","keywordType":"Outcome","text":"personalized recommendations section should be visible"}],"examples":[]}},{"scenario":{"id":"abfbce0c-992e-484d-b820-7779e28acc36","tags":[{"location":{"line":48,"column":3},"name":"@home-page","id":"87d30012-9077-40e2-842a-caac1a5a1322"},{"location":{"line":48,"column":14},"name":"@performance","id":"ff74638b-6bb6-4b22-b993-232b00b76477"},{"location":{"line":48,"column":27},"name":"@skip-login","id":"6384977b-4ff1-46fe-8d30-2474ea6cf722"}],"location":{"line":49,"column":1},"keyword":"Scenario","name":"Verify home page performance metrics","description":"","steps":[{"id":"4fe167fb-58f8-48b9-bf84-92c5305352e9","location":{"line":50,"column":3},"keyword":"Given ","keywordType":"Context","text":"user navigates to Experience League home page to verify performsnce metrics"},{"id":"ac1c7cb0-dbec-40dc-8240-62a8155ed1a1","location":{"line":51,"column":3},"keyword":"Then ","keywordType":"Outcome","text":"page should load within acceptable time threshold"},{"id":"5e5674ac-8370-4c41-877b-60cd3309bfa9","location":{"line":52,"column":3},"keyword":"And ","keywordType":"Conjunction","text":"core web vitals should meet performance standards","dataTable":{"location":{"line":53,"column":5},"rows":[{"id":"d7537f63-12a3-45a4-918f-650f1c23ed7b","location":{"line":53,"column":5},"cells":[{"location":{"line":53,"column":7},"value":"Metric"},{"location":{"line":53,"column":35},"value":"Threshold"}]},{"id":"fe97fece-b399-44d1-bd8d-d40df7c2363e","location":{"line":54,"column":5},"cells":[{"location":{"line":54,"column":7},"value":"First Contentful Paint"},{"location":{"line":54,"column":35},"value":"< 2.5s"}]},{"id":"cf909f4e-3810-41c8-8530-2d60facd6cdc","location":{"line":55,"column":5},"cells":[{"location":{"line":55,"column":7},"value":"Largest Contentful Paint"},{"location":{"line":55,"column":35},"value":"< 4.0s"}]},{"id":"5913bc20-b93a-438c-97d8-3408ace7e615","location":{"line":56,"column":5},"cells":[{"location":{"line":56,"column":7},"value":"Cumulative Layout Shift"},{"location":{"line":56,"column":35},"value":"< 0.1"}]},{"id":"a1ce9813-40ff-488e-b537-edc3f420ba69","location":{"line":57,"column":5},"cells":[{"location":{"line":57,"column":7},"value":"First Input Delay"},{"location":{"line":57,"column":35},"value":"< 100ms"}]}]}},{"id":"b57085a1-ac14-433f-b22c-78c9b98f2100","location":{"line":58,"column":3},"keyword":"And ","keywordType":"Conjunction","text":"images should be properly optimized"}],"examples":[]}}]},"comments":[],"uri":"tests\\features\\aa.feature"}},{"pickle":{"id":"e2569635-16a1-452b-9087-36a691e5b5e4","uri":"tests\\features\\aa.feature","astNodeIds":["3ec82387-5990-4cab-877f-748022a026b8"],"tags":[{"name":"@skip-login","astNodeId":"be93ac4e-249f-49f4-9c50-2d19062b868d"}],"name":"verify essential UI elements on the home page","language":"en","steps":[{"id":"a4a118ef-c05e-4459-a14f-9af10af11b3f","text":"I navigate to the Experience League homepage","type":"Context","astNodeIds":["bc3803ae-6320-426d-a187-fb5ed241dd2b"]},{"id":"c1158a90-ac94-4e5d-9f22-490f4e56c0e9","text":"the header navigation should be visible","type":"Outcome","astNodeIds":["3ab88649-6b45-4e36-98f5-9e09fb0d267a"]},{"id":"c82cb021-eec9-442d-af4a-aa59ad28b7f2","text":"the search bar should be visible and enabled","type":"Outcome","astNodeIds":["e267b60e-7938-477f-aabc-fe34b2ae1aa1"]},{"id":"3fa59ea6-c171-435f-9a82-d5dcaddeb9de","text":"the marquee section should be displayed","type":"Outcome","astNodeIds":["434d7e1f-19c1-48cb-8690-65034b48eed0"]},{"id":"6a89e731-0a31-4811-8304-ea6ade931213","text":"the footer should be visible","type":"Outcome","astNodeIds":["021a39e5-67c0-41be-9188-2c04bb65c681"]}]}},{"pickle":{"id":"5ba8f0f9-e67f-4007-81f9-a99851e46a3e","uri":"tests\\features\\aa.feature","astNodeIds":["60e6b4e2-b818-43fa-b1ce-1bfbf0f7768f"],"tags":[{"name":"@home-page","astNodeId":"3a4a7946-f823-41f2-a389-b2bada7ea8f3"},{"name":"@search","astNodeId":"701f7536-7325-4a1b-82ea-8541b9e977ea"},{"name":"@skip-login","astNodeId":"a4000614-7dcf-4106-9c65-187ec9ed90cb"}],"name":"Validate search functionality from home page","language":"en","steps":[{"id":"893d2030-b659-46ff-9326-cdb0ad9ff750","text":"user navigates to Experience League home page","type":"Context","astNodeIds":["c815016a-e725-4543-a97a-78affe07e06e"]},{"id":"5e4e7756-7970-48ff-860a-72dca51d8fc5","text":"user enters \"Analytics\" in the search bar","type":"Action","astNodeIds":["505fc616-094b-47e1-a38b-be4b21e8d6f7"]},{"id":"e04e08c3-7e0f-45e5-b118-7d23abe0b1c4","text":"user submits the search","type":"Action","astNodeIds":["9bc48f3e-bc44-4bb2-9853-2b185ad02bcc"]},{"id":"c1c3ad93-ee8a-4876-8b5a-78864b9edf08","text":"search results page should display","type":"Outcome","astNodeIds":["16e3c4c2-cec8-4622-bb8e-879b14bffc34"]},{"id":"3785265b-7e00-44c4-b5bf-bafe1283625d","text":"search results should contain items related to \"Analytics\"","type":"Outcome","astNodeIds":["079e3c78-23a5-4f16-b5e0-bec4a55da392"]}]}},{"pickle":{"id":"498ed5d6-3275-487a-a8f1-145ecf82c037","uri":"tests\\features\\aa.feature","astNodeIds":["cd173496-7109-449e-ae81-6eda8990e82c"],"tags":[{"name":"@home-page","astNodeId":"ef48f43d-c87a-41dd-9b99-5cc799544660"},{"name":"@navigation","astNodeId":"ece83acd-afc6-4c5a-b064-0512140ae05c"},{"name":"@skip-login","astNodeId":"e0d7af38-d853-4b05-a107-be8ff5764003"}],"name":"Verify main navigation links functionality","language":"en","steps":[{"id":"3b7c0447-953d-4686-a352-25a77caa53e8","text":"user navigates to Experience League home page","type":"Context","astNodeIds":["7101d763-a037-4bd5-a142-002c624a92af"]},{"id":"8625ee3e-f7af-4734-86da-16be691a1eac","text":"user clicks on each main navigation link","type":"Action","argument":{"dataTable":{"rows":[{"cells":[{"value":"Link Name"}]},{"cells":[{"value":"Tutorials"}]},{"cells":[{"value":"Documentation"}]},{"cells":[{"value":"Perspective"}]}]}},"astNodeIds":["d5f68c6a-afdf-41f7-8dab-4bd5edf2f24e"]},{"id":"525c7b1a-e357-4c20-bb63-4a0b292da129","text":"each page should load successfully","type":"Outcome","astNodeIds":["00d07e9a-6918-49b8-a4c9-2d47b3ddb400"]},{"id":"af6df51f-9c5e-4c70-8d2d-91c4a3fec4aa","text":"each page should display relevant content","type":"Outcome","astNodeIds":["3b5af3b5-141d-4898-bbfa-76c3de2fd9c2"]}]}},{"pickle":{"id":"a9389203-2dde-4579-9a06-c5787015d533","uri":"tests\\features\\aa.feature","astNodeIds":["768eb0e1-38ca-4d91-98b9-1d16a9508aef"],"tags":[{"name":"@home-page","astNodeId":"4b3c6699-6d8c-458b-b6e2-2eeb86b2a327"},{"name":"@responsive","astNodeId":"6785c5e0-8885-4e9c-aa2e-125b71da82f6"},{"name":"@skip-login","astNodeId":"1d5a668e-39d7-4e47-9e24-b678a1bc16d1"}],"name":"Validate responsive behavior of home page","language":"en","steps":[{"id":"344e806e-39a3-46d8-926c-a08f18834daa","text":"user navigates to EX League home page","type":"Context","astNodeIds":["a193a3cb-3b51-4a52-82b8-3c2033a373e5"]},{"id":"f10b1d6c-6343-44ab-95f4-35d5545ad6b3","text":"viewport size is changed to the following dimensions","type":"Action","argument":{"dataTable":{"rows":[{"cells":[{"value":"Device"},{"value":"Width"},{"value":"Height"}]},{"cells":[{"value":"Mobile"},{"value":"375"},{"value":"667"}]},{"cells":[{"value":"Tablet"},{"value":"768"},{"value":"1024"}]},{"cells":[{"value":"Desktop"},{"value":"1440"},{"value":"900"}]}]}},"astNodeIds":["52d615c4-11cb-472b-88c9-877595ffac5b"]},{"id":"bfb42b91-a331-45c0-863d-e66a5d100dc8","text":"page layout should adapt appropriately to each viewport","type":"Outcome","astNodeIds":["2a64eed5-457e-4cd2-ab9e-2a9ffc6e351d"]}]}},{"pickle":{"id":"6a43f80d-67dc-4f4e-a581-1cf9b8f465c7","uri":"tests\\features\\aa.feature","astNodeIds":["b2a3129a-e194-4e50-9264-0a2e88a3448f"],"tags":[{"name":"@home-page","astNodeId":"12897335-61e2-405e-a4b9-d1fbcebd5c9e"},{"name":"@personalization","astNodeId":"dea75c0d-8088-4e5b-87ea-308214e1bc84"},{"name":"@skip-login","astNodeId":"2e497cd3-d011-4532-bcfb-386f5fe66610"}],"name":"Verify personalized content recommendations for logged-in user","language":"en","steps":[{"id":"92fa1ca6-6ee0-459b-99d8-c92b386c4d71","text":"user is logged in to Experience League to verify","type":"Context","astNodeIds":["734e015e-484a-41d8-83ee-0c19bddce2c7"]},{"id":"3b2730a5-46d2-458b-b682-69dc2048530e","text":"user navigates to Experience League home page","type":"Action","astNodeIds":["2aa0eff1-3e17-4480-bf04-28837ae8069d"]},{"id":"feb22bcc-caf8-440c-959b-93593cf3d7f0","text":"personalized recommendations section should be visible","type":"Outcome","astNodeIds":["97f0b2d1-1874-4203-b0a2-2c07d8bc05fb"]}]}},{"pickle":{"id":"2066f998-11c9-4c78-a5f8-3e00a9a3bffe","uri":"tests\\features\\aa.feature","astNodeIds":["abfbce0c-992e-484d-b820-7779e28acc36"],"tags":[{"name":"@home-page","astNodeId":"87d30012-9077-40e2-842a-caac1a5a1322"},{"name":"@performance","astNodeId":"ff74638b-6bb6-4b22-b993-232b00b76477"},{"name":"@skip-login","astNodeId":"6384977b-4ff1-46fe-8d30-2474ea6cf722"}],"name":"Verify home page performance metrics","language":"en","steps":[{"id":"fdc4c536-2f1d-40a1-a7d2-de440d87c9b1","text":"user navigates to Experience League home page to verify performsnce metrics","type":"Context","astNodeIds":["4fe167fb-58f8-48b9-bf84-92c5305352e9"]},{"id":"bb6470c5-ebcf-4305-bd37-156f89442177","text":"page should load within acceptable time threshold","type":"Outcome","astNodeIds":["ac1c7cb0-dbec-40dc-8240-62a8155ed1a1"]},{"id":"10f78006-e7d7-45cf-becb-19203442706f","text":"core web vitals should meet performance standards","type":"Outcome","argument":{"dataTable":{"rows":[{"cells":[{"value":"Metric"},{"value":"Threshold"}]},{"cells":[{"value":"First Contentful Paint"},{"value":"< 2.5s"}]},{"cells":[{"value":"Largest Contentful Paint"},{"value":"< 4.0s"}]},{"cells":[{"value":"Cumulative Layout Shift"},{"value":"< 0.1"}]},{"cells":[{"value":"First Input Delay"},{"value":"< 100ms"}]}]}},"astNodeIds":["5e5674ac-8370-4c41-877b-60cd3309bfa9"]},{"id":"b906d492-49af-462b-ab82-335795bfb44f","text":"images should be properly optimized","type":"Outcome","astNodeIds":["b57085a1-ac14-433f-b22c-78c9b98f2100"]}]}},{"source":{"data":"Feature: Launch Adobe Experience League URL and login\r\n\r\n@skip-login\r\nScenario Outline: PHP page launched successfully and user logs in\r\n    Given the user is on the landing page\r\n    When the user clicks the CTA to begin login\r\n    And the user enters their email address \"<email>\"\r\n    And the user clicks the Continue button\r\n    And the user enters their password \"<password>\"\r\n    And the user submits the password form\r\n    Then the user should be logged in successfully\r\n\r\nExamples:\r\n  | email                                    | password  |\r\n  | gsnair+US+Team+VISA+hello+1@adobetest.com | Bap@d0be |\r\n\r\n ","uri":"tests\\features\\bookmark.feature","mediaType":"text\/x.cucumber.gherkin+plain"}},{"gherkinDocument":{"feature":{"tags":[],"location":{"line":1,"column":1},"language":"en","keyword":"Feature","name":"Launch Adobe Experience League URL and login","description":"","children":[{"scenario":{"id":"6e0c995d-bd7f-47db-917a-c1a4862a67fe","tags":[{"location":{"line":3,"column":1},"name":"@skip-login","id":"5cfecdee-ce51-41e7-acf5-e5fcea79829d"}],"location":{"line":4,"column":1},"keyword":"Scenario Outline","name":"PHP page launched successfully and user logs in","description":"","steps":[{"id":"33ad8b91-0057-4a4d-90e4-470649c79f7b","location":{"line":5,"column":5},"keyword":"Given ","keywordType":"Context","text":"the user is on the landing page"},{"id":"69a7247c-bab1-45ed-be14-d05e49779077","location":{"line":6,"column":5},"keyword":"When ","keywordType":"Action","text":"the user clicks the CTA to begin login"},{"id":"8f142c0c-466f-46bb-a908-dbee11a79526","location":{"line":7,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"the user enters their email address \"<email>\""},{"id":"ff02fc41-adb2-4ec4-8fab-1ca56d9821e2","location":{"line":8,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"the user clicks the Continue button"},{"id":"6fc62ead-2a3b-46a5-a174-992ff83e0a49","location":{"line":9,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"the user enters their password \"<password>\""},{"id":"0e49df4e-f20a-45da-a156-58864242686e","location":{"line":10,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"the user submits the password form"},{"id":"e313afad-a0ab-414f-b4eb-1c043925fbf5","location":{"line":11,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"the user should be logged in successfully"}],"examples":[{"id":"206671df-c785-48d9-9273-2e3d981d3ffd","tags":[],"location":{"line":13,"column":1},"keyword":"Examples","name":"","description":"","tableHeader":{"id":"330372db-e515-4f77-b672-3fcaaafaa988","location":{"line":14,"column":3},"cells":[{"location":{"line":14,"column":5},"value":"email"},{"location":{"line":14,"column":48},"value":"password"}]},"tableBody":[{"id":"f4a4ba09-0444-4498-ae63-3855151a006c","location":{"line":15,"column":3},"cells":[{"location":{"line":15,"column":5},"value":"gsnair+US+Team+VISA+hello+1@adobetest.com"},{"location":{"line":15,"column":49},"value":"Bap@d0be"}]}]}]}}]},"comments":[],"uri":"tests\\features\\bookmark.feature"}},{"pickle":{"id":"b41dda10-4e6a-4861-851e-dd357d9c9240","uri":"tests\\features\\bookmark.feature","astNodeIds":["6e0c995d-bd7f-47db-917a-c1a4862a67fe","f4a4ba09-0444-4498-ae63-3855151a006c"],"name":"PHP page launched successfully and user logs in","language":"en","steps":[{"id":"4f9acbd8-fcb9-4635-98e3-63e6c8334430","text":"the user is on the landing page","type":"Context","astNodeIds":["33ad8b91-0057-4a4d-90e4-470649c79f7b","f4a4ba09-0444-4498-ae63-3855151a006c"]},{"id":"46691323-2068-4f4d-b99c-6f5f851da56f","text":"the user clicks the CTA to begin login","type":"Action","astNodeIds":["69a7247c-bab1-45ed-be14-d05e49779077","f4a4ba09-0444-4498-ae63-3855151a006c"]},{"id":"a8c04b9c-f036-4df7-9c31-bfb2016d08b4","text":"the user enters their email address \"gsnair+US+Team+VISA+hello+1@adobetest.com\"","type":"Action","astNodeIds":["8f142c0c-466f-46bb-a908-dbee11a79526","f4a4ba09-0444-4498-ae63-3855151a006c"]},{"id":"723a5148-e42f-46b2-a5cd-a7d7f5227b3e","text":"the user clicks the Continue button","type":"Action","astNodeIds":["ff02fc41-adb2-4ec4-8fab-1ca56d9821e2","f4a4ba09-0444-4498-ae63-3855151a006c"]},{"id":"8606abaa-a8bb-476b-9210-15389f643471","text":"the user enters their password \"Bap@d0be\"","type":"Action","astNodeIds":["6fc62ead-2a3b-46a5-a174-992ff83e0a49","f4a4ba09-0444-4498-ae63-3855151a006c"]},{"id":"11495c91-989a-48b0-9ab6-1af212b829f1","text":"the user submits the password form","type":"Action","astNodeIds":["0e49df4e-f20a-45da-a156-58864242686e","f4a4ba09-0444-4498-ae63-3855151a006c"]},{"id":"f3d0d980-e943-4d70-871a-fa2118bcaf0e","text":"the user should be logged in successfully","type":"Outcome","astNodeIds":["e313afad-a0ab-414f-b4eb-1c043925fbf5","f4a4ba09-0444-4498-ae63-3855151a006c"]}],"tags":[{"name":"@skip-login","astNodeId":"5cfecdee-ce51-41e7-acf5-e5fcea79829d"}]}},{"source":{"data":"Feature: Browse and filter content on Adobe Experience League\r\n\r\n@skip-login\r\n@browse-filter\r\nScenario: Filter content by type and product and validate first card\r\n    Given user is on the PHP page\r\n    When user navigates to the browse page\r\n    And user selects content type as \"Community\"\r\n    And user selects product as \"^Analytics$\"\r\n    Then verify first card displays with selected content type and product tag\r\n","uri":"tests\\features\\browse-filter.feature","mediaType":"text\/x.cucumber.gherkin+plain"}},{"gherkinDocument":{"feature":{"tags":[],"location":{"line":1,"column":1},"language":"en","keyword":"Feature","name":"Browse and filter content on Adobe Experience League","description":"","children":[{"scenario":{"id":"7170b818-dfaf-4e00-b884-89346c62c22a","tags":[{"location":{"line":3,"column":1},"name":"@skip-login","id":"1cfe46eb-09a3-46f4-9b5a-904660683a80"},{"location":{"line":4,"column":1},"name":"@browse-filter","id":"54a7fbfe-24d3-4771-8ba5-e707226ae794"}],"location":{"line":5,"column":1},"keyword":"Scenario","name":"Filter content by type and product and validate first card","description":"","steps":[{"id":"56feda23-59bd-46f0-ad53-82553fd9c50d","location":{"line":6,"column":5},"keyword":"Given ","keywordType":"Context","text":"user is on the PHP page"},{"id":"3000ecc9-bac3-41d5-ba11-78c4b460d7fe","location":{"line":7,"column":5},"keyword":"When ","keywordType":"Action","text":"user navigates to the browse page"},{"id":"45e9dc95-753d-4ef2-8a9b-aa516b6a1f92","location":{"line":8,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"user selects content type as \"Community\""},{"id":"bc537804-ef91-493d-b540-8afcd3d39106","location":{"line":9,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"user selects product as \"^Analytics$\""},{"id":"7813fe47-80c6-4470-b2b6-e3487de041b5","location":{"line":10,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"verify first card displays with selected content type and product tag"}],"examples":[]}}]},"comments":[],"uri":"tests\\features\\browse-filter.feature"}},{"pickle":{"id":"1cb8d47f-692f-4ea8-8f6b-3980e44ead24","uri":"tests\\features\\browse-filter.feature","astNodeIds":["7170b818-dfaf-4e00-b884-89346c62c22a"],"tags":[{"name":"@skip-login","astNodeId":"1cfe46eb-09a3-46f4-9b5a-904660683a80"},{"name":"@browse-filter","astNodeId":"54a7fbfe-24d3-4771-8ba5-e707226ae794"}],"name":"Filter content by type and product and validate first card","language":"en","steps":[{"id":"c4830e29-223f-404e-8cc5-c4ccb40c7516","text":"user is on the PHP page","type":"Context","astNodeIds":["56feda23-59bd-46f0-ad53-82553fd9c50d"]},{"id":"8439e631-2fa4-43ea-9089-5b7cb1f4f3f3","text":"user navigates to the browse page","type":"Action","astNodeIds":["3000ecc9-bac3-41d5-ba11-78c4b460d7fe"]},{"id":"7b156ddf-8a2c-45d8-b0a8-bad37c3aba58","text":"user selects content type as \"Community\"","type":"Action","astNodeIds":["45e9dc95-753d-4ef2-8a9b-aa516b6a1f92"]},{"id":"45048fb2-21bb-42de-8a10-543d7bc386d6","text":"user selects product as \"^Analytics$\"","type":"Action","astNodeIds":["bc537804-ef91-493d-b540-8afcd3d39106"]},{"id":"a2701f09-ed1d-49b7-a75b-99d88f63f0ea","text":"verify first card displays with selected content type and product tag","type":"Outcome","astNodeIds":["7813fe47-80c6-4470-b2b6-e3487de041b5"]}]}},{"source":{"data":"Feature: Perspective Page Author Badge\r\n  As a user\r\n  I want to filter perspectives by author type\r\n  So that I can view perspectives authored by Adobe\r\n@skip-login\r\n  Scenario: Filter perspectives by author type '&nbsp;Adobe' and verify badge\r\n    Given user logs in and lands on PHP page\r\n    When user navigates to the perspective page\r\n    And user selects author type as \"Adobe\"\r\n    Then verify first card displays with \"By Adobe\" badge\r\n","uri":"tests\\features\\perspective-author-badge.feature","mediaType":"text\/x.cucumber.gherkin+plain"}},{"gherkinDocument":{"feature":{"tags":[],"location":{"line":1,"column":1},"language":"en","keyword":"Feature","name":"Perspective Page Author Badge","description":"  As a user\n  I want to filter perspectives by author type\n  So that I can view perspectives authored by Adobe","children":[{"scenario":{"id":"913eaa92-be8a-4d24-8d34-8141776581e3","tags":[{"location":{"line":5,"column":1},"name":"@skip-login","id":"16604eeb-6eb7-434a-a7f0-cab97fd204c5"}],"location":{"line":6,"column":3},"keyword":"Scenario","name":"Filter perspectives by author type '&nbsp;Adobe' and verify badge","description":"","steps":[{"id":"fcde0fa9-3024-4bac-9e51-83e9cfbac660","location":{"line":7,"column":5},"keyword":"Given ","keywordType":"Context","text":"user logs in and lands on PHP page"},{"id":"a67d85df-95ff-4413-b4e4-a08e83cce06b","location":{"line":8,"column":5},"keyword":"When ","keywordType":"Action","text":"user navigates to the perspective page"},{"id":"86f3ce63-b852-46f6-aa2b-acd18c43c669","location":{"line":9,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"user selects author type as \"Adobe\""},{"id":"78cf3def-abee-4377-97f3-7d4a13bf3c81","location":{"line":10,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"verify first card displays with \"By Adobe\" badge"}],"examples":[]}}]},"comments":[],"uri":"tests\\features\\perspective-author-badge.feature"}},{"pickle":{"id":"b60205fd-e75a-4e6e-aca5-77cc4e768504","uri":"tests\\features\\perspective-author-badge.feature","astNodeIds":["913eaa92-be8a-4d24-8d34-8141776581e3"],"tags":[{"name":"@skip-login","astNodeId":"16604eeb-6eb7-434a-a7f0-cab97fd204c5"}],"name":"Filter perspectives by author type '&nbsp;Adobe' and verify badge","language":"en","steps":[{"id":"f2141df1-a322-485f-ac8d-0cb1f024843f","text":"user logs in and lands on PHP page","type":"Context","astNodeIds":["fcde0fa9-3024-4bac-9e51-83e9cfbac660"]},{"id":"d86baa31-f996-4380-9a0e-8e89827b9eaa","text":"user navigates to the perspective page","type":"Action","astNodeIds":["a67d85df-95ff-4413-b4e4-a08e83cce06b"]},{"id":"066e005d-b356-41da-bc3f-e22caaa9d829","text":"user selects author type as \"Adobe\"","type":"Action","astNodeIds":["86f3ce63-b852-46f6-aa2b-acd18c43c669"]},{"id":"350ec476-717c-4f6a-afd4-51d6e0c1a77d","text":"verify first card displays with \"By Adobe\" badge","type":"Outcome","astNodeIds":["78cf3def-abee-4377-97f3-7d4a13bf3c81"]}]}},{"source":{"data":"Feature: Recommendations functionality on Adobe Experience League\r\n\r\n@skip-login\r\nScenario: Check and interact with See More Recommendations button\r\n    Given user is logged in to Experience League\r\n    When the page loads completely\r\n    Then user checks if See More Recommendations button is available\r\n    And user clicks the See More Recommendations button\r\n    And waits for additional recommendations to load\r\n    And verifies that See Less Recommendations is displayed\r\n","uri":"tests\\features\\recommendations.feature","mediaType":"text\/x.cucumber.gherkin+plain"}},{"gherkinDocument":{"feature":{"tags":[],"location":{"line":1,"column":1},"language":"en","keyword":"Feature","name":"Recommendations functionality on Adobe Experience League","description":"","children":[{"scenario":{"id":"5f3fb536-dced-4a94-b80f-41148e8d3c2c","tags":[{"location":{"line":3,"column":1},"name":"@skip-login","id":"bcb95702-00fd-4da1-ba58-84bb9e0724e8"}],"location":{"line":4,"column":1},"keyword":"Scenario","name":"Check and interact with See More Recommendations button","description":"","steps":[{"id":"5fff1411-6c61-42ce-8afe-e08cbaceaf8f","location":{"line":5,"column":5},"keyword":"Given ","keywordType":"Context","text":"user is logged in to Experience League"},{"id":"40995b0b-8bf0-4f26-b185-2b1c7977c6c4","location":{"line":6,"column":5},"keyword":"When ","keywordType":"Action","text":"the page loads completely"},{"id":"4096fe38-f823-4eac-9ab2-e671aa9ce610","location":{"line":7,"column":5},"keyword":"Then ","keywordType":"Outcome","text":"user checks if See More Recommendations button is available"},{"id":"b9ab7340-a3e8-4e3f-80af-0aa88a2b1283","location":{"line":8,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"user clicks the See More Recommendations button"},{"id":"0674ac22-1719-48d1-8fd4-02d56c7ee617","location":{"line":9,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"waits for additional recommendations to load"},{"id":"6da312d5-fb26-4a1b-b8b0-2025fa70775d","location":{"line":10,"column":5},"keyword":"And ","keywordType":"Conjunction","text":"verifies that See Less Recommendations is displayed"}],"examples":[]}}]},"comments":[],"uri":"tests\\features\\recommendations.feature"}},{"pickle":{"id":"1d1909ee-7bec-4ef8-b9cf-7530bd19d5c2","uri":"tests\\features\\recommendations.feature","astNodeIds":["5f3fb536-dced-4a94-b80f-41148e8d3c2c"],"tags":[{"name":"@skip-login","astNodeId":"bcb95702-00fd-4da1-ba58-84bb9e0724e8"}],"name":"Check and interact with See More Recommendations button","language":"en","steps":[{"id":"dca2720d-d5d0-4e9e-9b75-2f30679d9892","text":"user is logged in to Experience League","type":"Context","astNodeIds":["5fff1411-6c61-42ce-8afe-e08cbaceaf8f"]},{"id":"48ddc134-8226-40fd-bf77-c9f3ef3f2065","text":"the page loads completely","type":"Action","astNodeIds":["40995b0b-8bf0-4f26-b185-2b1c7977c6c4"]},{"id":"634b3724-31fc-4a8a-aa9a-9cfcb68dd1ac","text":"user checks if See More Recommendations button is available","type":"Outcome","astNodeIds":["4096fe38-f823-4eac-9ab2-e671aa9ce610"]},{"id":"bb3ce7b5-05a6-4d80-b2af-103db5abcc8b","text":"user clicks the See More Recommendations button","type":"Outcome","astNodeIds":["b9ab7340-a3e8-4e3f-80af-0aa88a2b1283"]},{"id":"ac05a65a-c368-4343-9686-905bc3d036e8","text":"waits for additional recommendations to load","type":"Outcome","astNodeIds":["0674ac22-1719-48d1-8fd4-02d56c7ee617"]},{"id":"36e50e37-f63d-4ca0-8cac-a819c87c1422","text":"verifies that See Less Recommendations is displayed","type":"Outcome","astNodeIds":["6da312d5-fb26-4a1b-b8b0-2025fa70775d"]}]}},{"stepDefinition":{"id":"072c4ff1-93ad-473c-8333-29b265229bf7","pattern":{"source":"user is logged in to Experience League application","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":7}}}},{"stepDefinition":{"id":"2e062ce0-6a30-4f61-ba0b-ccc937ee7aef","pattern":{"source":"the home page loads completely","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":15}}}},{"stepDefinition":{"id":"562ed71c-4784-47ef-8dcf-d0554b5231dc","pattern":{"source":"user checks if Recently viewed block is available","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":24}}}},{"stepDefinition":{"id":"9c6b2085-09d3-496c-ae8f-7477ab3723dc","pattern":{"source":"user clicks on Cookie preferences in the footer","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":35}}}},{"stepDefinition":{"id":"7f0afb7f-669e-4584-b79e-cf482abc0cdf","pattern":{"source":"user disables cookies in the preferences modal","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":55}}}},{"stepDefinition":{"id":"af365789-d049-4a6e-a38e-5a633a26c59a","pattern":{"source":"user refreshes the page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":92}}}},{"stepDefinition":{"id":"1a5ee91e-441c-46e4-a186-ce978e8da30c","pattern":{"source":"the Recently viewed block should not be visible","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\a.js","location":{"line":101}}}},{"stepDefinition":{"id":"c365f2e6-4bf1-4943-bd01-835cc5dce643","pattern":{"source":"I navigate to the Experience League homepage","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":8}}}},{"stepDefinition":{"id":"cb37801d-a1ea-4e91-80c9-496692947183","pattern":{"source":"the header navigation should be visible","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":16}}}},{"stepDefinition":{"id":"80b45fa2-3281-4a58-8caf-5b7f99fe0dcf","pattern":{"source":"the search bar should be visible and enabled","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":49}}}},{"stepDefinition":{"id":"9336007e-0e60-4ae1-bb3e-915977fdf274","pattern":{"source":"the marquee section should be displayed","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":88}}}},{"stepDefinition":{"id":"af56e53e-8fbe-45b0-9744-98d18cdd3b1b","pattern":{"source":"the footer should be visible","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":119}}}},{"stepDefinition":{"id":"7b24ec0c-e951-4127-b798-bebe28077c13","pattern":{"source":"user navigates to Experience League home page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":151}}}},{"stepDefinition":{"id":"70aea789-195d-4110-b0c8-75ed3d73f729","pattern":{"source":"user enters {string} in the search bar","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":159}}}},{"stepDefinition":{"id":"7c134035-e57b-41f8-93a5-371a44a04393","pattern":{"source":"user submits the search","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":179}}}},{"stepDefinition":{"id":"f3ca8517-7e22-458f-8817-65c6c149d5b4","pattern":{"source":"search results page should display","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":200}}}},{"stepDefinition":{"id":"44696604-146b-4c87-b227-fc1d939aaa5e","pattern":{"source":"search results should contain items related to {string}","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":216}}}},{"stepDefinition":{"id":"5cead3e3-b9be-4761-9f35-27e7e17f2aba","pattern":{"source":"user is logged in and on the home page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":232}}}},{"stepDefinition":{"id":"aef25390-a8c6-45dc-b289-301f717efac3","pattern":{"source":"user clicks on each main navigation link","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":237}}}},{"stepDefinition":{"id":"1da60a03-09ea-4553-a4f1-0931a1be91ff","pattern":{"source":"each page should load successfully","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":273}}}},{"stepDefinition":{"id":"5a0c948b-7c2b-46ed-b5ca-7f6034f52e00","pattern":{"source":"each page should display relevant content","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":284}}}},{"stepDefinition":{"id":"4f99e39e-1622-40df-8e6d-0c2505cb33a9","pattern":{"source":"user navigates to EX League home page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":297}}}},{"stepDefinition":{"id":"955db1db-5564-44fd-ab1a-3ee4a95c94b6","pattern":{"source":"viewport size is changed to the following dimensions","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":302}}}},{"stepDefinition":{"id":"a23cd919-276b-4145-89ff-3910c1d9ed1e","pattern":{"source":"page layout should adapt appropriately to each viewport","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":352}}}},{"stepDefinition":{"id":"f6418305-aad6-4a2a-a15d-d938161c9927","pattern":{"source":"user is logged in to Experience League to verify","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":362}}}},{"stepDefinition":{"id":"91630aed-f498-41c1-9fff-942aaf29a324","pattern":{"source":"personalized recommendations section should be visible","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":367}}}},{"stepDefinition":{"id":"9f774097-acfb-4bc1-aea9-20d2e31e4e17","pattern":{"source":"user navigates to Experience League home page to verify performsnce metrics","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":424}}}},{"stepDefinition":{"id":"952b3ac0-1773-4bf6-8610-9d96ec9ef3c4","pattern":{"source":"page should load within acceptable time threshold","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":430}}}},{"stepDefinition":{"id":"1f0781fd-0202-421f-8331-f76176930b71","pattern":{"source":"core web vitals should meet performance standards","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":482}}}},{"stepDefinition":{"id":"f396ee97-87ff-466b-86d3-643118c34ffe","pattern":{"source":"images should be properly optimized","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\aa.js","location":{"line":494}}}},{"stepDefinition":{"id":"b8d1ef68-1dee-4a3d-b5c7-9690ce5c1b2c","pattern":{"source":"the user is on the landing page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":22}}}},{"stepDefinition":{"id":"0f4d51cb-1deb-4deb-8d72-183a60e76284","pattern":{"source":"the user clicks the CTA to begin login","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":44}}}},{"stepDefinition":{"id":"12041276-c0e6-4c71-8b1b-f086b1b2692a","pattern":{"source":"the user enters their email address {string}","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":58}}}},{"stepDefinition":{"id":"b3d23f00-224b-44bf-b076-8c9ad3ed579f","pattern":{"source":"the user clicks the Continue button","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":74}}}},{"stepDefinition":{"id":"a2ce10d9-cac8-4aef-ad5c-47107e41ac62","pattern":{"source":"the user enters their password {string}","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":88}}}},{"stepDefinition":{"id":"95dff740-06ae-45fc-83d2-919e7e3fd576","pattern":{"source":"the user submits the password form","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":101}}}},{"stepDefinition":{"id":"146aaba3-7efa-4698-866f-050d29de5472","pattern":{"source":"the user should be logged in successfully","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":110}}}},{"stepDefinition":{"id":"b432c1ea-c562-496a-85b7-85e27fbff0b2","pattern":{"source":"user is on Experience League home","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":124}}}},{"stepDefinition":{"id":"dfa9d7cb-d897-43d4-817c-fed004db9f18","pattern":{"source":"user bookmarks the first content card","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":130}}}},{"stepDefinition":{"id":"fceb1644-99b5-4958-b6bf-e47ebd9e051e","pattern":{"source":"ensure bookmarked card appears in bookmarks page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\bookmark.js","location":{"line":167}}}},{"stepDefinition":{"id":"4919f0ac-b6e9-40cf-8c06-2bd8bff14cd0","pattern":{"source":"user is on the PHP page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\browse-filter.js","location":{"line":7}}}},{"stepDefinition":{"id":"233c71ff-750c-48bd-86d6-4bf329007c86","pattern":{"source":"user navigates to the browse page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\browse-filter.js","location":{"line":12}}}},{"stepDefinition":{"id":"e9091eaf-8778-4015-bea6-c29ed3c7b4ee","pattern":{"source":"user selects content type as {string}","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\browse-filter.js","location":{"line":20}}}},{"stepDefinition":{"id":"59ee8fc1-4176-4057-bd96-6db511b76619","pattern":{"source":"user selects product as {string}","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\browse-filter.js","location":{"line":33}}}},{"stepDefinition":{"id":"86e61635-bb75-4a06-aa96-3e41da55b20f","pattern":{"source":"verify first card displays with selected content type and product tag","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\browse-filter.js","location":{"line":53}}}},{"stepDefinition":{"id":"b0252e1d-9aa3-41f9-9ac6-35bb58e22c90","pattern":{"source":"user logs in and lands on PHP page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\perspective-author-badge.js","location":{"line":8}}}},{"stepDefinition":{"id":"1f5b32dd-6179-4bef-ac4d-a185938ee594","pattern":{"source":"user navigates to the perspective page","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\perspective-author-badge.js","location":{"line":15}}}},{"stepDefinition":{"id":"5ba848f3-7b50-469a-b925-621c07805194","pattern":{"source":"user selects author type as {string}","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\perspective-author-badge.js","location":{"line":26}}}},{"stepDefinition":{"id":"2ad37466-f099-4934-a814-8727c5837741","pattern":{"source":"verify first card displays with {string} badge","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\perspective-author-badge.js","location":{"line":48}}}},{"stepDefinition":{"id":"db5c0058-8425-495e-a647-05e02e494eb7","pattern":{"source":"user is logged in to Experience League","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\recommendations.js","location":{"line":7}}}},{"stepDefinition":{"id":"d443d273-ce14-42f6-a34b-37d827bbc681","pattern":{"source":"the page loads completely","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\recommendations.js","location":{"line":15}}}},{"stepDefinition":{"id":"66cabea2-af6e-44dc-a569-a48325f08bf8","pattern":{"source":"user checks if See More Recommendations button is available","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\recommendations.js","location":{"line":53}}}},{"stepDefinition":{"id":"81f51bd2-b94c-439b-91b7-9035db42395f","pattern":{"source":"user clicks the See More Recommendations button","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\recommendations.js","location":{"line":75}}}},{"stepDefinition":{"id":"3e6eb55f-e690-411d-9822-4223a4e926b9","pattern":{"source":"waits for additional recommendations to load","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\recommendations.js","location":{"line":101}}}},{"stepDefinition":{"id":"f171e439-88df-4289-88ea-9248a10fa7d1","pattern":{"source":"verifies that See Less Recommendations is displayed","type":"CUCUMBER_EXPRESSION"},"sourceReference":{"uri":"tests\\steps\\recommendations.js","location":{"line":114}}}},{"hook":{"id":"28a9a6f9-d36c-4e05-8736-0cfc0551210d","type":"BEFORE_TEST_CASE","tagExpression":"not @skip-login","sourceReference":{"uri":"tests\\support\\hooks.js","location":{"line":6}}}},{"hook":{"id":"346e1e47-c3c4-40e1-b575-324d6d9bdf76","type":"AFTER_TEST_CASE","sourceReference":{"uri":"tests\\support\\hooks.js","location":{"line":19}}}},{"testRunStarted":{"id":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","timestamp":{"seconds":1753687151,"nanos":414000000}}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"2ad97493-6822-4be1-83f7-14458fd99e29","id":"aae76eff-b781-4995-aebe-ecb086709a7b","testSteps":[{"id":"e4cd43e3-e22d-4a58-9d99-15be14001e26","pickleStepId":"d86e27bb-c34c-482c-aeb3-7793bc2cbed7","stepDefinitionIds":["072c4ff1-93ad-473c-8333-29b265229bf7"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"21e561b3-4ff3-4c1c-b9e7-e6313a8413f8","pickleStepId":"fbfbac06-6808-40af-bdd6-72389f027ba2","stepDefinitionIds":["2e062ce0-6a30-4f61-ba0b-ccc937ee7aef"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"e26e870a-5e9f-46d2-a62c-2886ab6cc70b","pickleStepId":"38d29c4f-19aa-4d06-9274-e98592cd917c","stepDefinitionIds":["562ed71c-4784-47ef-8dcf-d0554b5231dc"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"47e83cfb-dbe9-44fe-af62-2b6dc9ba31ab","pickleStepId":"d87cb684-f954-4a57-a923-f2bfb5c9eb9b","stepDefinitionIds":["9c6b2085-09d3-496c-ae8f-7477ab3723dc"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"ec80fcc8-d419-48f9-a6fb-7d3b54985654","pickleStepId":"cb73128b-66fc-4cf5-8231-80641f5c8c6a","stepDefinitionIds":["7f0afb7f-669e-4584-b79e-cf482abc0cdf"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"99567c74-79a0-4c20-82e7-0b76dc80a77d","pickleStepId":"60c39343-e573-430e-b6be-794b62e1fa43","stepDefinitionIds":["af365789-d049-4a6e-a38e-5a633a26c59a"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"1f1158fa-51f4-40e0-bc47-3d926fc0cd43","pickleStepId":"6cff1445-48a1-4855-94ea-ec8f068b1d17","stepDefinitionIds":["1a5ee91e-441c-46e4-a186-ce978e8da30c"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"5a973433-8585-4e43-9160-d354946ae5cb","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"e2569635-16a1-452b-9087-36a691e5b5e4","id":"ac3aa5ff-9564-4a37-9fa7-f4f62f4d5028","testSteps":[{"id":"14581fb5-2a32-4540-8fcf-5b06510bbf0e","pickleStepId":"a4a118ef-c05e-4459-a14f-9af10af11b3f","stepDefinitionIds":["c365f2e6-4bf1-4943-bd01-835cc5dce643"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"962d4bf8-b437-4455-9636-98ed2a7ec3c9","pickleStepId":"c1158a90-ac94-4e5d-9f22-490f4e56c0e9","stepDefinitionIds":["cb37801d-a1ea-4e91-80c9-496692947183"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"20fdecce-46c5-4d7c-907a-71468ac1e845","pickleStepId":"c82cb021-eec9-442d-af4a-aa59ad28b7f2","stepDefinitionIds":["80b45fa2-3281-4a58-8caf-5b7f99fe0dcf"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"e81d6ee1-7a8b-455f-bcac-47a959465d22","pickleStepId":"3fa59ea6-c171-435f-9a82-d5dcaddeb9de","stepDefinitionIds":["9336007e-0e60-4ae1-bb3e-915977fdf274"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"d9503095-549e-4c32-ab78-2dc3e7433504","pickleStepId":"6a89e731-0a31-4811-8304-ea6ade931213","stepDefinitionIds":["af56e53e-8fbe-45b0-9744-98d18cdd3b1b"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"b40a7ff7-1b2d-40b4-ad1f-abb84f252086","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"5ba8f0f9-e67f-4007-81f9-a99851e46a3e","id":"f157b3c9-001a-44d4-ab1f-dc0e9201930e","testSteps":[{"id":"ce6443a9-02f1-4758-8ba0-03d46017c27e","pickleStepId":"893d2030-b659-46ff-9326-cdb0ad9ff750","stepDefinitionIds":["7b24ec0c-e951-4127-b798-bebe28077c13"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"92b7a310-26c2-44ca-976e-d38780c520f0","pickleStepId":"5e4e7756-7970-48ff-860a-72dca51d8fc5","stepDefinitionIds":["70aea789-195d-4110-b0c8-75ed3d73f729"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":12,"value":"\"Analytics\"","children":[{"start":13,"value":"Analytics","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"b3ca0198-9e29-44f9-9d84-8c864d5201e3","pickleStepId":"e04e08c3-7e0f-45e5-b118-7d23abe0b1c4","stepDefinitionIds":["7c134035-e57b-41f8-93a5-371a44a04393"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"cda742d2-1903-4353-9b01-a0ce7c7a0b8f","pickleStepId":"c1c3ad93-ee8a-4876-8b5a-78864b9edf08","stepDefinitionIds":["f3ca8517-7e22-458f-8817-65c6c149d5b4"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"c788dfb6-f2cd-4e3e-a3ff-37807543f013","pickleStepId":"3785265b-7e00-44c4-b5bf-bafe1283625d","stepDefinitionIds":["44696604-146b-4c87-b227-fc1d939aaa5e"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":47,"value":"\"Analytics\"","children":[{"start":48,"value":"Analytics","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"62d3ecac-d3cd-4d7f-98dc-72d14b0803a1","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"498ed5d6-3275-487a-a8f1-145ecf82c037","id":"cbcecd99-eca5-41f5-a814-908d03b76289","testSteps":[{"id":"b42066bb-232e-4317-8304-a8766656ab86","pickleStepId":"3b7c0447-953d-4686-a352-25a77caa53e8","stepDefinitionIds":["7b24ec0c-e951-4127-b798-bebe28077c13"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"05f03e8d-9985-45a4-a0a8-c50d9645db16","pickleStepId":"8625ee3e-f7af-4734-86da-16be691a1eac","stepDefinitionIds":["aef25390-a8c6-45dc-b289-301f717efac3"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"70ac515b-607e-4cf0-b9a1-4e194187755e","pickleStepId":"525c7b1a-e357-4c20-bb63-4a0b292da129","stepDefinitionIds":["1da60a03-09ea-4553-a4f1-0931a1be91ff"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"ba12b558-0887-4bf0-8d0e-e2ac28a54881","pickleStepId":"af6df51f-9c5e-4c70-8d2d-91c4a3fec4aa","stepDefinitionIds":["5a0c948b-7c2b-46ed-b5ca-7f6034f52e00"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"40635481-deaf-4603-9ea6-a2ee6983faf3","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"a9389203-2dde-4579-9a06-c5787015d533","id":"cb846231-fe04-4521-b10a-3d348f7e4bca","testSteps":[{"id":"a2c4da17-e50f-4aad-8427-bed05f2123ab","pickleStepId":"344e806e-39a3-46d8-926c-a08f18834daa","stepDefinitionIds":["4f99e39e-1622-40df-8e6d-0c2505cb33a9"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"87d3601a-0625-45f0-b8ce-f96f49fd04a9","pickleStepId":"f10b1d6c-6343-44ab-95f4-35d5545ad6b3","stepDefinitionIds":["955db1db-5564-44fd-ab1a-3ee4a95c94b6"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"74433bfa-05c6-423a-8cd5-2baf5b342e73","pickleStepId":"bfb42b91-a331-45c0-863d-e66a5d100dc8","stepDefinitionIds":["a23cd919-276b-4145-89ff-3910c1d9ed1e"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"5753b711-08f2-48db-bb89-4a838a90f50a","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"6a43f80d-67dc-4f4e-a581-1cf9b8f465c7","id":"fd9dc968-c398-4bdd-b815-0a7a2fab1559","testSteps":[{"id":"159deb6b-d2a0-4c53-b196-2630b69758de","pickleStepId":"92fa1ca6-6ee0-459b-99d8-c92b386c4d71","stepDefinitionIds":["f6418305-aad6-4a2a-a15d-d938161c9927"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"b30f41f1-7222-47cb-830a-be8bc643c845","pickleStepId":"3b2730a5-46d2-458b-b682-69dc2048530e","stepDefinitionIds":["7b24ec0c-e951-4127-b798-bebe28077c13"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"1b18ba34-f521-490a-b80e-17f32502adf0","pickleStepId":"feb22bcc-caf8-440c-959b-93593cf3d7f0","stepDefinitionIds":["91630aed-f498-41c1-9fff-942aaf29a324"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"8c86fea8-62b6-4fa5-8261-d9a4bb3a0007","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"2066f998-11c9-4c78-a5f8-3e00a9a3bffe","id":"ac96012a-5c12-40d7-8294-03866326b5b0","testSteps":[{"id":"96c8ea1f-15d9-4c7d-b7cd-5c9e1ce2fd2c","pickleStepId":"fdc4c536-2f1d-40a1-a7d2-de440d87c9b1","stepDefinitionIds":["9f774097-acfb-4bc1-aea9-20d2e31e4e17"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"ceb5e017-d185-483d-926d-aeaa254b710e","pickleStepId":"bb6470c5-ebcf-4305-bd37-156f89442177","stepDefinitionIds":["952b3ac0-1773-4bf6-8610-9d96ec9ef3c4"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"24bc1861-ad7a-4ccc-a739-49084b1c73de","pickleStepId":"10f78006-e7d7-45cf-becb-19203442706f","stepDefinitionIds":["1f0781fd-0202-421f-8331-f76176930b71"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"363886da-3b6c-4019-a58a-83d451249828","pickleStepId":"b906d492-49af-462b-ab82-335795bfb44f","stepDefinitionIds":["f396ee97-87ff-466b-86d3-643118c34ffe"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"b8289ecd-69e7-4d8a-b68e-05695c8e4ba2","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"b41dda10-4e6a-4861-851e-dd357d9c9240","id":"b422afbe-1471-4532-b79b-6d5af78fc001","testSteps":[{"id":"5edd29fe-c606-4eb5-9865-244a33df164f","pickleStepId":"4f9acbd8-fcb9-4635-98e3-63e6c8334430","stepDefinitionIds":["b8d1ef68-1dee-4a3d-b5c7-9690ce5c1b2c"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"f9e818ce-2052-4239-afea-a835e567a52f","pickleStepId":"46691323-2068-4f4d-b99c-6f5f851da56f","stepDefinitionIds":["0f4d51cb-1deb-4deb-8d72-183a60e76284"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"62c772fb-8d0a-4c09-adb2-a44e1a9264cb","pickleStepId":"a8c04b9c-f036-4df7-9c31-bfb2016d08b4","stepDefinitionIds":["12041276-c0e6-4c71-8b1b-f086b1b2692a"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":36,"value":"\"gsnair+US+Team+VISA+hello+1@adobetest.com\"","children":[{"start":37,"value":"gsnair+US+Team+VISA+hello+1@adobetest.com","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"837faba0-201c-4945-9c05-8b7d1821d3ab","pickleStepId":"723a5148-e42f-46b2-a5cd-a7d7f5227b3e","stepDefinitionIds":["b3d23f00-224b-44bf-b076-8c9ad3ed579f"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"420e076a-906f-4e14-9cde-502a3dc0e8ec","pickleStepId":"8606abaa-a8bb-476b-9210-15389f643471","stepDefinitionIds":["a2ce10d9-cac8-4aef-ad5c-47107e41ac62"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":31,"value":"\"Bap@d0be\"","children":[{"start":32,"value":"Bap@d0be","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"756b41b4-57fd-454d-bdc8-20465f056b30","pickleStepId":"11495c91-989a-48b0-9ab6-1af212b829f1","stepDefinitionIds":["95dff740-06ae-45fc-83d2-919e7e3fd576"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"a722ff79-4525-4314-9ed0-18a538e0aa61","pickleStepId":"f3d0d980-e943-4d70-871a-fa2118bcaf0e","stepDefinitionIds":["146aaba3-7efa-4698-866f-050d29de5472"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"3f666cb6-546a-4001-af9f-2670a96f180a","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"1cb8d47f-692f-4ea8-8f6b-3980e44ead24","id":"8d018118-f33a-4225-a021-70635f3146ba","testSteps":[{"id":"ff8226ae-b11b-4ea0-ae93-5b32fa6815b4","pickleStepId":"c4830e29-223f-404e-8cc5-c4ccb40c7516","stepDefinitionIds":["4919f0ac-b6e9-40cf-8c06-2bd8bff14cd0"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"a8e60271-d62d-4ed0-81d3-4239e5e59e89","pickleStepId":"8439e631-2fa4-43ea-9089-5b7cb1f4f3f3","stepDefinitionIds":["233c71ff-750c-48bd-86d6-4bf329007c86"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"6f3f6bf4-2292-449f-8024-3e7a5eb705e5","pickleStepId":"7b156ddf-8a2c-45d8-b0a8-bad37c3aba58","stepDefinitionIds":["e9091eaf-8778-4015-bea6-c29ed3c7b4ee"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":29,"value":"\"Community\"","children":[{"start":30,"value":"Community","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"14d781f5-c785-4861-9ae7-28aab34b5b28","pickleStepId":"45048fb2-21bb-42de-8a10-543d7bc386d6","stepDefinitionIds":["59ee8fc1-4176-4057-bd96-6db511b76619"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":24,"value":"\"^Analytics$\"","children":[{"start":25,"value":"^Analytics$","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"7bc42955-3b2e-4c5a-9924-d6f8a09fd85c","pickleStepId":"a2701f09-ed1d-49b7-a75b-99d88f63f0ea","stepDefinitionIds":["86e61635-bb75-4a06-aa96-3e41da55b20f"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"922b3413-b9b0-4917-9d02-127855b8a2d6","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"b60205fd-e75a-4e6e-aca5-77cc4e768504","id":"ff1e2cdc-f6d8-45a0-b7cd-e11d56ce2266","testSteps":[{"id":"1db18595-44df-4960-81f2-a7dfb41764d1","pickleStepId":"f2141df1-a322-485f-ac8d-0cb1f024843f","stepDefinitionIds":["b0252e1d-9aa3-41f9-9ac6-35bb58e22c90"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"065b0608-3f08-48c8-9574-8df394926269","pickleStepId":"d86baa31-f996-4380-9a0e-8e89827b9eaa","stepDefinitionIds":["1f5b32dd-6179-4bef-ac4d-a185938ee594"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"515f3a2c-33a9-41d0-aa15-5768c2a0952a","pickleStepId":"066e005d-b356-41da-bc3f-e22caaa9d829","stepDefinitionIds":["5ba848f3-7b50-469a-b925-621c07805194"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":28,"value":"\"Adobe\"","children":[{"start":29,"value":"Adobe","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"397843a0-baec-4a26-8408-8b7b8216be92","pickleStepId":"350ec476-717c-4f6a-afd4-51d6e0c1a77d","stepDefinitionIds":["2ad37466-f099-4934-a814-8727c5837741"],"stepMatchArgumentsLists":[{"stepMatchArguments":[{"group":{"start":32,"value":"\"By Adobe\"","children":[{"start":33,"value":"By Adobe","children":[{"children":[]}]},{"children":[{"children":[]}]}]},"parameterTypeName":"string"}]}]},{"id":"ff368912-196a-4228-9d86-40f85e873ae9","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCase":{"testRunStartedId":"50d2fd4e-7b6a-45c5-ad50-95285fba5c24","pickleId":"1d1909ee-7bec-4ef8-b9cf-7530bd19d5c2","id":"69f6d185-19e5-4ecb-9a5d-4e396df315e1","testSteps":[{"id":"5c599e33-b667-4bd2-8ef9-5239ddb97c2f","pickleStepId":"dca2720d-d5d0-4e9e-9b75-2f30679d9892","stepDefinitionIds":["db5c0058-8425-495e-a647-05e02e494eb7"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"95c3690a-79c0-434a-ba8f-4519e0f18936","pickleStepId":"48ddc134-8226-40fd-bf77-c9f3ef3f2065","stepDefinitionIds":["d443d273-ce14-42f6-a34b-37d827bbc681"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"8d4ba997-414b-48af-82d8-b2e0e8a36023","pickleStepId":"634b3724-31fc-4a8a-aa9a-9cfcb68dd1ac","stepDefinitionIds":["66cabea2-af6e-44dc-a569-a48325f08bf8"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"d7f05f0f-a388-48a6-9231-7bf3cc0e8a06","pickleStepId":"bb3ce7b5-05a6-4d80-b2af-103db5abcc8b","stepDefinitionIds":["81f51bd2-b94c-439b-91b7-9035db42395f"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"fa292379-2e1b-4e92-993c-e28b874b3ecd","pickleStepId":"ac05a65a-c368-4343-9686-905bc3d036e8","stepDefinitionIds":["3e6eb55f-e690-411d-9822-4223a4e926b9"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"54ac389d-b2fa-4341-bf5e-cc18a3c55f81","pickleStepId":"36e50e37-f63d-4ca0-8cac-a819c87c1422","stepDefinitionIds":["f171e439-88df-4289-88ea-9248a10fa7d1"],"stepMatchArgumentsLists":[{"stepMatchArguments":[]}]},{"id":"f3eecbdb-4a31-4db2-8cd2-2549e0739a8b","hookId":"346e1e47-c3c4-40e1-b575-324d6d9bdf76"}]}},{"testCaseStarted":{"attempt":0,"testCaseId":"aae76eff-b781-4995-aebe-ecb086709a7b","id":"881f2525-2be7-4218-b07b-175116a3be7c","timestamp":{"seconds":1753687152,"nanos":229000000},"workerId":"0"}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"e4cd43e3-e22d-4a58-9d99-15be14001e26","timestamp":{"seconds":1753687152,"nanos":229000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"e4cd43e3-e22d-4a58-9d99-15be14001e26","testStepResult":{"duration":{"seconds":19,"nanos":118734000},"status":"PASSED"},"timestamp":{"seconds":1753687171,"nanos":349000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"21e561b3-4ff3-4c1c-b9e7-e6313a8413f8","timestamp":{"seconds":1753687171,"nanos":350000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"21e561b3-4ff3-4c1c-b9e7-e6313a8413f8","testStepResult":{"duration":{"seconds":5,"nanos":47077000},"status":"PASSED"},"timestamp":{"seconds":1753687176,"nanos":397000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"e26e870a-5e9f-46d2-a62c-2886ab6cc70b","timestamp":{"seconds":1753687176,"nanos":398000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"e26e870a-5e9f-46d2-a62c-2886ab6cc70b","testStepResult":{"duration":{"seconds":10,"nanos":21091200},"status":"FAILED","message":"Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('div').filter({ hasText: 'Recently viewed' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"to.be.visible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div').filter({ hasText: 'Recently viewed' })\u001b[22m\n\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\a.js:28:40)","exception":{"type":"Error","message":"\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('div').filter({ hasText: 'Recently viewed' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"to.be.visible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div').filter({ hasText: 'Recently viewed' })\u001b[22m\n","stackTrace":"    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\a.js:28:40)"}},"timestamp":{"seconds":1753687186,"nanos":421000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"47e83cfb-dbe9-44fe-af62-2b6dc9ba31ab","timestamp":{"seconds":1753687186,"nanos":421000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"47e83cfb-dbe9-44fe-af62-2b6dc9ba31ab","testStepResult":{"status":"SKIPPED","duration":{"seconds":0,"nanos":0}},"timestamp":{"seconds":1753687186,"nanos":421000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"ec80fcc8-d419-48f9-a6fb-7d3b54985654","timestamp":{"seconds":1753687186,"nanos":421000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"ec80fcc8-d419-48f9-a6fb-7d3b54985654","testStepResult":{"status":"SKIPPED","duration":{"seconds":0,"nanos":0}},"timestamp":{"seconds":1753687186,"nanos":421000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"99567c74-79a0-4c20-82e7-0b76dc80a77d","timestamp":{"seconds":1753687186,"nanos":421000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"99567c74-79a0-4c20-82e7-0b76dc80a77d","testStepResult":{"status":"SKIPPED","duration":{"seconds":0,"nanos":0}},"timestamp":{"seconds":1753687186,"nanos":422000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"1f1158fa-51f4-40e0-bc47-3d926fc0cd43","timestamp":{"seconds":1753687186,"nanos":422000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"1f1158fa-51f4-40e0-bc47-3d926fc0cd43","testStepResult":{"status":"SKIPPED","duration":{"seconds":0,"nanos":0}},"timestamp":{"seconds":1753687186,"nanos":422000000}}},{"testStepStarted":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"5a973433-8585-4e43-9160-d354946ae5cb","timestamp":{"seconds":1753687186,"nanos":422000000}}},{"testStepFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","testStepId":"5a973433-8585-4e43-9160-d354946ae5cb","testStepResult":{"duration":{"seconds":0,"nanos":605687900},"status":"PASSED"},"timestamp":{"seconds":1753687187,"nanos":28000000}}},{"testCaseFinished":{"testCaseStartedId":"881f2525-2be7-4218-b07b-175116a3be7c","timestamp":{"seconds":1753687187,"nanos":28000000},"willBeRetried":false}},{"testCaseStarted":{"attempt":0,"testCaseId":"ac3aa5ff-9564-4a37-9fa7-f4f62f4d5028","id":"ff892dc1-ff64-47d9-8374-e7c0343504f5","timestamp":{"seconds":1753687187,"nanos":32000000},"workerId":"0"}},{"testStepStarted":{"testCaseStartedId":"ff892dc1-ff64-47d9-8374-e7c0343504f5","testStepId":"14581fb5-2a32-4540-8fcf-5b06510bbf0e","timestamp":{"seconds":1753687187,"nanos":32000000}}}
+    <header>
+        <h1>Cucumber Test Report</h1>
+        <p>Generated on <span id="report-date"></span></p>
+    </header>
+
+    <div class="summary">
+        <div class="summary-box passed">
+            <h2>Passed</h2>
+            <p id="passed-count">9</p>
+        </div>
+        <div class="summary-box failed">
+            <h2>Failed</h2>
+            <p id="failed-count">2</p>
+        </div>
+        <div class="summary-box skipped">
+            <h2>Skipped</h2>
+            <p id="skipped-count">0</p>
+        </div>
+      <div class="summary-box steps">
+        <h3>Steps Summary</h3>
+        <p>Total Steps: 53</p>
+        <p>Passed Steps: 43</p>
+        <p>Failed Steps: 2</p>
+        <p>Skipped Steps: 8</p>
+      </div>
+        <div class="summary-box">
+            <h2>Total</h2>
+            <p id="total-count">11</p>
+        </div>
+    </div>
+
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Test Results Overview</h3>
+            <canvas id="results-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios by Feature</h3>
+            <canvas id="feature-chart"></canvas>
+        </div>
+    </div>
+    
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Step Status Distribution</h3>
+            <canvas id="steps-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios Per Feature</h3>
+            <canvas id="scenarios-chart"></canvas>
+        </div>
+    </div>
+
+    <div id="features-container">
+        <!-- Features will be inserted here by JavaScript -->
+    </div>
+
+    <footer>
+        <p>EXL Automation Report - Powered by Cucumber.js</p>
+    </footer>
+
+    <script>
+        // This script will be replaced with actual data when the report is generated
+        document.getElementById('report-date').textContent = new Date().toLocaleString();
+        
+        // Sample data structure - will be replaced with actual test results
+        const testResults = {
+    "features": [
+        {
+            "name": "Recently viewed block functionality",
+            "description": "Test the recently viewed block functionality",
+            "scenarios": [
+                {
+                    "name": "Verify Recently viewed block disappears when cookies are disabled",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League application",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the home page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user checks if Recently viewed block is available",
+                            "status": "failed",
+                            "error_message": "Timed out 10000ms waiting for expect(locator).toBeVisible()"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on Cookie preferences in the footer",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user disables cookies in the preferences modal",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user refreshes the page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the Recently viewed block should not be visible",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Validate homepage essential",
+            "description": "Test the essential UI elements on the homepage",
+            "scenarios": [
+                {
+                    "name": "Verify essential UI elements on the home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "I navigate to the Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the header navigation should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the search bar should be visible and enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the marquee section should be displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the footer should be visible",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate search functionality from home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters \"Analytics\" in the search bar",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user submits the search",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Bookmark functionality",
+            "description": "Test the bookmark functionality",
+            "scenarios": [
+                {
+                    "name": "Add and remove bookmarks",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the article page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the bookmark icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the article should be added to bookmarks",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the bookmark icon again",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the article should be removed from bookmarks",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Browse filter functionality",
+            "description": "Test the browse filter functionality",
+            "scenarios": [
+                {
+                    "name": "Filter content by category",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects a category filter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "only content from that category should be displayed",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Clear all filters",
+                    "status": "skipped",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user has applied multiple filters",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on clear all filters",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all filters should be removed",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Recommendations functionality",
+            "description": "Test the recommendations functionality",
+            "scenarios": [
+                {
+                    "name": "View personalized recommendations",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to recommendations page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "personalized recommendations should be displayed",
+                            "status": "failed",
+                            "error_message": "Expected to find personalized recommendations but none were found"
+                        }
+                    ]
+                },
+                {
+                    "name": "Refresh recommendations",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the recommendations page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on refresh button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "recommendations should be updated",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
+        
+        function renderReport(data) {
+            const featuresContainer = document.getElementById('features-container');
+            let passedCount = 9;
+            let failedCount = 2;
+            let skippedCount = 0;
+            let totalCount = 11;
+
+            // For step status chart
+            let passedSteps = 43;
+            let failedSteps = 2;
+            let skippedSteps = 8;
+            let pendingSteps = 0;
+
+            // For feature chart
+            const featureData = {
+                "Recently viewed block functionality on Adobe Experience League": {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    skipped: 0
+                },
+                "validate homepage essential": {
+                    total: 6,
+                    passed: 6,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Launch Adobe Experience League URL and login": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Browse and filter content on Adobe Experience League": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Perspective Page Author Badge": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Recommendations functionality on Adobe Experience League": {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    skipped: 0
+                }
+            };
+
+            // Process the data and render the features
+            data.features.forEach(feature => {
+                const featureElement = document.createElement('div');
+                featureElement.className = 'feature';
+
+                const featureHeader = document.createElement('div');
+                featureHeader.className = 'feature-header';
+                featureHeader.innerHTML = `<h2 class="feature-name">${feature.name}</h2>`;
+
+                featureElement.appendChild(featureHeader);
+
+                feature.scenarios.forEach(scenario => {
+                    const scenarioElement = document.createElement('div');
+                    scenarioElement.className = `scenario scenario-${scenario.status}`;
+
+                    let scenarioContent = `<h3 class="scenario-name">${scenario.name}</h3>`;
+                    scenarioContent += '<ul class="steps">';
+
+                    scenario.steps.forEach(step => {
+                        scenarioContent += `<li class="step step-${step.status}">${step.keyword} ${step.text}</li>`;
+
+                        if (step.status === 'failed' && step.error_message) {
+                            scenarioContent += `<div class="error-message">${step.error_message}</div>`;
+                        }
+                    });
+
+                    scenarioContent += '</ul>';
+                    scenarioElement.innerHTML = scenarioContent;
+                    featureElement.appendChild(scenarioElement);
+                });
+
+                featuresContainer.appendChild(featureElement);
+            });
+
+            document.getElementById('passed-count').textContent = passedCount;
+            document.getElementById('failed-count').textContent = failedCount;
+            document.getElementById('skipped-count').textContent = skippedCount;
+            document.getElementById('total-count').textContent = totalCount;
+
+            // Render charts
+            renderResultsChart(passedCount, failedCount, skippedCount);
+            renderFeatureChart(featureData);
+            renderStepsChart(passedSteps, failedSteps, skippedSteps, pendingSteps);
+            renderScenariosPerFeatureChart(featureData);
+        }
+        
+        function renderResultsChart(passed, failed, skipped) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped'],
+                    datasets: [{
+                        data: [9, 2, 0],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const passedData = featureNames.map(name => featureData[name].passed);
+            const failedData = featureNames.map(name => featureData[name].failed);
+            const skippedData = featureNames.map(name => featureData[name].skipped);
+            
+            const ctx = document.getElementById('feature-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [
+                        {
+                            label: 'Passed',
+                            data: passedData,
+                            backgroundColor: '#4CAF50',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Failed',
+                            data: failedData,
+                            backgroundColor: '#f44336',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Skipped',
+                            data: skippedData,
+                            backgroundColor: '#2196F3',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderStepsChart(passed, failed, skipped, pending) {
+            const ctx = document.getElementById('steps-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped', 'Pending'],
+                    datasets: [{
+                        data: [43, 2, 8, 0],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3', '#FFC107'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderScenariosPerFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const scenarioCounts = featureNames.map(name => featureData[name].total);
+            
+            const ctx = document.getElementById('scenarios-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [{
+                        label: 'Number of Scenarios',
+                        data: scenarioCounts,
+                        backgroundColor: '#9C27B0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // This will be replaced with actual data when the report is generated
+        renderReport(testResults);
+    </script>
+</body>
+</html>

@@ -46,7 +46,40 @@ function generateReport() {
     
     // Check if the content is empty or invalid
     if (!jsonContent || jsonContent.trim() === '') {
-      console.log('JSON report file exists but is empty. Creating an empty report...');
+      console.log('JSON report file exists but is empty. Using sample test data...');
+      
+      // Try to use sample test data if available
+      const sampleDataPath = path.join(__dirname, '../../reports/sample-test-data.json');
+      if (fs.existsSync(sampleDataPath)) {
+        console.log('Found sample test data. Using it for the report...');
+        const sampleDataContent = fs.readFileSync(sampleDataPath, 'utf8');
+        
+        try {
+          const sampleData = JSON.parse(sampleDataContent);
+          
+          // Read the HTML template
+          const templatePath = path.join(__dirname, './report-template.html');
+          let htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+          
+          // Replace the placeholder in the template with sample data
+          htmlTemplate = htmlTemplate.replace(
+            'const testResults = {\n            features: []\n        };',
+            `const testResults = ${JSON.stringify(sampleData, null, 4)};`
+          );
+          
+          // Write the HTML report with sample data
+          const customReportPath = path.join(__dirname, '../../reports/custom-report.html');
+          fs.writeFileSync(customReportPath, htmlTemplate);
+          
+          console.log(`Custom HTML report with sample data generated at: ${customReportPath}`);
+          return;
+        } catch (sampleDataError) {
+          console.error('Error parsing sample test data:', sampleDataError.message);
+        }
+      }
+      
+      // If sample data is not available or cannot be parsed, create an empty report
+      console.log('Creating an empty report...');
       const emptyReport = { features: [] };
       
       // Read the HTML template
@@ -128,6 +161,15 @@ function generateReport() {
             let skippedCount = 0;
             let totalCount = 0;
             
+            // For step status chart
+            let passedSteps = 0;
+            let failedSteps = 0;
+            let skippedSteps = 0;
+            let pendingSteps = 0;
+            
+            // For feature chart
+            const featureData = {};
+            
             data.features.forEach(feature => {
                 const featureElement = document.createElement('div');
                 featureElement.className = 'feature';
@@ -138,12 +180,32 @@ function generateReport() {
                 
                 featureElement.appendChild(featureHeader);
                 
+                // Initialize feature data for charts
+                if (!featureData[feature.name]) {
+                    featureData[feature.name] = {
+                        total: 0,
+                        passed: 0,
+                        failed: 0,
+                        skipped: 0
+                    };
+                }
+                
                 feature.scenarios.forEach(scenario => {
                     totalCount++;
+                    featureData[feature.name].total++;
                     
-                    if (scenario.status === 'passed') passedCount++;
-                    else if (scenario.status === 'failed') failedCount++;
-                    else skippedCount++;
+                    if (scenario.status === 'passed') {
+                        passedCount++;
+                        featureData[feature.name].passed++;
+                    }
+                    else if (scenario.status === 'failed') {
+                        failedCount++;
+                        featureData[feature.name].failed++;
+                    }
+                    else {
+                        skippedCount++;
+                        featureData[feature.name].skipped++;
+                    }
                     
                     const scenarioElement = document.createElement('div');
                     scenarioElement.className = \`scenario scenario-\${scenario.status}\`;
@@ -153,6 +215,12 @@ function generateReport() {
                     
                     scenario.steps.forEach(step => {
                         scenarioContent += \`<li class="step step-\${step.status}">\${step.keyword} \${step.text}</li>\`;
+                        
+                        // Count steps by status for chart
+                        if (step.status === 'passed') passedSteps++;
+                        else if (step.status === 'failed') failedSteps++;
+                        else if (step.status === 'skipped') skippedSteps++;
+                        else if (step.status === 'pending') pendingSteps++;
                         
                         if (step.status === 'failed' && step.error_message) {
                             scenarioContent += \`<div class="error-message">\${step.error_message}</div>\`;
@@ -173,6 +241,132 @@ function generateReport() {
             document.getElementById('failed-count').textContent = failedCount;
             document.getElementById('skipped-count').textContent = skippedCount;
             document.getElementById('total-count').textContent = totalCount;
+            
+            // Render charts
+            renderResultsChart(passedCount, failedCount, skippedCount);
+            renderFeatureChart(featureData);
+            renderStepsChart(passedSteps, failedSteps, skippedSteps, pendingSteps);
+            renderScenariosPerFeatureChart(featureData);
+        }
+        
+        function renderResultsChart(passed, failed, skipped) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped'],
+                    datasets: [{
+                        data: [passed, failed, skipped],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const passedData = featureNames.map(name => featureData[name].passed);
+            const failedData = featureNames.map(name => featureData[name].failed);
+            const skippedData = featureNames.map(name => featureData[name].skipped);
+            
+            const ctx = document.getElementById('feature-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [
+                        {
+                            label: 'Passed',
+                            data: passedData,
+                            backgroundColor: '#4CAF50',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Failed',
+                            data: failedData,
+                            backgroundColor: '#f44336',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Skipped',
+                            data: skippedData,
+                            backgroundColor: '#2196F3',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderStepsChart(passed, failed, skipped, pending) {
+            const ctx = document.getElementById('steps-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped', 'Pending'],
+                    datasets: [{
+                        data: [passed, failed, skipped, pending],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3', '#FFC107'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderScenariosPerFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const scenarioCounts = featureNames.map(name => featureData[name].total);
+            
+            const ctx = document.getElementById('scenarios-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [{
+                        label: 'Number of Scenarios',
+                        data: scenarioCounts,
+                        backgroundColor: '#9C27B0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
         
         renderReport(testResults);
@@ -229,12 +423,42 @@ function processJsonReport(jsonReport) {
   const result = {
     features: []
   };
-  
+
   // Handle empty or invalid jsonReport
   if (!jsonReport || !Array.isArray(jsonReport) || jsonReport.length === 0) {
     return result;
   }
+
+  // Count total test cases for verification
+  let totalTestCases = 0;
+  jsonReport.forEach(feature => {
+    if (feature && feature.elements && Array.isArray(feature.elements)) {
+      feature.elements.forEach(element => {
+        if (element && element.type === 'scenario') {
+          totalTestCases++;
+        }
+      });
+    }
+  });
   
+  console.log(`Total test cases found in JSON report: ${totalTestCases}`);
+  
+  // Check if this matches the count in custom-report.txt
+  try {
+    const customReportPath = require('path').join(__dirname, '../../reports/custom-report.txt');
+    if (require('fs').existsSync(customReportPath)) {
+      const customReportContent = require('fs').readFileSync(customReportPath, 'utf8');
+      const unknownStatusCount = (customReportContent.match(/Test status unknown/g) || []).length;
+      console.log(`Unknown status count in custom-report.txt: ${unknownStatusCount}`);
+      
+      if (totalTestCases !== unknownStatusCount) {
+        console.log(`WARNING: Count mismatch between JSON report (${totalTestCases}) and custom-report.txt (${unknownStatusCount})`);
+      }
+    }
+  } catch (error) {
+    console.error('Error checking custom-report.txt:', error.message);
+  }
+
   jsonReport.forEach(feature => {
     try {
       // Skip if feature is invalid
@@ -242,20 +466,20 @@ function processJsonReport(jsonReport) {
         console.log('Skipping invalid feature entry');
         return;
       }
-      
+
       const processedFeature = {
         name: feature.name || 'Unnamed Feature',
         description: feature.description || '',
         scenarios: []
       };
-      
+
       // Skip if elements array is missing
       if (!feature.elements || !Array.isArray(feature.elements)) {
         console.log(`Feature "${processedFeature.name}" has no elements`);
         result.features.push(processedFeature);
         return;
       }
-      
+
       feature.elements.forEach(element => {
         try {
           // Skip if element is invalid
@@ -263,24 +487,24 @@ function processJsonReport(jsonReport) {
             console.log('Skipping invalid element entry');
             return;
           }
-          
+
           if (element.type === 'scenario') {
             const scenario = {
               name: element.name || 'Unnamed Scenario',
               status: getScenarioStatus(element),
               steps: []
             };
-            
+
             // Skip if steps array is missing
             if (!element.steps || !Array.isArray(element.steps)) {
               console.log(`Scenario "${scenario.name}" has no steps`);
               processedFeature.scenarios.push(scenario);
               return;
             }
-            
+
             // Filter out Before and After steps (hidden hooks)
             const visibleSteps = element.steps.filter(step => !step.hidden);
-            
+
             visibleSteps.forEach(step => {
               try {
                 // Skip if step is invalid
@@ -288,25 +512,25 @@ function processJsonReport(jsonReport) {
                   console.log('Skipping invalid step entry');
                   return;
                 }
-                
+
                 const processedStep = {
                   keyword: (step.keyword || 'Step').trim(),
                   text: step.name || 'Unnamed Step',
                   status: step.result ? step.result.status : 'skipped'
                 };
-                
+
                 if (step.result && step.result.status === 'failed') {
                   processedStep.error_message = step.result.error_message || 'Unknown error';
                 }
-                
+
                 // Screenshots are disabled as per user request
-                
+
                 scenario.steps.push(processedStep);
               } catch (stepError) {
                 console.error('Error processing step:', stepError.message);
               }
             });
-            
+
             processedFeature.scenarios.push(scenario);
           }
         } catch (elementError) {

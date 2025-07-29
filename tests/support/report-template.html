@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cucumber Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,6 +13,26 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .chart-box {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .chart-title {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
         }
         header {
             background-color: #f5f5f5;
@@ -144,6 +165,28 @@
         </div>
     </div>
 
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Test Results Overview</h3>
+            <canvas id="results-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios by Feature</h3>
+            <canvas id="feature-chart"></canvas>
+        </div>
+    </div>
+    
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Step Status Distribution</h3>
+            <canvas id="steps-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios Per Feature</h3>
+            <canvas id="scenarios-chart"></canvas>
+        </div>
+    </div>
+
     <div id="features-container">
         <!-- Features will be inserted here by JavaScript -->
     </div>
@@ -168,6 +211,15 @@
             let skippedCount = 0;
             let totalCount = 0;
             
+            // For step status chart
+            let passedSteps = 0;
+            let failedSteps = 0;
+            let skippedSteps = 0;
+            let pendingSteps = 0;
+            
+            // For feature chart
+            const featureData = {};
+            
             data.features.forEach(feature => {
                 const featureElement = document.createElement('div');
                 featureElement.className = 'feature';
@@ -178,12 +230,32 @@
                 
                 featureElement.appendChild(featureHeader);
                 
+                // Initialize feature data for charts
+                if (!featureData[feature.name]) {
+                    featureData[feature.name] = {
+                        total: 0,
+                        passed: 0,
+                        failed: 0,
+                        skipped: 0
+                    };
+                }
+                
                 feature.scenarios.forEach(scenario => {
                     totalCount++;
+                    featureData[feature.name].total++;
                     
-                    if (scenario.status === 'passed') passedCount++;
-                    else if (scenario.status === 'failed') failedCount++;
-                    else skippedCount++;
+                    if (scenario.status === 'passed') {
+                        passedCount++;
+                        featureData[feature.name].passed++;
+                    }
+                    else if (scenario.status === 'failed') {
+                        failedCount++;
+                        featureData[feature.name].failed++;
+                    }
+                    else {
+                        skippedCount++;
+                        featureData[feature.name].skipped++;
+                    }
                     
                     const scenarioElement = document.createElement('div');
                     scenarioElement.className = `scenario scenario-${scenario.status}`;
@@ -193,6 +265,12 @@
                     
                     scenario.steps.forEach(step => {
                         scenarioContent += `<li class="step step-${step.status}">${step.keyword} ${step.text}</li>`;
+                        
+                        // Count steps by status for chart
+                        if (step.status === 'passed') passedSteps++;
+                        else if (step.status === 'failed') failedSteps++;
+                        else if (step.status === 'skipped') skippedSteps++;
+                        else if (step.status === 'pending') pendingSteps++;
                         
                         if (step.status === 'failed' && step.error_message) {
                             scenarioContent += `<div class="error-message">${step.error_message}</div>`;
@@ -213,6 +291,132 @@
             document.getElementById('failed-count').textContent = failedCount;
             document.getElementById('skipped-count').textContent = skippedCount;
             document.getElementById('total-count').textContent = totalCount;
+            
+            // Render charts
+            renderResultsChart(passedCount, failedCount, skippedCount);
+            renderFeatureChart(featureData);
+            renderStepsChart(passedSteps, failedSteps, skippedSteps, pendingSteps);
+            renderScenariosPerFeatureChart(featureData);
+        }
+        
+        function renderResultsChart(passed, failed, skipped) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped'],
+                    datasets: [{
+                        data: [passed, failed, skipped],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const passedData = featureNames.map(name => featureData[name].passed);
+            const failedData = featureNames.map(name => featureData[name].failed);
+            const skippedData = featureNames.map(name => featureData[name].skipped);
+            
+            const ctx = document.getElementById('feature-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [
+                        {
+                            label: 'Passed',
+                            data: passedData,
+                            backgroundColor: '#4CAF50',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Failed',
+                            data: failedData,
+                            backgroundColor: '#f44336',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Skipped',
+                            data: skippedData,
+                            backgroundColor: '#2196F3',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderStepsChart(passed, failed, skipped, pending) {
+            const ctx = document.getElementById('steps-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped', 'Pending'],
+                    datasets: [{
+                        data: [passed, failed, skipped, pending],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3', '#FFC107'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderScenariosPerFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const scenarioCounts = featureNames.map(name => featureData[name].total);
+            
+            const ctx = document.getElementById('scenarios-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [{
+                        label: 'Number of Scenarios',
+                        data: scenarioCounts,
+                        backgroundColor: '#9C27B0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
         
         // This will be replaced with actual data when the report is generated

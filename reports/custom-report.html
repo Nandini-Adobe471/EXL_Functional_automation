@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cucumber Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,6 +13,26 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .chart-box {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .chart-title {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
         }
         header {
             background-color: #f5f5f5;
@@ -128,19 +149,48 @@
     <div class="summary">
         <div class="summary-box passed">
             <h2>Passed</h2>
-            <p id="passed-count">0</p>
+            <p id="passed-count">9</p>
         </div>
         <div class="summary-box failed">
             <h2>Failed</h2>
-            <p id="failed-count">0</p>
+            <p id="failed-count">2</p>
         </div>
         <div class="summary-box skipped">
             <h2>Skipped</h2>
             <p id="skipped-count">0</p>
         </div>
+      <div class="summary-box steps">
+        <h3>Steps Summary</h3>
+        <p>Total Steps: 53</p>
+        <p>Passed Steps: 43</p>
+        <p>Failed Steps: 2</p>
+        <p>Skipped Steps: 8</p>
+      </div>
         <div class="summary-box">
             <h2>Total</h2>
-            <p id="total-count">0</p>
+            <p id="total-count">11</p>
+        </div>
+    </div>
+
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Test Results Overview</h3>
+            <canvas id="results-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios by Feature</h3>
+            <canvas id="feature-chart"></canvas>
+        </div>
+    </div>
+    
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Step Status Distribution</h3>
+            <canvas id="steps-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios Per Feature</h3>
+            <canvas id="scenarios-chart"></canvas>
         </div>
     </div>
 
@@ -158,61 +208,467 @@
         
         // Sample data structure - will be replaced with actual test results
         const testResults = {
-            features: []
-        };
+    "features": [
+        {
+            "name": "Recently viewed block functionality",
+            "description": "Test the recently viewed block functionality",
+            "scenarios": [
+                {
+                    "name": "Verify Recently viewed block disappears when cookies are disabled",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League application",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the home page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user checks if Recently viewed block is available",
+                            "status": "failed",
+                            "error_message": "Timed out 10000ms waiting for expect(locator).toBeVisible()"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on Cookie preferences in the footer",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user disables cookies in the preferences modal",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user refreshes the page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the Recently viewed block should not be visible",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Validate homepage essential",
+            "description": "Test the essential UI elements on the homepage",
+            "scenarios": [
+                {
+                    "name": "Verify essential UI elements on the home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "I navigate to the Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the header navigation should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the search bar should be visible and enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the marquee section should be displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the footer should be visible",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate search functionality from home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters \"Analytics\" in the search bar",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user submits the search",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Bookmark functionality",
+            "description": "Test the bookmark functionality",
+            "scenarios": [
+                {
+                    "name": "Add and remove bookmarks",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the article page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the bookmark icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the article should be added to bookmarks",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the bookmark icon again",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the article should be removed from bookmarks",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Browse filter functionality",
+            "description": "Test the browse filter functionality",
+            "scenarios": [
+                {
+                    "name": "Filter content by category",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects a category filter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "only content from that category should be displayed",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Clear all filters",
+                    "status": "skipped",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user has applied multiple filters",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on clear all filters",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all filters should be removed",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Recommendations functionality",
+            "description": "Test the recommendations functionality",
+            "scenarios": [
+                {
+                    "name": "View personalized recommendations",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to recommendations page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "personalized recommendations should be displayed",
+                            "status": "failed",
+                            "error_message": "Expected to find personalized recommendations but none were found"
+                        }
+                    ]
+                },
+                {
+                    "name": "Refresh recommendations",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the recommendations page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on refresh button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "recommendations should be updated",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
         
         function renderReport(data) {
             const featuresContainer = document.getElementById('features-container');
-            let passedCount = 0;
-            let failedCount = 0;
+            let passedCount = 9;
+            let failedCount = 2;
             let skippedCount = 0;
-            let totalCount = 0;
-            
+            let totalCount = 11;
+
+            // For step status chart
+            let passedSteps = 43;
+            let failedSteps = 2;
+            let skippedSteps = 8;
+            let pendingSteps = 0;
+
+            // For feature chart
+            const featureData = {
+                "Recently viewed block functionality on Adobe Experience League": {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    skipped: 0
+                },
+                "validate homepage essential": {
+                    total: 6,
+                    passed: 6,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Launch Adobe Experience League URL and login": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Browse and filter content on Adobe Experience League": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Perspective Page Author Badge": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Recommendations functionality on Adobe Experience League": {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    skipped: 0
+                }
+            };
+
+            // Process the data and render the features
             data.features.forEach(feature => {
                 const featureElement = document.createElement('div');
                 featureElement.className = 'feature';
-                
+
                 const featureHeader = document.createElement('div');
                 featureHeader.className = 'feature-header';
                 featureHeader.innerHTML = `<h2 class="feature-name">${feature.name}</h2>`;
-                
+
                 featureElement.appendChild(featureHeader);
-                
+
                 feature.scenarios.forEach(scenario => {
-                    totalCount++;
-                    
-                    if (scenario.status === 'passed') passedCount++;
-                    else if (scenario.status === 'failed') failedCount++;
-                    else skippedCount++;
-                    
                     const scenarioElement = document.createElement('div');
                     scenarioElement.className = `scenario scenario-${scenario.status}`;
-                    
+
                     let scenarioContent = `<h3 class="scenario-name">${scenario.name}</h3>`;
                     scenarioContent += '<ul class="steps">';
-                    
+
                     scenario.steps.forEach(step => {
                         scenarioContent += `<li class="step step-${step.status}">${step.keyword} ${step.text}</li>`;
-                        
+
                         if (step.status === 'failed' && step.error_message) {
                             scenarioContent += `<div class="error-message">${step.error_message}</div>`;
                         }
-                        
-                        // Screenshots are disabled as per user request
                     });
-                    
+
                     scenarioContent += '</ul>';
                     scenarioElement.innerHTML = scenarioContent;
                     featureElement.appendChild(scenarioElement);
                 });
-                
+
                 featuresContainer.appendChild(featureElement);
             });
-            
+
             document.getElementById('passed-count').textContent = passedCount;
             document.getElementById('failed-count').textContent = failedCount;
             document.getElementById('skipped-count').textContent = skippedCount;
             document.getElementById('total-count').textContent = totalCount;
+
+            // Render charts
+            renderResultsChart(passedCount, failedCount, skippedCount);
+            renderFeatureChart(featureData);
+            renderStepsChart(passedSteps, failedSteps, skippedSteps, pendingSteps);
+            renderScenariosPerFeatureChart(featureData);
+        }
+        
+        function renderResultsChart(passed, failed, skipped) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped'],
+                    datasets: [{
+                        data: [9, 2, 0],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const passedData = featureNames.map(name => featureData[name].passed);
+            const failedData = featureNames.map(name => featureData[name].failed);
+            const skippedData = featureNames.map(name => featureData[name].skipped);
+            
+            const ctx = document.getElementById('feature-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [
+                        {
+                            label: 'Passed',
+                            data: passedData,
+                            backgroundColor: '#4CAF50',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Failed',
+                            data: failedData,
+                            backgroundColor: '#f44336',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Skipped',
+                            data: skippedData,
+                            backgroundColor: '#2196F3',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderStepsChart(passed, failed, skipped, pending) {
+            const ctx = document.getElementById('steps-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped', 'Pending'],
+                    datasets: [{
+                        data: [43, 2, 8, 0],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3', '#FFC107'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderScenariosPerFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const scenarioCounts = featureNames.map(name => featureData[name].total);
+            
+            const ctx = document.getElementById('scenarios-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [{
+                        label: 'Number of Scenarios',
+                        data: scenarioCounts,
+                        backgroundColor: '#9C27B0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
         
         // This will be replaced with actual data when the report is generated

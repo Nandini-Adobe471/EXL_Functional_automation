@@ -12,7 +12,9 @@
     "report:generate": "npm run clean:screenshots && node tests/support/generate-report.js",
     "report:view": "npx http-server ./reports -p 9090 -c-1 -o /custom-report.html",
     "report:full": "npm run report:generate && npm run report:view",
-    "report:empty": "npm run ensure-reports-dir && node tests/support/generate-report.js"
+    "report:empty": "npm run ensure-reports-dir && node tests/support/generate-report.js",
+    "report:sample": "npm run report:generate && node tests/support/inject-sample-data.js && node tests/support/update-cucumber-report.js && npm run report:view",
+    "report:update-cucumber": "node tests/support/update-cucumber-report.js"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,1160 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "recently-viewed-block-functionality-on-adobe-experience-league;verify-recently-viewed-block-disappears-when-cookies-are-disabled",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "Verify Recently viewed block disappears when cookies are disabled",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user is logged in to Experience League application",
+            "match": {
+              "location": "tests\\steps\\a.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20951544799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "the home page loads completely",
+            "match": {
+              "location": "tests\\steps\\a.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5036223699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "user checks if Recently viewed block is available",
+            "match": {
+              "location": "tests\\steps\\a.js:24"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 10010592699,
+              "error_message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('div').filter({ hasText: 'Recently viewed' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"to.be.visible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('div').filter({ hasText: 'Recently viewed' })\u001b[22m\n\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\a.js:28:40)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user clicks on Cookie preferences in the footer",
+            "match": {
+              "location": "tests\\steps\\a.js:35"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "user disables cookies in the preferences modal",
+            "match": {
+              "location": "tests\\steps\\a.js:55"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "user refreshes the page",
+            "match": {
+              "location": "tests\\steps\\a.js:92"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "the Recently viewed block should not be visible",
+            "match": {
+              "location": "tests\\steps\\a.js:101"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 610172299
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "recently-viewed-block-functionality-on-adobe-experience-league",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Recently viewed block functionality on Adobe Experience League",
+    "tags": [],
+    "uri": "tests\\features\\a.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "validate-homepage-essential;verify-essential-ui-elements-on-the-home-page",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "verify essential UI elements on the home page",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I navigate to the Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\aa.js:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19720978199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "the header navigation should be visible",
+            "match": {
+              "location": "tests\\steps\\aa.js:16"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4031564899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the search bar should be visible and enabled",
+            "match": {
+              "location": "tests\\steps\\aa.js:49"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2938605299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "the marquee section should be displayed",
+            "match": {
+              "location": "tests\\steps\\aa.js:88"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18006600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "the footer should be visible",
+            "match": {
+              "location": "tests\\steps\\aa.js:119"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10598399
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 157200
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "validate-homepage-essential;validate-search-functionality-from-home-page",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Validate search functionality from home page",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 15,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\aa.js:151"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 21631808700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "user enters \"Analytics\" in the search bar",
+            "match": {
+              "location": "tests\\steps\\aa.js:159"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7008381000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "user submits the search",
+            "match": {
+              "location": "tests\\steps\\aa.js:179"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 42123184600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "search results page should display",
+            "match": {
+              "location": "tests\\steps\\aa.js:200"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 40603300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 19,
+            "name": "search results should contain items related to \"Analytics\"",
+            "match": {
+              "location": "tests\\steps\\aa.js:216"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 21447899
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 93599
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 13
+          },
+          {
+            "name": "@search",
+            "line": 13
+          },
+          {
+            "name": "@skip-login",
+            "line": 13
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "validate-homepage-essential;verify-main-navigation-links-functionality",
+        "keyword": "Scenario",
+        "line": 22,
+        "name": "Verify main navigation links functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 23,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\aa.js:151"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20486689199
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Link Name"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Tutorials"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Documentation"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Perspective"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "When ",
+            "line": 24,
+            "name": "user clicks on each main navigation link",
+            "match": {
+              "location": "tests\\steps\\aa.js:237"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18824336299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "each page should load successfully",
+            "match": {
+              "location": "tests\\steps\\aa.js:273"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1534729299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "each page should display relevant content",
+            "match": {
+              "location": "tests\\steps\\aa.js:284"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 359428999
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 88299
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 21
+          },
+          {
+            "name": "@navigation",
+            "line": 21
+          },
+          {
+            "name": "@skip-login",
+            "line": 21
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "validate-homepage-essential;validate-responsive-behavior-of-home-page",
+        "keyword": "Scenario",
+        "line": 33,
+        "name": "Validate responsive behavior of home page",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 34,
+            "name": "user navigates to EX League home page",
+            "match": {
+              "location": "tests\\steps\\aa.js:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25062664400
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Device",
+                      "Width",
+                      "Height"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Mobile",
+                      "375",
+                      "667"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Tablet",
+                      "768",
+                      "1024"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Desktop",
+                      "1440",
+                      "900"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "When ",
+            "line": 35,
+            "name": "viewport size is changed to the following dimensions",
+            "match": {
+              "location": "tests\\steps\\aa.js:302"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6149014499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 40,
+            "name": "page layout should adapt appropriately to each viewport",
+            "match": {
+              "location": "tests\\steps\\aa.js:352"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2609599
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 51200
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 32
+          },
+          {
+            "name": "@responsive",
+            "line": 32
+          },
+          {
+            "name": "@skip-login",
+            "line": 32
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "validate-homepage-essential;verify-personalized-content-recommendations-for-logged-in-user",
+        "keyword": "Scenario",
+        "line": 43,
+        "name": "Verify personalized content recommendations for logged-in user",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 44,
+            "name": "user is logged in to Experience League to verify",
+            "match": {
+              "location": "tests\\steps\\aa.js:362"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25074825600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 45,
+            "name": "user navigates to Experience League home page",
+            "match": {
+              "location": "tests\\steps\\aa.js:151"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20925632299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 46,
+            "name": "personalized recommendations section should be visible",
+            "match": {
+              "location": "tests\\steps\\aa.js:367"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8054687200
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 155800
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 42
+          },
+          {
+            "name": "@personalization",
+            "line": 42
+          },
+          {
+            "name": "@skip-login",
+            "line": 42
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "validate-homepage-essential;verify-home-page-performance-metrics",
+        "keyword": "Scenario",
+        "line": 49,
+        "name": "Verify home page performance metrics",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 50,
+            "name": "user navigates to Experience League home page to verify performsnce metrics",
+            "match": {
+              "location": "tests\\steps\\aa.js:424"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25822867699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 51,
+            "name": "page should load within acceptable time threshold",
+            "match": {
+              "location": "tests\\steps\\aa.js:430"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 60094790399
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Metric",
+                      "Threshold"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "First Contentful Paint",
+                      "< 2.5s"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Largest Contentful Paint",
+                      "< 4.0s"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Cumulative Layout Shift",
+                      "< 0.1"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "First Input Delay",
+                      "< 100ms"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 52,
+            "name": "core web vitals should meet performance standards",
+            "match": {
+              "location": "tests\\steps\\aa.js:482"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4122099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 58,
+            "name": "images should be properly optimized",
+            "match": {
+              "location": "tests\\steps\\aa.js:494"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 420963199
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 277999
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@home-page",
+            "line": 48
+          },
+          {
+            "name": "@performance",
+            "line": 48
+          },
+          {
+            "name": "@skip-login",
+            "line": 48
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "validate-homepage-essential",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "validate homepage essential",
+    "tags": [],
+    "uri": "tests\\features\\aa.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "launch-adobe-experience-league-url-and-login;php-page-launched-successfully-and-user-logs-in",
+        "keyword": "Scenario Outline",
+        "line": 15,
+        "name": "PHP page launched successfully and user logs in",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "the user is on the landing page",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1985686300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "the user clicks the CTA to begin login",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:44"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5271828700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "the user enters their email address \"gsnair+US+Team+VISA+hello+1@adobetest.com\"",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:58"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4148176199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the user clicks the Continue button",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:74"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5147202300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "the user enters their password \"Bap@d0be\"",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:88"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 40573299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "the user submits the password form",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:101"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 499537799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "the user should be logged in successfully",
+            "match": {
+              "location": "tests\\steps\\bookmark.js:110"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2022945000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 242399
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "launch-adobe-experience-league-url-and-login",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Launch Adobe Experience League URL and login",
+    "tags": [],
+    "uri": "tests\\features\\bookmark.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "browse-and-filter-content-on-adobe-experience-league;filter-content-by-type-and-product-and-validate-first-card",
+        "keyword": "Scenario",
+        "line": 5,
+        "name": "Filter content by type and product and validate first card",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "user is on the PHP page",
+            "match": {
+              "location": "tests\\steps\\browse-filter.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17333424200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 7,
+            "name": "user navigates to the browse page",
+            "match": {
+              "location": "tests\\steps\\browse-filter.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12783970700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "user selects content type as \"Community\"",
+            "match": {
+              "location": "tests\\steps\\browse-filter.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4438746400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "user selects product as \"^Analytics$\"",
+            "match": {
+              "location": "tests\\steps\\browse-filter.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4260700299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "verify first card displays with selected content type and product tag",
+            "match": {
+              "location": "tests\\steps\\browse-filter.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2067661900
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 242999
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 3
+          },
+          {
+            "name": "@browse-filter",
+            "line": 4
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "browse-and-filter-content-on-adobe-experience-league",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Browse and filter content on Adobe Experience League",
+    "tags": [],
+    "uri": "tests\\features\\browse-filter.feature"
+  },
+  {
+    "description": "  As a user\n  I want to filter perspectives by author type\n  So that I can view perspectives authored by Adobe",
+    "elements": [
+      {
+        "description": "",
+        "id": "perspective-page-author-badge;filter-perspectives-by-author-type-'&nbsp;adobe'-and-verify-badge",
+        "keyword": "Scenario",
+        "line": 6,
+        "name": "Filter perspectives by author type '&nbsp;Adobe' and verify badge",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "user logs in and lands on PHP page",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:8"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18332504599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to the perspective page",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4154181099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "user selects author type as \"Adobe\"",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 168805200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "verify first card displays with \"By Adobe\" badge",
+            "match": {
+              "location": "tests\\steps\\perspective-author-badge.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1430920700
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 144899
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 5
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "perspective-page-author-badge",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Perspective Page Author Badge",
+    "tags": [],
+    "uri": "tests\\features\\perspective-author-badge.feature"
+  },
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "recommendations-functionality-on-adobe-experience-league;check-and-interact-with-see-more-recommendations-button",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "Check and interact with See More Recommendations button",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user is logged in to Experience League",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18377330300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "the page loads completely",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:15"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 40005142399,
+              "error_message": "page.waitForSelector: Timeout 40000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.browse-card-content') to be visible\u001b[22m\n\u001b[2m    - waiting for\" https://adobeid-na1-stg1.services.adobe.com/ims/fromSusi\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"https://adobeid-na1-stg1.services.adobe.com/ims/fromSusi\"\u001b[22m\n\n    at CustomWorld.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\recommendations.js:17:19)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "user checks if See More Recommendations button is available",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:53"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "user clicks the See More Recommendations button",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:75"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "waits for additional recommendations to load",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:101"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "verifies that See Less Recommendations is displayed",
+            "match": {
+              "location": "tests\\steps\\recommendations.js:114"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 704732200
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "recommendations-functionality-on-adobe-experience-league",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Recommendations functionality on Adobe Experience League",
+    "tags": [],
+    "uri": "tests\\features\\recommendations.feature"
+  }
+]
