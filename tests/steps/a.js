@@ -22,14 +22,17 @@ When('the home page loads completely', async function() {
 });
 
 Then('user checks if Recently viewed block is available', async function() {
+
+  await this.page.waitForTimeout(5000);
   
-   const recentlyViewedElement = this.page.locator('div').filter({ hasText: 'Recently viewed' });
+   const recentlyViewedElement = this.page.locator('#watch-past-events-on-demand')
+   //this.page.locator('div').filter({ hasText: 'Recently viewed' });
    // Basic Playwright assertion to check if the element is visible
    await expect(recentlyViewedElement).toBeVisible({ timeout: 10000 });
    console.log("✓ Recently viewed block is visible");
-   // Store the selector for later use
+   /*/ Store the selector for later use
    this.recentlyViewedSelector = 'div:has-text("Recently viewed")';
-   this.recentlyViewedFound = true;
+   this.recentlyViewedFound = true;*/
 });
 
 When('user clicks on Cookie preferences in the footer', async function() {
@@ -85,7 +88,7 @@ When('user disables cookies in the preferences modal', async function() {
    await this.page.getByRole('link', { name: 'Cookie preferences' }).click();
    await this.page.waitForTimeout(2000);
   //await this.page.getByRole('button', { name: 'Don’t enable' }).click();
-  await this.page.locator('.ot-main-content .pc-logo-button .disable-all-btn').click();
+  await this.page.locator('#ot-pc-logo-button .disable-all-btn').click();
 await this.page.waitForTimeout(2000);
 });
 

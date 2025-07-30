@@ -14,4 +14,8 @@ Examples:
   | email                                    | password  |
   | gsnair+US+Team+VISA+hello+1@adobetest.com | Bap@d0be |
 
- 
+@skip-login
+ Scenario: Bookmark content on Experience League
+    Given user is on Experience League home
+    When user bookmarks the first content card
+    Then ensure bookmarked card appears in bookmarks page
