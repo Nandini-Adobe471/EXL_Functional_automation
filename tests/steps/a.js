@@ -85,15 +85,19 @@ When('user disables cookies in the preferences modal', async function() {
   
   // Wait for the modal to close
   await this.page.waitForTimeout(2000);*/
-   await this.page.getByRole('link', { name: 'Cookie preferences' }).click();
-   await this.page.waitForTimeout(2000);
+  // await this.page.getByRole('link', { name: 'Cookie preferences' }).click();
+   //await this.page.waitForTimeout(2000);
+   //await this.page.waitForSelector('#onetrust-consent-sdk', {      visible: true,timeout: 5000    });
+   await this.page.waitForSelector('button.disable-all-btn', {      visible: true,timeout: 3000    }); 
+   await this.page.click('button.disable-all-btn');   
   //await this.page.getByRole('button', { name: 'Don’t enable' }).click();
-  await this.page.locator('#ot-pc-logo-button .disable-all-btn').click();
+ // await this.page.locator('#ot-pc-logo-button .disable-all-btn').click();
 await this.page.waitForTimeout(2000);
 });
 
 When('user refreshes the page', async function() {
   // Refresh the page
+  
   await this.page.reload();
   
   // Wait for the page to load
