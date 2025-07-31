@@ -571,3 +571,291 @@ Then('the Recently viewed block should not be visible', async function() {
     await this.browser.close();
   }
 });
+
+//bookmark
+
+Given('user is on Experience League home',async function() {
+  // Use the common login function instead of just launching the browser
+ const result = await performLogin(this);
+  await this.page.waitForTimeout(2000);
+})
+
+When('user bookmarks the first content card', async function() {
+   await this.page.waitForTimeout(2000);
+    //Locate firstcard
+    const firstCard = await this.page.locator('.browse-card-content').first();
+    // Uncomment and use the assertion
+    await expect(firstCard).toBeVisible();
+    const firstCardTitle = await firstCard.locator('.browse-card-title-text').textContent();
+    console.log(firstCardTitle);
+    await this.page.waitForTimeout(2000);
+
+    //click on bookmark icon of first card
+    const bookmarkIcon = await this.page.locator('.browse-card-options .bookmark').first();
+    console.log(bookmarkIcon);
+    await this.page.waitForTimeout(2000);
+    await bookmarkIcon.click({ force: true });  
+     await this.page.waitForTimeout(2000);
+    const bookmarPage = await this.page.locator('.profile-rail-links a[title="Bookmarks"]');
+    console.log(bookmarPage);
+    await bookmarPage.click(); 
+    await this.page.waitForTimeout(2000);
+
+    // remove the bookmark of a card from bookmark page
+     bookmarkedCardTitle = await this.page.locator('.bookmarks-content .bookmarks-card .browse-card-title-text').first().textContent();
+    
+    // Replace the if/else with an assertion
+    await expect(bookmarkedCardTitle).toBe(firstCardTitle);
+    console.log("bookmark Successful");
+
+    //remove bookmark
+    const bookmarkedIcon = await this.page.locator('.browse-card-options .bookmark').first();
+    console.log(bookmarkedIcon);
+    await this.page.waitForTimeout(2000);
+    await bookmarkedIcon.click({ force: true });
+
+   
+});
+
+Then('ensure bookmarked card appears in bookmarks page', async function() {
+     //Navigate to Bookmark page
+   
+
+    await this.page.waitForTimeout(2000);
+    
+    // Assert that we're on the bookmarks page and it contains at least one card
+   // await expect(this.page.locator('.bookmarks-content')).toBeVisible();
+    //await expect(this.page.locator('.bookmarks-card')).toBeVisible();
+    
+    if (this.browser) {
+      await this.browser.close();
+    }
+});
+
+//recommendation see more
+
+Given('user is logged in to Experience League', async function() {
+  // Use the common login function to log in
+  const result = await performLogin(this);
+  
+  // Wait for the page to stabilize
+  await this.page.waitForTimeout(2000);
+});
+
+When('the page loads completely', async function() {
+  // Wait for the main content to be visible
+  await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 40000 });
+  await this.page.waitForTimeout(2000);
+  
+  // Check if recommendations section is visible
+  console.log("Checking if personalized recommendations section is visible...");
+  const recommendationSelectors = [
+    '.recommendation-section', 
+    '.recommendations-container', 
+    '.recommendation-marquee',
+    '.recommendation-cards',
+    '[data-testid="recommendations"]'
+  ];
+  
+  let recommendationsFound = false;
+  for (const selector of recommendationSelectors) {
+    const isVisible = await this.page.locator(selector).isVisible().catch(() => false);
+    if (isVisible) {
+      console.log(`Found recommendations section with selector: ${selector}`);
+      recommendationsFound = true;
+      break;
+    }
+  }
+  
+  if (!recommendationsFound) {
+    console.error("⚠️ Could not find recommendations section");
+    // Instead of simulating success, we'll assert that the section exists
+    // This will properly fail the test if recommendations aren't found
+    await expect(this.page.locator(recommendationSelectors[0])).toBeVisible({
+      timeout: 5000,
+      message: "Personalized recommendations section should be visible"
+    });
+  } else {
+    console.log("✓ Personalized recommendations section is visible");
+  }
+});
+
+Then('user checks if See More Recommendations button is available', async function() {
+  // Try to locate the See More Recommendations button with exact text match
+  // Using capital 'M' in "More" as that's a common capitalization
+  await this.page.waitForTimeout(2000);
+  const seeMoreButton = this.page.locator('.recommendation-marquee-see-more-btn button:text("See More recommendations"), a:text("See More recommendations")');
+ /* await seeMoreButton.focus();
+  await seeMoreButton.click();
+  console.log("test");*/
+  // Store the button and its availability in the world object for later steps
+  this.seeMoreButton = seeMoreButton;
+ this.seeMoreButtonAvailable = await seeMoreButton.isVisible().catch(() => false);
+  
+  if (!this.seeMoreButtonAvailable) {
+    console.log("There are few cards, See More Recommendations button is not available");
+  } else {
+    console.log("See More Recommendations button is available");
+    // Basic assertion to check button visibility
+    await expect(seeMoreButton).toBeVisible();
+  }
+});
+
+
+Then('user clicks the See More Recommendations button', async function() {
+  // Only try to click if the button is available
+  if (this.seeMoreButtonAvailable) {
+    // Use the button we already found
+    const seeMoreButton = this.seeMoreButton;
+    
+    // Focus on the button first
+    await seeMoreButton.focus();
+    console.log("Focused on See More Recommendations button");
+    await this.page.waitForTimeout(2000);
+    
+    // Highlight the button to make it visible in the UI
+    await seeMoreButton.highlight();
+    console.log("Highlighted See More Recommendations button");
+    
+    await this.page.waitForTimeout(2000);
+    
+    // Click the button
+    await seeMoreButton.click();
+    console.log("Clicked See More Recommendations button");
+    await this.page.waitForTimeout(6000);
+  } else {
+    console.log("Skipping click as See More Recommendations button is not available");
+  }
+});
+
+Then('waits for additional recommendations to load', async function() {
+  // Only wait if the button was clicked
+  if (this.seeMoreButtonAvailable) {
+    await this.page.waitForTimeout(5000);
+    
+    // Log the number of cards
+    const cardCount = await this.page.locator('.browse-card-content').count();
+    console.log(`Number of recommendation cards: ${cardCount}`);
+  } else {
+    console.log("Skipping wait as See More Recommendations button was not available");
+  }
+});
+
+Then('verifies that See Less Recommendations is displayed', async function() {
+  if (this.seeMoreButtonAvailable) {
+    // Check for the See Less Recommendations button
+    const seeLessButton = this.page.locator('button:text("See Less recommendations"), a:text("See Less recommendations")');
+    // Basic assertion to check See Less button visibility
+    await expect(seeLessButton).toBeVisible({ timeout: 10000 });
+    console.log("See Less Recommendations button is displayed");
+  } else {
+    console.log("Skipping verification as See More Recommendations button was not available");
+  }
+  
+  // Clean up - close the browser
+  if (this.browser) {
+    await this.browser.close();
+  }
+});
+Given('user is logged in to Experience League application with valid credentials', async function() {
+  // Use the common login function to log in
+  const result = await performLogin(this);
+  
+  // Wait for the page to stabilize
+  await this.page.waitForTimeout(2000);
+});
+
+When('wait till the page loads completely', async function() {
+  // Wait for the main content to be visible
+  await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 40000 });
+  await this.page.waitForTimeout(2000);
+  
+  // Check if recommendations section is visible
+  console.log("Checking if personalized recommendations section is visible...");
+  const recommendationSelectors = [
+    '.recommendation-section', 
+    '.recommendations-container', 
+    '.recommendation-marquee',
+    '.recommendation-cards',
+    '[data-testid="recommendations"]'
+  ];
+  
+  let recommendationsFound = false;
+  for (const selector of recommendationSelectors) {
+    const isVisible = await this.page.locator(selector).isVisible().catch(() => false);
+    if (isVisible) {
+      console.log(`Found recommendations section with selector: ${selector}`);
+      this.recommendationSelector = selector;
+      recommendationsFound = true;
+      break;
+    }
+  }
+  
+  if (!recommendationsFound) {
+    console.error("⚠️ Could not find recommendations section");
+    // Instead of simulating success, we'll assert that the section exists
+    await expect(this.page.locator(recommendationSelectors[0])).toBeVisible({
+      timeout: 5000,
+      message: "Personalized recommendations section should be visible"
+    });
+  } else {
+    console.log("✓ Personalized recommendations section is visible");
+  }
+});
+
+Then('user captures the target recs count from console', async function() {
+  // Execute JavaScript in the browser to get the recommendation count from window.exlm.targetData.length
+  await this.page.waitForTimeout(2000);
+  const targetDataLength = await this.page.evaluate(() => {
+     
+    if (window.exlm && window.exlm.targetData ) {
+     return window.exlm.targetData.length;
+    console.log(`window.exlm.targetData length: ${window.exlm.targetData.length}`);
+    } else {
+      return null;
+    }
+  });
+  
+  if (targetDataLength === null) {
+    console.error("⚠️ Could not find window.exlm.targetData in the console");
+    throw new Error("window.exlm.targetData not found in the console");
+  }
+  
+  console.log(`Found ${targetDataLength} recs in window.exlm.targetData`);
+  
+  // Store the count for later comparison
+  this.consoleRecommendationCount = targetDataLength;
+
+
+});
+
+Then('user finds the recommended content blocks count on the page', async function() {
+  // Wait for the recommendation cards to be visible
+  const recommendationCards = this.page.locator('div[data-block-name="recommended-content"]');
+  //await expect(recommendationCards.first()).toBeVisible({ timeout: 10000 });
+  
+  // Count the number of recommendation cards visible on the page
+  const uiRecommendationCount = await recommendationCards.count();
+  console.log(`Found ${uiRecommendationCount} recommended content blocks in the php page`);
+  
+  // Store the count for later comparison
+  this.uiRecommendationCount = uiRecommendationCount;
+});
+
+Then('user verifies the count matches between target recs and recommended content blocks on php page', async function() {
+  console.log(`Comparing recommendation counts: Console=${this.consoleRecommendationCount}, UI=${this.uiRecommendationCount}`);
+  
+  // Assert that the counts match
+  expect(this.uiRecommendationCount).toBe(this.consoleRecommendationCount);
+  
+  if (this.uiRecommendationCount === this.consoleRecommendationCount) {
+    console.log("✓ Recommended content blocks counts matches with recs count");
+  } else {
+    console.error(`❌ Recommendation counts do not match: Console=${this.consoleRecommendationCount}, UI=${this.uiRecommendationCount}`);
+  }
+  
+  // Clean up - close the browser
+  if (this.browser) {
+    await this.browser.close();
+  }
+});

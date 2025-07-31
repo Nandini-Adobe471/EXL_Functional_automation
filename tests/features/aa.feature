@@ -61,3 +61,26 @@ Scenario: Verify Recently viewed block disappears when cookies are disabled
     And user disables cookies in the preferences modal
     And user refreshes the page
     Then the Recently viewed block should not be visible
+
+    @skip-login
+ Scenario: Bookmark content on Experience League
+    Given user is on Experience League home
+    When user bookmarks the first content card
+    Then ensure bookmarked card appears in bookmarks page
+
+    @skip-login
+Scenario: Check and interact with See More Recommendations button
+    Given user is logged in to Experience League
+    When the page loads completely
+    Then user checks if See More Recommendations button is available
+    And user clicks the See More Recommendations button
+    And waits for additional recommendations to load
+    And verifies that See Less Recommendations is displayed
+
+@recommendation-validation @skip-login
+Scenario: Verify recommendation count matches between recs count and recommended content blocks on PHP page
+    Given user is logged in to Experience League application with valid credentials
+    When wait till the page loads completely
+    Then user captures the target recs count from console
+    And user finds the recommended content blocks count on the page
+    And user verifies the count matches between target recs and recommended content blocks on php page
