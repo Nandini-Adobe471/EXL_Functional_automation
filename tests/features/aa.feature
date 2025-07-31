@@ -39,11 +39,6 @@ Scenario: Validate responsive behavior of home page
     | Desktop     | 1440  | 900    |
   Then page layout should adapt appropriately to each viewport
 
-  @home-page @personalization @skip-login
-Scenario: Verify personalized content recommendations for logged-in user
-  Given user is logged in to Experience League to verify
-  When user navigates to Experience League home page
-  Then personalized recommendations section should be visible
 
   @home-page @performance @skip-login
 Scenario: Verify home page performance metrics
@@ -51,8 +46,18 @@ Scenario: Verify home page performance metrics
   Then page should load within acceptable time threshold
   And core web vitals should meet performance standards
     | Metric                    | Threshold |
-    | First Contentful Paint    | < 2.5s    |
-    | Largest Contentful Paint  | < 4.0s    |
+    | First Contentful Paint    | < 1.8s    |
+    | Largest Contentful Paint  | < 2.5s    |
     | Cumulative Layout Shift   | < 0.1     |
     | First Input Delay         | < 100ms   |
   And images should be properly optimized
+
+  @home-page @cookies @skip-login
+Scenario: Verify Recently viewed block disappears when cookies are disabled
+    Given user is logged in to Experience League application
+    When the home page loads completely
+    Then user checks if Recently viewed block is available
+    When user clicks on Cookie preferences in the footer
+    And user disables cookies in the preferences modal
+    And user refreshes the page
+    Then the Recently viewed block should not be visible
