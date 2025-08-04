@@ -1,0 +1,119 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "customize-learning-and-verify-interests-on-home-page;verify-interests-from-customize-learning-appear-as-pills-on-home-page",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "Verify interests from customize learning appear as pills on home page",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user logs in to Experience League",
+            "match": {
+              "location": "tests\\steps\\customize-learning.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16694085199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on customize learning link",
+            "match": {
+              "location": "tests\\steps\\customize-learning.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7060893900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "user should see element with class user-interests",
+            "match": {
+              "location": "tests\\steps\\customize-learning.js:58"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 406245399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "user should see interests separated by pipe symbol",
+            "match": {
+              "location": "tests\\steps\\customize-learning.js:68"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25827799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "user navigates back to home page",
+            "match": {
+              "location": "tests\\steps\\customize-learning.js:144"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3079134000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "interests should be visible as pills in responsive pill list",
+            "match": {
+              "location": "tests\\steps\\customize-learning.js:182"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 577409700
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 779399
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@customize-learning",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "customize-learning-and-verify-interests-on-home-page",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Customize Learning and Verify Interests on Home Page",
+    "tags": [],
+    "uri": "tests\\features\\customize-learning.feature"
+  }
+]
