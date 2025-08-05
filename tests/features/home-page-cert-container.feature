@@ -1,6 +1,6 @@
 Feature: Experience League Home Page Certification Container
 
-@home-page-cert-container
+@home-page-cert-container @skip-login
 Scenario: Verify certification top container is loaded on the home page
     Given user navigates to Experience League home apage
     When the home page loaads completely

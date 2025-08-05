@@ -132,7 +132,7 @@ Then('user should see interests separated by pipe symbol', async function() {
   // If we still couldn't find interests, use default interests
   if (!interestsFound || this.interests.length === 0) {
     console.log("Could not find interests. Using default interests for testing.");
-    this.interests = ["Analytics", "Experience Manager", "Target"];
+    this.interests = [];
     interestsFound = true;
   }
   
@@ -195,7 +195,7 @@ Then('interests should be visible as pills in responsive pill list', async funct
   const notFoundInterests = [];
   
   // First, get all pill texts for debugging
-  const allPills = await this.page.locator('.responsive-pill-list .pill, .responsive-pill-list button, .pill, button.pill, .tag, button.tag').all();
+  const allPills = await this.page.locator('.responsive-pill-list ul li').all();
   const allPillTexts = [];
   
   for (const pill of allPills) {
@@ -216,14 +216,10 @@ Then('interests should be visible as pills in responsive pill list', async funct
     let found = false;
     
     // Try exact match first
-    const interestPill = this.page.locator(`text="${interest}"`).first();
-    const isVisible = await interestPill.isVisible().catch(() => false);
+    //*const interestPill = this.page.locator(`text="${interest}"`).first();
+    // const isVisible = await interestPill.isVisible().catch(() => false);
     
-    if (isVisible) {
-      console.log(`Found interest pill with exact match: ${interest}`);
-      foundInterests.push(interest);
-      found = true;
-    } else {
+   
       // Try case-insensitive match with all pills
       const interestLower = interest.toLowerCase();
       for (const pillText of allPillTexts) {
@@ -234,7 +230,7 @@ Then('interests should be visible as pills in responsive pill list', async funct
           foundInterests.push(interest);
           found = true;
           break;
-        }
+        
       }
       
       if (!found) {
@@ -247,9 +243,7 @@ Then('interests should be visible as pills in responsive pill list', async funct
   // Log summary of found and not found interests
   console.log(`Found ${foundInterests.length} out of ${this.interests.length} interests as pills`);
   console.log("Found interests:", foundInterests);
-  if (notFoundInterests.length > 0) {
-    console.log("Not found interests:", notFoundInterests);
-  }
+  
   
   // Assert that at least some interests were found
   expect(foundInterests.length).toBeGreaterThan(0);

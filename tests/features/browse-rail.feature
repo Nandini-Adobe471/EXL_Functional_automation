@@ -6,3 +6,4 @@ Scenario: Verify browse rail and its list items are visible
     When the browse page loads completely
     Then the browse rail should be visible
     And the browse rail list items should be visible
+   

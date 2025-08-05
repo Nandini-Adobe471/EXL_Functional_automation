@@ -8,3 +8,9 @@ Scenario: Verify breadcrumb navigation from browse rail list items
     Then the breadcrumb should be visible
     When user clicks on the browse breadcrumb
     Then user should navigate back to the browse page
+    # Mobile view testing
+    When user sets viewport to mobile size1
+    And user clicks on a list item in the browse rail in mobile view
+    Then the breadcrumb should be visible in mobile view
+    When user clicks on the browse breadcrumb in mobile view
+    Then user should navigate back to the browse page in mobile view

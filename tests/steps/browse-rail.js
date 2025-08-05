@@ -2,6 +2,8 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
 const { launchBrowser } = require('../commonFunctions/launchbrowser');
+// Import common mobile steps
+require('./common-mobile-steps');
 
 setDefaultTimeout(90 * 1000);
 
@@ -123,9 +125,7 @@ Then('the browse rail list items should be visible', async function() {
   expect(listItemsFound).toBeTruthy();
   expect(listItemsCount).toBeGreaterThan(0);
   console.log(`✓ Browse rail contains ${listItemsCount} visible list items`);
-  
-  // Clean up - close the browser
-  if (this.browser) {
-    await this.browser.close();
-  }
 });
+
+// Note: 'user sets viewport to mobile size' step is in common-mobile-steps.js
+// Mobile view validation steps have been removed as requested
