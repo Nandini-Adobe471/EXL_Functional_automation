@@ -4,160 +4,87 @@
     "elements": [
       {
         "description": "",
-        "id": "browse-breadcrumb-navigation-on-experience-league;verify-breadcrumb-navigation-from-browse-rail-list-items",
+        "id": "author-information-validation;validate-author-information-consistency-across-pages",
         "keyword": "Scenario",
         "line": 4,
-        "name": "Verify breadcrumb navigation from browse rail list items",
+        "name": "Validate author information consistency across pages",
         "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 15195685900
-            }
-          },
           {
             "arguments": [],
             "keyword": "Given ",
             "line": 5,
-            "name": "user navigates to Experience League browse pagea",
+            "name": "user logs in and lands on the home page for author validation",
             "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:9"
+              "location": "tests\\steps\\author-info-validation.js:8"
             },
             "result": {
               "status": "passed",
-              "duration": 2888409999
+              "duration": 19721024300
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
             "line": 6,
-            "name": "the browse page loads completelya",
+            "name": "user navigates to the perspective page for author validation",
             "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:23"
+              "location": "tests\\steps\\author-info-validation.js:29"
             },
             "result": {
               "status": "passed",
-              "duration": 2076600500
+              "duration": 4125504100
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 7,
-            "name": "user clicks on a list item in the browse rail",
+            "name": "user clicks on a card with author information",
             "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:33"
+              "location": "tests\\steps\\author-info-validation.js:42"
             },
             "result": {
               "status": "passed",
-              "duration": 6174820599
+              "duration": 2276131700
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
             "line": 8,
-            "name": "the breadcrumb should be visible",
+            "name": "user extracts author info text from article marquee",
             "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:79"
+              "location": "tests\\steps\\author-info-validation.js:191"
             },
             "result": {
               "status": "passed",
-              "duration": 63699199
+              "duration": 2148672899
             }
           },
           {
             "arguments": [],
-            "keyword": "When ",
+            "keyword": "And ",
             "line": 9,
-            "name": "user clicks on the browse breadcrumb",
+            "name": "user navigates to author bio page",
             "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:121"
+              "location": "tests\\steps\\author-info-validation.js:285"
             },
             "result": {
               "status": "passed",
-              "duration": 2085959299
+              "duration": 2166432100
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
             "line": 10,
-            "name": "user should navigate back to the browse page",
+            "name": "author info from article should match author bio page",
             "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:136"
+              "location": "tests\\steps\\author-info-validation.js:397"
             },
             "result": {
               "status": "passed",
-              "duration": 28386899
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 12,
-            "name": "user sets viewport to mobile size1",
-            "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:143"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3150175300
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 13,
-            "name": "user clicks on a list item in the browse rail in mobile view",
-            "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:158"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 6596663200
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 14,
-            "name": "the breadcrumb should be visible in mobile view",
-            "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:280"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 118874400
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 15,
-            "name": "user clicks on the browse breadcrumb in mobile view",
-            "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:335"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2620575800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 16,
-            "name": "user should navigate back to the browse page in mobile view",
-            "match": {
-              "location": "tests\\steps\\browse-breadcrumb.js:471"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2608738100
+              "duration": 380694999
             }
           },
           {
@@ -165,24 +92,28 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 456700
+              "duration": 270699
             }
           }
         ],
         "tags": [
           {
-            "name": "@browse-breadcrumb",
+            "name": "@author-info",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
             "line": 3
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "browse-breadcrumb-navigation-on-experience-league",
+    "id": "author-information-validation",
     "line": 1,
     "keyword": "Feature",
-    "name": "Browse Breadcrumb Navigation on Experience League",
+    "name": "Author Information Validation",
     "tags": [],
-    "uri": "tests\\features\\browse-breadcrumb.feature"
+    "uri": "tests\\features\\author-info-validation.feature"
   }
 ]
