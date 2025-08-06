@@ -226,6 +226,25 @@ Then('if mini TOC is visible verify clicking on TOC items scrolls to respective 
           
           if (isSectionVisible) {
             console.log(`✓ Section with ID "${sectionId}" is visible after clicking TOC item ${i+1}`);
+            
+            // Find the h2 heading within the section
+            const sectionHeading = section.locator('h2').first();
+            const headingVisible = await sectionHeading.isVisible().catch(() => false);
+            
+            if (headingVisible) {
+              const headingText = await sectionHeading.textContent();
+              const normalizedHeadingText = headingText.trim().toLowerCase();
+              const normalizedTocItemText = tocItemText.trim().toLowerCase();
+              
+              if (normalizedHeadingText.includes(normalizedTocItemText) || 
+                  normalizedTocItemText.includes(normalizedHeadingText)) {
+                console.log(`✓ Section h2 heading text "${headingText.trim()}" matches TOC item text "${tocItemText.trim()}"`);
+              } else {
+                console.log(`Warning: Section h2 heading text "${headingText.trim()}" does not match TOC item text "${tocItemText.trim()}"`);
+              }
+            } else {
+              console.log(`Warning: No h2 heading found in section with ID "${sectionId}"`);
+            }
           } else {
             console.log(`Warning: Section with ID "${sectionId}" is not visible after clicking TOC item ${i+1}`);
           }
