@@ -1,1 +1,571 @@
-[]
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "search-picker-navigation;verify-search-picker-navigation-functionality",
+        "keyword": "Scenario Outline",
+        "line": 14,
+        "name": "Verify search picker navigation functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4096455799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on search picker",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1059065800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "dropdown should open with list of values",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19042699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to \"docs/home-tutorials\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3216648299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "search picker should show \"Tutorials\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10761099
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 235300
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@search-picker",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "search-picker-navigation;verify-search-picker-navigation-functionality",
+        "keyword": "Scenario Outline",
+        "line": 15,
+        "name": "Verify search picker navigation functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3935827400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on search picker",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1060767799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "dropdown should open with list of values",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24524199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to \"docs\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3203970900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "search picker should show \"Documentation\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12918699
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 70199
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@search-picker",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "search-picker-navigation;verify-search-picker-navigation-functionality",
+        "keyword": "Scenario Outline",
+        "line": 16,
+        "name": "Verify search picker navigation functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3940200699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on search picker",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1052681599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "dropdown should open with list of values",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 13963899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to \"events\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3129229900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "search picker should show \"Events\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10639600
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 78799
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@search-picker",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "search-picker-navigation;verify-search-picker-navigation-functionality",
+        "keyword": "Scenario Outline",
+        "line": 17,
+        "name": "Verify search picker navigation functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3935474599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on search picker",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1058151600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "dropdown should open with list of values",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22654099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to \"certification-home\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3127058799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "search picker should show \"Certification\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7695400
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 73100
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@search-picker",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "search-picker-navigation;verify-search-picker-navigation-functionality",
+        "keyword": "Scenario Outline",
+        "line": 18,
+        "name": "Verify search picker navigation functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3866388699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on search picker",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1072136899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "dropdown should open with list of values",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24462699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to \"playlists\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3132765999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "search picker should show \"Playlists\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11236300
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 76000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@search-picker",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "search-picker-navigation;verify-search-picker-navigation-functionality",
+        "keyword": "Scenario Outline",
+        "line": 19,
+        "name": "Verify search picker navigation functionality",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to Experience League homepage",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3859808400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "user clicks on search picker",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1072384799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "dropdown should open with list of values",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19588799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 8,
+            "name": "user navigates to \"perspectives\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3125578999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "search picker should show \"Perspectives\"",
+            "match": {
+              "location": "tests\\steps\\search-picker.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7464199
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 71800
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@search-picker",
+            "line": 3
+          },
+          {
+            "name": "@skip-login",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "search-picker-navigation",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Search Picker Navigation",
+    "tags": [],
+    "uri": "tests\\features\\search-picker.feature"
+  }
+]

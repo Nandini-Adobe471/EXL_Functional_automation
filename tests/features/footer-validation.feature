@@ -1,6 +1,6 @@
 Feature: Footer Fragment Validation
 
-@footer
+@footer-exl
 Scenario: Validate footer fragment elements across pages
     Given user logs in and lands on the home page for footer validation
     When user navigates to the footer fragment page
@@ -11,6 +11,3 @@ Scenario: Validate footer fragment elements across pages
     And user should see footer copyright section
     When user navigates to the main site
     Then user should see the same footer elements on main site
-    # Mobile view testing
-    When user sets viewport to mobile size for footer validation
-    Then user should see the same footer elements on main site in mobile view

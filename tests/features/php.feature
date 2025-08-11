@@ -1,4 +1,4 @@
-Feature: validate homepage essential
+Feature: php validation
 
 @skip-login
  Scenario: verify essential UI elements on the home page
@@ -84,3 +84,12 @@ Scenario: Verify recommendation count matches between recs count and recommended
     Then user captures the target recs count from console
     And user finds the recommended content blocks count on the page
     And user verifies the count matches between target recs and recommended content blocks on php page
+
+    @customize-learning @skip-login
+Scenario: Verify interests from customize learning appear as pills on home page
+    Given user logs in to Experience League
+    When user clicks on customize learning link
+    And user should see element with class user-interests
+    Then user should see interests separated by pipe symbol
+    When user navigates back to home page
+    Then interests should be visible as pills in responsive pill list
