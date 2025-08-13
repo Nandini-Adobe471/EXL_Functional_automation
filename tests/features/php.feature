@@ -62,7 +62,7 @@ Scenario: Verify Recently viewed block disappears when cookies are disabled
     And user refreshes the page
     Then the Recently viewed block should not be visible
 
-    @skip-login
+   @php-bookmark @skip-login
  Scenario: Bookmark content on Experience League
     Given user is on Experience League home
     When user bookmarks the first content card

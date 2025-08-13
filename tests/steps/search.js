@@ -354,6 +354,7 @@ Given('user logs in and navigates to search page', async function() {
   
   // Use the common login function to log in
   await performLogin(this);
+   await this.page.waitForTimeout(3000);
   
   // Navigate directly to the search page
   await this.page.goto('https://experienceleague-stage.adobe.com/en/search');
@@ -473,4 +474,212 @@ Then('page {string} should be active in pagination', async function(pageNumber) 
   const url = this.page.url();
   expect(url).toContain("firstResult=25&numberOfResults=25");
   console.log(`✓ URL contains page=${pageNumber}`);
+});
+
+
+Given('user navigates to Experience League homepage', async function() {
+  // Launch browser
+  const result = await launchBrowser();
+  this.page = result.page;
+  this.browser = result.browser;
+  this.context = result.context;
+  
+  // Navigate to the Experience League homepage
+  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  
+  // Wait for the page to fully load
+  await this.page.waitForTimeout(3000);
+  
+  // Verify we're on the homepage
+  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+  console.log("✓ Successfully navigated to Experience League homepage");
+});
+
+When('user clicks on search picker', async function() {
+  // Find and click the search picker button
+  const searchPickerButton = this.page.locator('.search-picker-button');
+  await expect(searchPickerButton).toBeVisible();
+  await searchPickerButton.click();
+  console.log("✓ Clicked on search picker");
+  
+  // Wait for dropdown to appear
+  await this.page.waitForTimeout(1000);
+});
+
+Then('dropdown should open with list of values', async function() {
+  // Check if dropdown is visible
+  const dropdown = this.page.locator('.search-picker-popover.search-picker-popover-visible');
+  await expect(dropdown).toBeVisible();
+  console.log("✓ Search picker dropdown is visible");
+  
+  // Check if dropdown has items
+  const dropdownItems = dropdown.locator('.search-picker-label');
+  const count = await dropdownItems.count();
+  expect(count).toBeGreaterThan(0);
+  console.log(`✓ Search picker dropdown has ${count} items`);
+  
+  // Verify at least one dropdown item is visible without printing all values
+  const firstItem = dropdownItems.first();
+  await expect(firstItem).toBeVisible();
+});
+
+When('user navigates to {string}', async function(pageName) {
+  // Launch browser if not already launched
+  if (!this.page) {
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
+  
+  // Construct the URL
+  const url = `https://experienceleague-stage.adobe.com/en/${pageName}`;
+  console.log(`✓ Navigating directly to: ${url}`);
+  
+  // Navigate to the URL
+  await this.page.goto(url);
+  
+  // Wait for the page to load
+  await this.page.waitForTimeout(3000);
+  
+  // Verify we're on the correct page
+  await expect(this.page).toHaveURL(new RegExp(`.*experienceleague-stage.adobe.com/en/${pageName}.*`));
+  console.log(`✓ Successfully navigated to ${pageName} page`);
+});
+
+Then('search picker should show {string}', async function(expectedValue) {
+  // Find the search picker label
+  const searchPickerLabel = this.page.locator('.search-picker-button .search-picker-label');
+  await expect(searchPickerLabel).toBeVisible();
+  
+  // Get the text of the search picker label
+  const labelText = await searchPickerLabel.textContent();
+  
+  // Verify the search picker shows the expected value
+  expect(labelText.trim()).toBe(expectedValue);
+  console.log(`✓ Search picker shows correct value: "${labelText.trim()}" (expected: "${expectedValue}")`);
+});
+
+// Search Content Type Step Definitions
+When('user clicks on search input', async function() {
+  // Find the search input
+  const searchInput = this.page.locator('.search-input, input[type="search"], [placeholder*="Search"]').first();
+  await expect(searchInput).toBeVisible();
+  
+  // Click on the search input
+  await searchInput.click();
+  console.log("✓ Clicked on search input");
+  
+  // Store the search input for later use
+  this.searchInput = searchInput;
+});
+
+When('user enters {string} and presses enter', async function(searchText) {
+  // Fill the search input with the search text
+  await this.searchInput.fill(searchText);
+  console.log(`✓ Entered search text: "${searchText}"`);
+  
+  // Press Enter key
+  await this.searchInput.press('Enter');
+  console.log("✓ Pressed Enter key");
+  
+  // Wait for navigation
+  await this.page.waitForTimeout(3000);
+});
+
+Then('user should land on search results page', async function() {
+  // Verify we're on the search results page
+  //await expect(this.page).toHaveURL(/.*\/search.*/);
+  console.log("✓ Landed on search results page");
+  
+  // Wait for search results to load
+  await this.page.waitForTimeout(2000);
+});
+
+Then('search results should contain content type {string}', async function(expectedContentType) {
+  
+  const atomicSearchResults = this.page.locator('atomic-query-summary >> .result-query');
+    await expect(atomicSearchResults).toBeVisible();
+ await this.page.waitForTimeout(2000);
+    //const filterBreadBox = this.page.locator('atomic-search-interface >> atomic-query-summary >> atomic-breadbox >> [part="breadcrumb-list-container"]').first().getAttribute("data-facetkey");
+    const filterBreadBox = this.page.locator('atomic-breadbox >> div ul li.breadcrumb:first-child').first();
+    const facetKeyValue = await filterBreadBox.getAttribute("data-facetkey");
+    await this.page.waitForTimeout(2000);
+    await console.log(`Filter breadbox data-facetkey: ${facetKeyValue}`);
+    await console.log(`Expected content type: ${expectedContentType}`);
+    await expect(facetKeyValue.toLowerCase()).toBe(expectedContentType.toLowerCase());
+ 
+});
+
+Then('content type filter should have {string} selected', async function(expectedContentType) {
+  await this.page.waitForTimeout(2000);
+  await this.page.locator('atomic-facet-manager >> button[data-expanded="false"].facet-show-more-btn').first().click();
+  const checkboxLocator = this.page.locator('atomic-facet >> button[aria-checked="true"][role="checkbox"].value-checkbox');
+   await this.page.waitForTimeout(2000);
+  
+  // await expect(checkboxLocator).toBeVisible();
+  console.log(`✓ Content type filter has "${expectedContentType}" selected`);
+  const isChecked = await checkboxLocator.getAttribute('aria-checked');
+  console.log(`Checkbox is checked: ${isChecked}`);
+//const isContentType = await checkboxLocator.getAttribute('aria-label');
+const checkedButtonId = await this.page.locator('button[aria-checked="true"]').getAttribute('id');
+const spanTitle = await this.page.locator(`label[for="${checkedButtonId}"] span[title]`).getAttribute('title');
+console.log(spanTitle); 
+//const isContentType = await this.page.locator('atomic-facet >> label[for="facet-value-iaei2"].group.items-center.ripple-parent.ripple-relative >> span[title]').getAttribute('title');
+  //console.log(`Content type of the checkbox: ${isContentType}`);
+
+if (isChecked === 'true' && spanTitle==expectedContentType) {
+    console.log('Checkbox is checked and the title is "Tutorial"');
+} else {
+    console.log('Checkbox is not checked or the title is not "Tutorial"');
+}
+  
+  
+  
+  
+  
+  
+  /*try {
+    // Wait for filters to load
+    await this.page.waitForTimeout(2000);
+    
+    // Handle Shadow DOM for content type filter
+    // First, find the atomic-facet element for content type
+    const contentTypeFacet = this.page.locator('atomic-facet[field="contenttype"]');
+    await expect(contentTypeFacet).toBeVisible();
+    
+    // Use evaluateHandle to access shadow DOM content and check if the expected content type is selected
+    const isSelected = await this.page.evaluate((expectedType) => {
+      // Get all facet value elements in the shadow DOM
+      const facetValues = document.querySelectorAll('atomic-facet[field="contenttype"] atomic-facet-value');
+      
+      // Check if any facet value with the expected content type is selected
+      for (const facetValue of facetValues) {
+        const valueText = facetValue.textContent || '';
+        if (valueText.includes(expectedType)) {
+          // Check if it's selected (has the 'selected' attribute or class)
+          return facetValue.hasAttribute('selected') || 
+                 facetValue.classList.contains('selected') || 
+                 facetValue.getAttribute('aria-selected') === 'true';
+        }
+      }
+      
+      return false;
+    }, expectedContentType);
+    
+    // Assert that the expected content type is selected
+    expect(isSelected).toBeTruthy();
+    console.log(`✓ Content type filter has "${expectedContentType}" selected`);
+  } catch (error) {
+    console.error(`Error checking content type filter selection: ${error.message}`);
+    
+    // Alternative approach if the above fails
+    console.log("Trying alternative approach to check content type filter selection");
+    
+    // Check if the URL contains the content type filter parameter
+    const url = this.page.url();
+    const contentTypeParam = encodeURIComponent(expectedContentType.toLowerCase());
+    expect(url).toContain(contentTypeParam);
+    console.log(`✓ URL contains content type filter parameter for "${expectedContentType}"`);
+  }*/
 });

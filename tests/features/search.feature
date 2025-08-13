@@ -37,5 +37,39 @@ Scenario: Verify pagination and results per page functionality
     Then number of results displayed should be "25"
     When user navigates to page "2"
     Then page "2" should be active in pagination
-  
-  
+
+@search-picker @skip-login
+Scenario Outline: Verify search picker navigation functionality
+    Given user navigates to Experience League homepage
+    When user clicks on search picker
+    Then dropdown should open with list of values
+    When user navigates to "<page_name>"
+    Then search picker should show "<expected_value>"
+    
+
+Examples:
+    | page_name      | expected_value  |
+    | docs/home-tutorials      | Tutorials|
+    | docs           | Documentation   |
+    | events         | Events          |
+    | certification-home | Certification |
+    | playlists      | Playlists       |
+    | perspectives   | Perspectives    |
+
+@search-picker-content-type @skip-login
+Scenario Outline: Verify search content type from different pages
+    Given user navigates to "<page_name>"
+    When user clicks on search input
+    And user enters "experience" and presses enter
+    Then user should land on search results page
+    And search results should contain content type "<expected_content_type>"
+    And content type filter should have "<expected_content_type>" selected
+
+Examples:
+    | page_name      | expected_content_type |
+    | docs/home-tutorials      | Tutorial            |
+    | docs           | Documentation       |
+    | events         | Event               |
+    | certification-home | Certification       |
+    | playlists      | Playlist            |
+    | perspectives   | Perspective         |

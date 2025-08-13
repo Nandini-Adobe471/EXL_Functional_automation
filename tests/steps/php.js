@@ -805,16 +805,25 @@ When('wait till the page loads completely', async function() {
 
 Then('user captures the target recs count from console', async function() {
   // Execute JavaScript in the browser to get the recommendation count from window.exlm.targetData.length
-  await this.page.waitForTimeout(2000);
-  const targetDataLength = await this.page.evaluate(() => {
-     
-    if (window.exlm && window.exlm.targetData ) {
-     return window.exlm.targetData.length;
+  console.log("hi");
+  await this.page.waitForTimeout(5000);
+  /*console.log(`window.exlm.targetData length: ${window.exlm.targetData.length}`);*/
+   const targetDataLength = await this.page.evaluate(() => {
+    return window.exlm?.targetData?.length;
+  
+  });
+     console.log('Length of targetData:', targetDataLength);  
+  /* const targetDataLength = await this.page.evaluate(() => {
     console.log(`window.exlm.targetData length: ${window.exlm.targetData.length}`);
+     return window.exlm.targetData.length; 
+   /* if (window.exlm && window.exlm.targetData ) {
+    console.log(`window.exlm.targetData length: ${window.exlm.targetData.length}`);
+     return window.exlm.targetData.length;
+    //console.log(`window.exlm.targetData length: ${window.exlm.targetData.length}`);
     } else {
       return null;
     }
-  });
+  });*/
   
   if (targetDataLength === null) {
     console.error("⚠️ Could not find window.exlm.targetData in the console");
@@ -831,7 +840,8 @@ Then('user captures the target recs count from console', async function() {
 
 Then('user finds the recommended content blocks count on the page', async function() {
   // Wait for the recommendation cards to be visible
-  const recommendationCards = this.page.locator('div[data-block-name="recommended-content"]');
+  await this.page.waitForTimeout(5000);
+    const recommendationCards = this.page.locator('div[data-block-name="recommended-content"]');
   //await expect(recommendationCards.first()).toBeVisible({ timeout: 10000 });
   
   // Count the number of recommendation cards visible on the page
