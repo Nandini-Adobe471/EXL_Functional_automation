@@ -368,7 +368,7 @@ Then('page should load within acceptable time threshold', async function() {
   try {
     // Navigate to the page again to measure load time
     const startTime = Date.now();
-    await this.page.goto('https://experienceleague-stage.adobe.com/en/home');
+    await this.page.goto('https://experienceleague.adobe.com/en/home');
     
     // Wait for any content to be visible - try multiple selectors
     const contentSelectors = [
@@ -460,7 +460,7 @@ When('the home page loads completely', async function() {
   await this.page.waitForTimeout(5000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/home/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/home/);
 });
 
 Then('user checks if Recently viewed block is available', async function() {
@@ -914,7 +914,7 @@ await this.page.waitForTimeout(3000);
   // If we couldn't find the link, try direct navigation
   if (!clicked) {
     console.log("Could not find customize learning link. Trying direct navigation...");
-    await this.page.goto('https://experienceleague-stage.adobe.com/en/customize');
+    await this.page.goto('https://experienceleague.adobe.com/en/customize');
     await this.page.waitForTimeout(3000);
   }
   */
@@ -1038,7 +1038,7 @@ When('user navigates back to home page', async function() {
   // If we couldn't find a specific home link, navigate directly
   if (!homeClicked) {
     console.log("Navigating directly to home page");
-    await this.page.goto('https://experienceleague-stage.adobe.com/en/');
+    await this.page.goto('https://experienceleague.adobe.com/en/');
     await this.page.waitForTimeout(3000);
   }*/
   

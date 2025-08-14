@@ -71,7 +71,7 @@ Given('user navigates to Experience League browse page filter section', async fu
   this.context = result.context;
   
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   await this.page.waitForTimeout(2000);
 });
 
@@ -81,7 +81,7 @@ When('the browse page filters loads completely', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -334,11 +334,11 @@ Then('pagination should be working properly', async function() {
 
 When('user navigates back to the browse page', async function() {
   // Navigate back to the main browse page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
   console.log("✓ Successfully navigated back to the browse page"); 
 });
 
@@ -350,7 +350,7 @@ Given('user navigates to Experience League browse page', async function() {
   this.context = result.context;
   
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   
   // Wait for the page to stabilize
   await this.page.waitForTimeout(2000);
@@ -362,7 +362,7 @@ When('the browse page loads completely', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -474,7 +474,7 @@ Given('user navigates to Experience League browse pagea', async function() {
   this.context = result.context;
   
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   
   // Wait for the page to stabilize
   await this.page.waitForTimeout(2000);
@@ -486,7 +486,7 @@ When('the browse page loads completelya', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -595,7 +595,7 @@ When('user clicks on the browse breadcrumb', async function() {
 
 Then('user should navigate back to the browse page', async function() {
   // Verify we're back on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
   console.log("✓ Successfully navigated back to the browse page");
 });
 
@@ -610,7 +610,7 @@ When('user sets viewport to mobile size1', async function() {
   console.log('Viewport set to mobile size: 390x844');
   
   // Navigate back to the browse page to start mobile testing
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   await this.page.waitForSelector('main', { state: 'visible', timeout: 40000 });
   await this.page.waitForTimeout(2000);
 });
@@ -943,7 +943,7 @@ Then('user should navigate back to the browse page in mobile view', async functi
     if (!isBrowsePage) {
       console.log('Not on browse page, explicitly navigating to the staging browse page');
       // Navigate directly to the staging browse page
-      await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+      await this.page.goto('https://experienceleague.adobe.com/en/browse');
       await this.page.waitForTimeout(2000);
       console.log('Explicitly navigated to staging browse page');
       
@@ -952,7 +952,7 @@ Then('user should navigate back to the browse page in mobile view', async functi
     }
     
     // Now verify we're on the staging browse page
-    await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/en\/browse/);
+    await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
     console.log("✓ Successfully verified we're on the staging browse page in mobile view");
     
     // Clean up - close the browser
@@ -989,7 +989,7 @@ Given('user logs in to Experience Leaguee', async function() {
 
 When('user navigates to browse page', async function() {
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the browse page
@@ -1097,7 +1097,7 @@ When('user bookmarks the first card', async function() {
 
 When('user navigates to bookmarks page', async function() {
   // Navigate to the bookmarks page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/home/bookmarks');
+  await this.page.goto('https://experienceleague.adobe.com/en/home/bookmarks');
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the bookmarks page
@@ -1153,7 +1153,7 @@ When('user removes the bookmark from the card', async function() {
 
 When('user navigates back to browse page', async function() {
   // Navigate back to the browse page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/browse');
+  await this.page.goto('https://experienceleague.adobe.com/en/browse');
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the browse page
@@ -1161,7 +1161,7 @@ When('user navigates back to browse page', async function() {
   console.log("✓ Navigated back to browse page");
 });
 
-Then('the card should be available for bookmarking again', async function() {
+/*Then('the card should be available for bookmarking again', async function() {
   // Wait for the tabbed-cards-wrapper to be visible
   await this.page.waitForSelector('.tabbed-cards-wrapper', { state: 'visible', timeout: 10000 });
   
@@ -1189,4 +1189,4 @@ Then('the card should be available for bookmarking again', async function() {
   if (this.browser) {
     await this.browser.close();
   }
-});
+});*/

@@ -18,13 +18,13 @@ Given('user logs in and lands on the home page for search validation', async fun
   await performLogin(this);
    await this.page.waitForTimeout(5000);
   // Navigate to the home page
-  //await this.page.goto('https://experienceleague-stage.adobe.com/');
+  //await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   //await this.page.waitForTimeout(3000);
   
   // Verify we're on the home page
- // await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+ // await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page for search validation");
 });
 
@@ -161,13 +161,13 @@ Then('result header contains columns {string}', async function(expectedColumns) 
 When('user navigates back to home page for search testing', async function() {
   // Navigate back to the home page
   
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to load
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the home page
- // await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+ // await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Navigated back to home page for search testing");
 });
 
@@ -238,13 +238,13 @@ Given('user logs in and lands on the home page for mobile search validation', as
   await performLogin(this);
   
   // Navigate to the home page
- // await this.page.goto('https://experienceleague-stage.adobe.com/');
+ // await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com(\/en\/home.*)?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com(\/en\/home.*)?$/);
   console.log("✓ Successfully logged in and landed on the home page for mobile search validation");
 });
 
@@ -277,13 +277,13 @@ Then('user should land on search result page in mobile view', async function() {
 
 When('user navigates back to home page in mobile view', async function() {
   // Navigate back to the home page
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to load
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com(\/en\/home.*)?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com(\/en\/home.*)?$/);
   console.log("✓ Navigated back to home page in mobile view");
 });
 
@@ -354,13 +354,17 @@ Given('user logs in and navigates to search page', async function() {
   
   // Use the common login function to log in
   await performLogin(this);
+//<<<<<<< Updated upstream
    await this.page.waitForTimeout(3000);
   
+//=======
+  await this.page.waitForTimeout(3000);
+//>>>>>> Stashed changes
   // Navigate directly to the search page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/search');
+  await this.page.goto('https://experienceleague.adobe.com/en/search');
   
   // Wait for the page to fully load
-  await this.page.waitForTimeout(3000);
+  await this.page.waitForTimeout(2000);
   
   // Verify we're on the search page
   await expect(this.page).toHaveURL(/.*\/search.*/);

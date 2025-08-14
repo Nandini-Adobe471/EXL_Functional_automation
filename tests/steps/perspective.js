@@ -16,7 +16,7 @@ Given('user logs in and lands on PHP page', async function() {
 
 When('user navigates to the perspective page', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
+  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -162,19 +162,19 @@ Given('user logs in and lands on the home page for author validation', async fun
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page for author validation");
 });
 
 When('user navigates to the perspective page for author validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
+  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -442,7 +442,7 @@ When('user navigates to author bio page', async function() {
       // Append domain to the URL if it's a relative path
       const authorBioUrl = authorBioUrlPath.startsWith('http') 
         ? authorBioUrlPath 
-        : `https://experienceleague-stage.adobe.com${authorBioUrlPath.startsWith('/') ? '' : '/'}${authorBioUrlPath}`;
+        : `https://experienceleague.adobe.com${authorBioUrlPath.startsWith('/') ? '' : '/'}${authorBioUrlPath}`;
       
       console.log(`Complete author bio URL: ${authorBioUrl}`);
       
@@ -487,7 +487,7 @@ When('user navigates to author bio page', async function() {
           console.log(`Found author link href: ${href}`);
           
           // Navigate to the author bio page
-          const fullUrl = href.startsWith('http') ? href : `https://experienceleague-stage.adobe.com${href}`;
+          const fullUrl = href.startsWith('http') ? href : `https://experienceleague.adobe.com${href}`;
           await this.page.goto(fullUrl);
           await this.page.waitForTimeout(2000);
           
@@ -518,7 +518,7 @@ When('user navigates to author bio page', async function() {
       const cleanAuthorName = this.authorName.toLowerCase().replace(/[^a-z0-9]/g, '-');
       
       // Construct a potential author bio URL
-      const constructedUrl = `https://experienceleague-stage.adobe.com/en/perspectives/authors/${cleanAuthorName}`;
+      const constructedUrl = `https://experienceleague.adobe.com/en/perspectives/authors/${cleanAuthorName}`;
       console.log(`Attempting to navigate to constructed URL: ${constructedUrl}`);
       
       // Navigate to the constructed URL
@@ -646,19 +646,19 @@ Given('user logs in and lands on the home page', async function() {
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page");
 });
 
 When('user navigates to the perspectives page for breadcrumb validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
+  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -1028,19 +1028,19 @@ Given('user logs in and lands on the home page for mini TOC validation', async f
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page for mini TOC validation");
 });
 
 When('user navigates to the perspective page for mini TOC validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
+  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -1298,7 +1298,7 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
       console.log(`Navigating back to perspectives page to try block ${this.currentBlockIndex + 1} of ${this.authorableCardBlocks.length}`);
       
       // Navigate back to the perspectives page
-      await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
+      await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
       await this.page.waitForTimeout(4000);
       await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 30000 });
       
@@ -1468,21 +1468,26 @@ Given('user logs in and lands on the home page for tag validation', async functi
   
   // Use the common login function to log in
   await performLogin(this);
+
   await this.page.waitForTimeout(4000);
+//=======
+   await this.page.waitForTimeout(4000);
+////>>>>>> Stashed changes
   // Navigate to the home page
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the home page
   //await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+ // await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page for tag validation");
 });
 
 When('user navigates to the perspective page for tag validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague-stage.adobe.com/en/perspectives');
+  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);

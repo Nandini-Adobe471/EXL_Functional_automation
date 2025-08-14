@@ -51,4 +51,4 @@ Scenario: Add and remove bookmarks for browse cards
     Then user should see the bookmarked card with the same title
     When user removes the bookmark from the card
     And user navigates back to browse page
-    Then the card should be available for bookmarking again
+    

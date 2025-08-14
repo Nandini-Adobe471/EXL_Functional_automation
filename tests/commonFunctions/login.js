@@ -8,7 +8,7 @@ const { launchBrowser } = require('./launchbrowser');
  * @param {string} password - The password to use for login
  * @returns {Object} - The browser, context, and page objects
  */
-async function performLogin(world, email = 'gsnair+US+Team+VISA+hello+1@adobetest.com', password = 'Bap@d0be') {
+async function performLogin(world, email = 'EXL_Automation@adobetest.com', password = 'Automation@123') {
   // Launch browser and navigate to the site
   const result = await launchBrowser();
   const { page, browser, context } = result;
@@ -73,7 +73,7 @@ async function performLogout(page) {
 
   try {
     // Navigate to the home page
-    await page.goto('https://experienceleague-stage.adobe.com/en');
+    await page.goto('https://experienceleague.adobe.com/en');
     await page.waitForTimeout(2000);
     
     // Click on user profile icon to open menu

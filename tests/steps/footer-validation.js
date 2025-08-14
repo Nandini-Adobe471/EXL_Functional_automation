@@ -16,13 +16,13 @@ Given('user logs in and lands on the home page for footer validation', async fun
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page for footer validation");
 });
 
@@ -32,7 +32,7 @@ When('user navigates to the footer fragment page', async function() {
     
     // Navigate to the footer fragment page
     // Using the standard pattern for Adobe Experience League fragment URLs
-    await this.page.goto('https://experienceleague-stage.adobe.com/fragments/footer');
+    await this.page.goto('https://experienceleague.adobe.com/fragments/footer');
     
     // Wait for the page to load completely
     await this.page.waitForTimeout(2000);
@@ -299,7 +299,7 @@ Then('user should see footer copyright section', async function() {
 
 When('user navigates to the main site', async function() {
   // Navigate to the main site
-  await this.page.goto('https://experienceleague-stage.adobe.com/en');
+  await this.page.goto('https://experienceleague.adobe.com/en');
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(2000);

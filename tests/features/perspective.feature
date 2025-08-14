@@ -41,7 +41,7 @@ Scenario: Validate mini TOC functionality on perspective article pages
     And if mini TOC is visible verify clicking on TOC items scrolls to respective sections
     And if mini TOC is not visible try another card from next authorable card block
 
-    @card-tag
+    @card-tag @skip-login
 Scenario: Validate card tag matches article tag products on redirected page
     Given user logs in and lands on the home page for tag validation
     When user navigates to the perspective page for tag validation

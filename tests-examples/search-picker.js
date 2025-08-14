@@ -12,13 +12,13 @@ Given('user navigates to Experience League homepage', async function() {
   this.context = result.context;
   
   // Navigate to the Experience League homepage
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
+  await this.page.goto('https://experienceleague.adobe.com/');
   
   // Wait for the page to fully load
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the homepage
-  await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully navigated to Experience League homepage");
 });
 
@@ -60,7 +60,7 @@ When('user navigates to {string}', async function(pageName) {
   }
   
   // Construct the URL
-  const url = `https://experienceleague-stage.adobe.com/en/${pageName}`;
+  const url = `https://experienceleague.adobe.com/en/${pageName}`;
   console.log(`✓ Navigating directly to: ${url}`);
   
   // Navigate to the URL
@@ -70,7 +70,7 @@ When('user navigates to {string}', async function(pageName) {
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the correct page
-  await expect(this.page).toHaveURL(new RegExp(`.*experienceleague-stage.adobe.com/en/${pageName}.*`));
+  await expect(this.page).toHaveURL(new RegExp(`.*experienceleague.adobe.com/en/${pageName}.*`));
   console.log(`✓ Successfully navigated to ${pageName} page`);
 });
 
