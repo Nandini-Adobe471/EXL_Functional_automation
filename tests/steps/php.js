@@ -264,7 +264,7 @@ When('user clicks on each main navigation link', async function(dataTable) {
     } catch (error) {
       console.log(`Error clicking on ${linkName} link: ${error.message}`);
       // Add a fallback URL for testing
-      const fallbackUrl = `https://experienceleague.adobe.com/en/${linkName.toLowerCase()}`;
+      const fallbackUrl = `${ENV.URL}/${linkName.toLowerCase()}`;
       this.navigationResults.push({ name: linkName, url: fallbackUrl });
     }
   }
@@ -368,7 +368,7 @@ Then('page should load within acceptable time threshold', async function() {
   try {
     // Navigate to the page again to measure load time
     const startTime = Date.now();
-    await this.page.goto('https://experienceleague.adobe.com/en/home');
+    await this.page.goto(`${ENV.URL}/home`);
     
     // Wait for any content to be visible - try multiple selectors
     const contentSelectors = [
@@ -914,7 +914,7 @@ await this.page.waitForTimeout(3000);
   // If we couldn't find the link, try direct navigation
   if (!clicked) {
     console.log("Could not find customize learning link. Trying direct navigation...");
-    await this.page.goto('https://experienceleague.adobe.com/en/customize');
+    await this.page.goto(`${ENV.URL}/customize`);
     await this.page.waitForTimeout(3000);
   }
   */
@@ -1038,7 +1038,7 @@ When('user navigates back to home page', async function() {
   // If we couldn't find a specific home link, navigate directly
   if (!homeClicked) {
     console.log("Navigating directly to home page");
-    await this.page.goto('https://experienceleague.adobe.com/en/');
+    await this.page.goto(`${ENV.URL}`);
     await this.page.waitForTimeout(3000);
   }*/
   

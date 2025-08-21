@@ -2,6 +2,7 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
 const { launchBrowser } = require('../commonFunctions/launchbrowser');
+const ENV = require('../../config.js');
 // Import common mobile steps
 require('./common-mobile-steps');
 
@@ -71,7 +72,7 @@ Given('user navigates to Experience League browse page filter section', async fu
   this.context = result.context;
   
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+  await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForTimeout(2000);
 });
 
@@ -334,7 +335,7 @@ Then('pagination should be working properly', async function() {
 
 When('user navigates back to the browse page', async function() {
   // Navigate back to the main browse page
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+  await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
@@ -350,7 +351,7 @@ Given('user navigates to Experience League browse page', async function() {
   this.context = result.context;
   
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+  await this.page.goto(`${ENV.URL}/browse`);
   
   // Wait for the page to stabilize
   await this.page.waitForTimeout(2000);
@@ -474,7 +475,7 @@ Given('user navigates to Experience League browse pagea', async function() {
   this.context = result.context;
   
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+ await this.page.goto(`${ENV.URL}/browse`);
   
   // Wait for the page to stabilize
   await this.page.waitForTimeout(2000);
@@ -610,7 +611,7 @@ When('user sets viewport to mobile size1', async function() {
   console.log('Viewport set to mobile size: 390x844');
   
   // Navigate back to the browse page to start mobile testing
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+ await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForSelector('main', { state: 'visible', timeout: 40000 });
   await this.page.waitForTimeout(2000);
 });
@@ -943,7 +944,7 @@ Then('user should navigate back to the browse page in mobile view', async functi
     if (!isBrowsePage) {
       console.log('Not on browse page, explicitly navigating to the staging browse page');
       // Navigate directly to the staging browse page
-      await this.page.goto('https://experienceleague.adobe.com/en/browse');
+     await this.page.goto(`${ENV.URL}/browse`);
       await this.page.waitForTimeout(2000);
       console.log('Explicitly navigated to staging browse page');
       
@@ -989,7 +990,7 @@ Given('user logs in to Experience Leaguee', async function() {
 
 When('user navigates to browse page', async function() {
   // Navigate to the browse page
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+ await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the browse page
@@ -1097,7 +1098,7 @@ When('user bookmarks the first card', async function() {
 
 When('user navigates to bookmarks page', async function() {
   // Navigate to the bookmarks page
-  await this.page.goto('https://experienceleague.adobe.com/en/home/bookmarks');
+  await this.page.goto(`${ENV.URL}/home/bookmarks`);
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the bookmarks page
@@ -1153,7 +1154,7 @@ When('user removes the bookmark from the card', async function() {
 
 When('user navigates back to browse page', async function() {
   // Navigate back to the browse page
-  await this.page.goto('https://experienceleague.adobe.com/en/browse');
+  await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the browse page

@@ -2,6 +2,7 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
 const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
+const ENV = require('../../config.js');
 // Import common mobile steps
 require('./common-mobile-steps');
 
@@ -16,7 +17,7 @@ Given('user logs in and lands on PHP page', async function() {
 
 When('user navigates to the perspective page', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
+  await this.page.goto(`${ENV.URL}/perspectives`);
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -174,7 +175,7 @@ Given('user logs in and lands on the home page for author validation', async fun
 
 When('user navigates to the perspective page for author validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
+  await this.page.goto(`${ENV.URL}/perspectives`);
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -518,7 +519,7 @@ When('user navigates to author bio page', async function() {
       const cleanAuthorName = this.authorName.toLowerCase().replace(/[^a-z0-9]/g, '-');
       
       // Construct a potential author bio URL
-      const constructedUrl = `https://experienceleague.adobe.com/en/perspectives/authors/${cleanAuthorName}`;
+      const constructedUrl = `${ENV.URL}/perspectives/authors/${cleanAuthorName}`;
       console.log(`Attempting to navigate to constructed URL: ${constructedUrl}`);
       
       // Navigate to the constructed URL
@@ -658,7 +659,7 @@ Given('user logs in and lands on the home page', async function() {
 
 When('user navigates to the perspectives page for breadcrumb validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
+  await this.page.goto(`${ENV.URL}/perspectives`);
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -1040,7 +1041,7 @@ Given('user logs in and lands on the home page for mini TOC validation', async f
 
 When('user navigates to the perspective page for mini TOC validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
+  await this.page.goto(`${ENV.URL}/perspectives`);
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);
@@ -1298,7 +1299,7 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
       console.log(`Navigating back to perspectives page to try block ${this.currentBlockIndex + 1} of ${this.authorableCardBlocks.length}`);
       
       // Navigate back to the perspectives page
-      await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
+      await this.page.goto(`${ENV.URL}/perspectives`);
       await this.page.waitForTimeout(4000);
       await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 30000 });
       
@@ -1487,7 +1488,7 @@ Given('user logs in and lands on the home page for tag validation', async functi
 
 When('user navigates to the perspective page for tag validation', async function() {
   // Navigate directly to the perspectives page
-  await this.page.goto('https://experienceleague.adobe.com/en/perspectives');
+  await this.page.goto(`${ENV.URL}/perspectives`);
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(4000);

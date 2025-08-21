@@ -2,6 +2,7 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
 const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
+const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
 
@@ -299,7 +300,7 @@ Then('user should see footer copyright section', async function() {
 
 When('user navigates to the main site', async function() {
   // Navigate to the main site
-  await this.page.goto('https://experienceleague.adobe.com/en');
+  await this.page.goto(ENV.URL);
   
   // Wait for the page to load completely
   await this.page.waitForTimeout(2000);

@@ -361,7 +361,7 @@ Given('user logs in and navigates to search page', async function() {
   await this.page.waitForTimeout(3000);
 //>>>>>> Stashed changes
   // Navigate directly to the search page
-  await this.page.goto('https://experienceleague.adobe.com/en/search');
+  await this.page.goto(`${ENV.URL}/search`);
   
   // Wait for the page to fully load
   await this.page.waitForTimeout(2000);
@@ -697,7 +697,7 @@ Given('the user navigates to the search results page for only facet test', async
   this.context = result.context;
   
   // Navigate directly to the search page
-  await this.page.goto('https://experienceleague.adobe.com/en/search');
+  await this.page.goto(`${ENV.URL}/search`);
   
   // Wait for the page to fully load
   await this.page.waitForTimeout(3000);
@@ -884,7 +884,7 @@ Given('the user navigates to the search results page', async function() {
   this.context = result.context;
   
   // Navigate directly to the search page
-  await this.page.goto('https://experienceleague.adobe.com/en/search');
+  await this.page.goto(`${ENV.URL}/search`);
   
   // Wait for the page to fully load
   await this.page.waitForTimeout(3000);
@@ -1173,7 +1173,7 @@ Given('user navigates to search page', async function() {
   this.context = result.context;
   
   // Navigate directly to the search page
-  await this.page.goto('https://experienceleague.adobe.com/en/search');
+  await this.page.goto(`${ENV.URL}/search`);
   
   // Wait for the page to fully load
   await this.page.waitForTimeout(3000);
@@ -1204,7 +1204,7 @@ Given('user navigates to search page in mobile view', async function() {
   console.log("✓ Set viewport to mobile size");
   
   // Navigate directly to the search page
-  await this.page.goto('https://experienceleague.adobe.com/en/search');
+  await this.page.goto(`${ENV.URL}/search`);
   
   // Wait for the page to fully load
   await this.page.waitForTimeout(3000);

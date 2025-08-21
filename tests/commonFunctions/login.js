@@ -1,5 +1,6 @@
 const { chromium } = require('@playwright/test');
 const { launchBrowser } = require('./launchbrowser');
+const ENV = require('../../config.js');
 
 /**
  * Performs login to Adobe Experience League
@@ -8,7 +9,7 @@ const { launchBrowser } = require('./launchbrowser');
  * @param {string} password - The password to use for login
  * @returns {Object} - The browser, context, and page objects
  */
-async function performLogin(world, email = 'EXL_Automation@adobetest.com', password = 'Automation@123') {
+async function performLogin(world, email = ENV.EMAIL, password = ENV.PASSWORD) {
   // Launch browser and navigate to the site
   const result = await launchBrowser();
   const { page, browser, context } = result;
@@ -73,7 +74,7 @@ async function performLogout(page) {
 
   try {
     // Navigate to the home page
-    await page.goto('https://experienceleague.adobe.com/en');
+    await page.goto(ENV.URL);
     await page.waitForTimeout(2000);
     
     // Click on user profile icon to open menu
