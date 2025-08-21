@@ -73,3 +73,89 @@ Examples:
     | certification-home | Certification       |
     | playlists      | Playlist            |
     | perspectives   | Perspective         |
+
+@checkbox-only-facet @skip-login
+Scenario: Only button selects only that child facet
+    Given the user navigates to the search results page for only facet test
+    When the user checks the "Experience Manager" parent checkbox for only facet test
+    Then all child checkboxes under "Experience Manager" should be checked for only facet test
+    When the user hovers over a child facet
+    Then the only button should be visible
+    When the user clicks the only button
+    Then only that child should be selected
+    And all other children should be unselected
+    And the parent checkbox should be unchecked
+
+@checkbox-parent-child @skip-login
+Scenario: Parent checkbox controls child checkboxes
+    Given the user navigates to the search results page
+    When the user checks the "Experience Manager" parent checkbox
+    Then all child checkboxes under "Experience Manager" should be checked
+    Then all child elements in atomic-breadbox should display with pattern "Product:Experience Manager | child name"
+    When the user unchecks the first child under "Experience Manager"
+    Then the unchecked child should not appear in the breadcrumb
+    Then the "Experience Manager" parent checkbox should be unchecked
+
+@checkbox-breadcrumb-removal @skip-login
+Scenario: Removing breadcrumb element unchecks corresponding facet
+    Given the user navigates to the search results page
+    When the user checks the "Experience Manager" parent checkbox
+    Then all child checkboxes under "Experience Manager" should be checked
+    Then all child elements in atomic-breadbox should display with pattern "Product:Experience Manager | child name"
+    When the user removes a breadcrumb element
+    Then the corresponding facet should be unchecked
+
+@checkbox-mobile-filter @skip-login
+Scenario: Filter selection in mobile view
+    Given the user navigates to the search results page
+    When the user changes viewport to mobile
+    And the user clicks on the search icon
+    And the user clicks on the mobile filter button
+    And the user checks the "Experience Manager" parent checkbox
+    Then all child checkboxes under "Experience Manager" should be checked
+
+@checkbox-mobile-parent-child @skip-login
+Scenario: Parent checkbox controls child checkboxes in mobile view
+    Given the user navigates to the search results page
+    When the user changes viewport to mobile
+    And the user clicks on the search icon
+    And the user clicks on the mobile filter button
+    And the user checks the "Experience Manager" parent checkbox
+    Then all child checkboxes under "Experience Manager" should be checked
+    Then all child elements in atomic-breadbox should display with pattern "Product:Experience Manager | child name"
+    When the user unchecks the first child under "Experience Manager"
+    Then the unchecked child should not appear in the breadcrumb
+    Then the "Experience Manager" parent checkbox should be unchecked
+
+@search-facets-alphabetical @skip-login
+Scenario: Verify search facets are alphabetically ordered
+    Given user navigates to search page
+    Then facet items in "facetRole" should be alphabetically ordered
+    And facet items in "facetContentType" should be alphabetically ordered
+    And facet items in "facetProduct" should be alphabetically ordered
+
+@search-facets-multiple @skip-login
+Scenario: Verify multiple facet selection and breadcrumb display
+    Given user navigates to search page
+    When user selects "Experience Manager" from "Product" facet
+    And user selects "Documentation" from "Content Type" facet
+    Then all selected facets should appear in the breadcrumb list
+
+@search-facets-multiple-mobile @skip-login
+Scenario: Verify multiple facet selection and breadcrumb display on mobile
+    Given user navigates to search page in mobile view
+    When user selects "Experience Manager" from "Product" facet
+    And user selects "Documentation" from "Content Type" facet
+    And user clicks on close icon
+    Then all selected facets should appear in the breadcrumb list
+    
+@search-picker-selection @skip-login
+Scenario: Verify search picker dropdown shows checkmark against selected values
+    Given user navigates to home page
+    When user clicks on search picker button
+    Then search picker dropdown should be visible
+    And a checkmark should be displayed against "All" in search picker
+    When user selects "Documentation" from search picker dropdown
+    Then a checkmark should be displayed against "Documentation" in search picker
+    When user selects "All" from search picker dropdown
+    Then a checkmark should be displayed against "All" in search picker
