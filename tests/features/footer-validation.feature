@@ -11,3 +11,9 @@ Scenario: Validate footer fragment elements across pages
     And user should see footer copyright section
     When user navigates to the main site
     Then user should see the same footer elements on main site
+
+@footer-clickable-items @skip-login
+Scenario: Verify all list items in the footer are clickable
+    Given user logs in and lands on the home page for footer validation
+    When user navigates to the main site
+    Then all list items in the footer should be clickable

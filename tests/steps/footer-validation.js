@@ -476,3 +476,102 @@ Then('user should see the same footer elements on main site', async function() {
     throw error;
   }
 });
+
+Then('all list items in the footer should be clickable', async function() {
+  try {
+    console.log('Checking if all list items in the footer are clickable');
+    
+    // Scroll to the bottom of the page to ensure the footer is in view
+    await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await this.page.waitForTimeout(1000);
+    
+    // Find all list items in the footer
+    const footerListItems = this.page.locator('footer li, .footer li, .experienceleague-footer li');
+    const itemCount = await footerListItems.count();
+    console.log(`Found ${itemCount} list items in the footer`);
+    
+    // Check each list item
+    let clickableItems = 0;
+    let nonClickableItems = 0;
+    const nonClickableDetails = [];
+    
+    for (let i = 0; i < itemCount; i++) {
+      const listItem = footerListItems.nth(i);
+      
+      // Get the text content of the list item
+      const itemText = await listItem.textContent().catch(() => 'No text');
+      const trimmedText = itemText.trim().replace(/\s+/g, ' ').substring(0, 50);
+      
+      console.log(`Checking list item ${i + 1}: "${trimmedText}..."`);
+      
+      // Check if the list item contains an anchor tag
+      const anchorInItem = listItem.locator('a');
+      const hasAnchor = await anchorInItem.count() > 0;
+      
+      if (hasAnchor) {
+        // Get the href attribute of the anchor
+        const href = await anchorInItem.getAttribute('href').catch(() => null);
+        
+        // Skip anchors without href or with javascript: or mailto: protocols
+        if (!href || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('#')) {
+          console.log(`Skipping list item with special href: ${href}`);
+          continue;
+        }
+        
+        // Check if the anchor is enabled
+        const isEnabled = await anchorInItem.isEnabled().catch(() => false);
+        
+        if (isEnabled) {
+          clickableItems++;
+          console.log(`✓ List item "${trimmedText}..." is clickable`);
+        } else {
+          nonClickableItems++;
+          nonClickableDetails.push({ text: trimmedText, issue: 'Anchor is not enabled' });
+          console.log(`✗ List item "${trimmedText}..." contains an anchor that is not enabled`);
+        }
+      } else {
+        // Check if the list item itself is clickable (has a click handler)
+        const isClickable = await listItem.evaluate(el => {
+          const style = window.getComputedStyle(el);
+          return style.cursor === 'pointer' || el.onclick != null || el.getAttribute('role') === 'button';
+        }).catch(() => false);
+        
+        if (isClickable) {
+          clickableItems++;
+          console.log(`✓ List item "${trimmedText}..." is clickable (has click handler)`);
+        } else {
+          // Some list items might be headers or separators, not meant to be clickable
+          console.log(`ℹ️ List item "${trimmedText}..." does not contain an anchor and is not clickable`);
+        }
+      }
+    }
+    
+    console.log(`✓ ${clickableItems} list items are clickable`);
+    if (nonClickableItems > 0) {
+      console.log(`✗ ${nonClickableItems} list items contain anchors that are not clickable`);
+      console.log('Non-clickable item details:');
+      nonClickableDetails.forEach((item, index) => {
+        console.log(`${index + 1}. "${item.text}": ${item.issue}`);
+      });
+    }
+    
+    // Assert that all list items with anchors are clickable
+    expect(nonClickableItems).toBe(0);
+    
+    // Clean up - close the browser
+    if (this.browser) {
+      await closeBrowser(this.browser);
+      console.log('Browser closed successfully');
+    }
+    
+  } catch (error) {
+    console.error(`Error checking footer list items: ${error.message}`);
+    
+    // Clean up even if there's an error
+    if (this.browser) {
+      await closeBrowser(this.browser);
+    }
+    
+    throw error;
+  }
+});

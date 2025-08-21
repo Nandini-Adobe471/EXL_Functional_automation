@@ -616,9 +616,10 @@ Then('search results should contain content type {string}', async function(expec
 });
 
 Then('content type filter should have {string} selected', async function(expectedContentType) {
-  await this.page.waitForTimeout(2000);
+  await this.page.waitForTimeout(2000);  
   await this.page.locator('atomic-facet-manager >> button[data-expanded="false"].facet-show-more-btn').first().click();
-  const checkboxLocator = this.page.locator('atomic-facet >> button[aria-checked="true"][role="checkbox"].value-checkbox');
+
+  const checkboxLocator = this.page.locator('atomic-facet-manager >>  atomic-facet >> button[aria-checked="true"][role="checkbox"].value-checkbox');
    await this.page.waitForTimeout(2000);
   
   // await expect(checkboxLocator).toBeVisible();
