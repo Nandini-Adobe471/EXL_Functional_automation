@@ -1,4 +1,5 @@
 const { chromium } = require('@playwright/test');
+const ENV = require('../../config.js');
 
 async function launchBrowser() {
   const browser = await chromium.launch({ headless: false });

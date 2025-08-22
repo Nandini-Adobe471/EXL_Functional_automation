@@ -1,6 +1,8 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
+const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
+const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
 let searchTerm;
