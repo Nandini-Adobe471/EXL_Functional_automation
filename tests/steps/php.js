@@ -462,7 +462,7 @@ When('the home page loads completely', async function() {
   await this.page.waitForTimeout(5000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/home/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/home/`);
 });
 
 Then('user checks if Recently viewed block is available', async function() {

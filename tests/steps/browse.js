@@ -82,7 +82,7 @@ When('the browse page filters loads completely', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse/`);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -363,7 +363,7 @@ When('the browse page loads completely', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse/`);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -487,7 +487,7 @@ When('the browse page loads completelya', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse/`);
   console.log("✓ Browse page loaded successfully");
 });
 

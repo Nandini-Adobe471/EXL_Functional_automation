@@ -245,7 +245,7 @@ Given('user logs in and lands on the home page for mobile search validation', as
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com(\/en\/home.*)?$/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/home`);
   console.log("✓ Successfully logged in and landed on the home page for mobile search validation");
 });
 
