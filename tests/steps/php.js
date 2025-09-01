@@ -462,7 +462,7 @@ When('the home page loads completely', async function() {
   await this.page.waitForTimeout(5000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(`${ENV.URL}/home/`);
+  await expect(this.page).toHaveURL(`${ENV.URL}/home#`);
 });
 
 Then('user checks if Recently viewed block is available', async function() {
@@ -934,79 +934,37 @@ When('user should see element with class user-interests', async function() {
 });
 
 Then('user should see interests separated by pipe symbol', async function() {
-  // Look for spans with pipe-separated interests
-  const interestSpanSelectors = [
-    'span:has-text("|")',
-    'div:has-text("|")',
-    '.interests-list',
-    '.interest-list',
-    '.interest-items'
-  ];
+  // Wait for the page to stabilize
+  await this.page.waitForTimeout(2000);
   
-  // Try to find interests
-  let interestsFound = false;
-  this.interests = [];
+  // Look for the user-interests div
+  const userInterestsDiv = this.page.locator('.user-interests');
+  await expect(userInterestsDiv).toBeVisible({ timeout: 5000 });
+  console.log("✓ Found user-interests div");
   
-  for (const selector of interestSpanSelectors) {
-    const interestSpan = this.page.locator(selector).first();
-    const isVisible = await interestSpan.isVisible().catch(() => false);
-    
-    if (isVisible) {
-      const text = await interestSpan.textContent();
-      console.log(`Found interests text: ${text}`);
-      
-      // Extract interests separated by pipe symbol
-      if (text.includes('|')) {
-        const interestArray = text.split('|').map(item => item.trim());
-        this.interests = interestArray.filter(item => item.length > 0);
-        interestsFound = true;
-        break;
-      }
-    }
-  }
+  // Get the second span in the user-interests div which contains the pipe-separated interests
+  // Note: The first span with class="heading" contains "My Interests: "
+  const interestsSpan = userInterestsDiv.locator('span:nth-child(2)');
+  await expect(interestsSpan).toBeVisible({ timeout: 5000 });
   
-  // If we couldn't find pipe-separated interests, look for individual interest elements
-  if (!interestsFound) {
-    const individualInterestSelectors = [
-      '.interest-item',
-      '.interest-pill',
-      '.interest-tag',
-      '.tag',
-      '.pill'
-    ];
-    
-    for (const selector of individualInterestSelectors) {
-      const count = await this.page.locator(selector).count();
-      
-      if (count > 0) {
-        console.log(`Found ${count} individual interest elements with selector: ${selector}`);
-        
-        // Extract text from each interest element
-        for (let i = 0; i < count; i++) {
-          const text = await this.page.locator(selector).nth(i).textContent();
-          if (text && text.trim()) {
-            this.interests.push(text.trim());
-          }
-        }
-        
-        if (this.interests.length > 0) {
-          interestsFound = true;
-          break;
-        }
-      }
-    }
-  }
+  // Get the text content of the interests span
+  const interestsText = await interestsSpan.textContent();
+  console.log(`Found interests text: "${interestsText}"`);
   
-  // If we still couldn't find interests, use default interests
-  if (!interestsFound || this.interests.length === 0) {
-    console.log("Could not find interests. Using default interests for testing.");
-    this.interests = [];
-    interestsFound = true;
-  }
+  // Verify that the interests text contains pipe symbols
+  expect(interestsText).toContain('|');
+  console.log("✓ Interests text contains pipe symbols");
   
-  console.log("Found interests:", this.interests);
+  // Extract interests separated by pipe symbol
+  const interestArray = interestsText.split('|').map(item => item.trim());
+  this.interests = interestArray.filter(item => item.length > 0);
+  
+  // Log the extracted interests
+  console.log("Extracted interests:", this.interests);
+  
+  // Verify that we found at least one interest
   expect(this.interests.length).toBeGreaterThan(0);
-  console.log("✓ Found interests");
+  console.log(`✓ Found ${this.interests.length} interests`);
 });
 
 When('user navigates back to home page', async function() {
@@ -1049,7 +1007,8 @@ When('user navigates back to home page', async function() {
 
 Then('interests should be visible as pills in responsive pill list', async function() {
   // Look for responsive pill list
-  const pillList = this.page.locator('.responsive-pill-list');
+  const pillList = this.page.locator('.responsive-pill-list ul');
+  await this.page.waitForTimeout(4000);
   const isPillListVisible = await pillList.isVisible().catch(() => false);
   
   if (!isPillListVisible) {
@@ -1079,39 +1038,56 @@ Then('interests should be visible as pills in responsive pill list', async funct
   
   console.log("All pill texts found:", allPillTexts);
   
-  // Now check each interest with case-insensitive comparison
+  // Helper function to normalize text for exact comparison
+  const normalizeText = (text) => {
+    return text.toLowerCase().trim();
+  };
+  
+  // Now check each interest with exact matching
   for (const interest of this.interests) {
     let found = false;
+    const normalizedInterest = normalizeText(interest);
     
-    // Try exact match first
-    //*const interestPill = this.page.locator(`text="${interest}"`).first();
-    // const isVisible = await interestPill.isVisible().catch(() => false);
-    
-   
-      // Try case-insensitive match with all pills
-      const interestLower = interest.toLowerCase();
-      for (const pillText of allPillTexts) {
-        if (pillText.toLowerCase() === interestLower || 
-            pillText.toLowerCase().includes(interestLower) || 
-            interestLower.includes(pillText.toLowerCase())) {
-          console.log(`Found interest pill with fuzzy match: ${interest} as ${pillText}`);
-          foundInterests.push(interest);
-          found = true;
-          break;
-        
-      }
+    // Try to find an exact match in the pill texts
+    for (const pillText of allPillTexts) {
+      const normalizedPillText = normalizeText(pillText);
       
-      if (!found) {
-        console.log(`Interest pill not found: ${interest}`);
-        notFoundInterests.push(interest);
+      // Only consider exact matches
+      if (normalizedPillText === normalizedInterest) {
+        console.log(`Found exact interest pill match: "${interest}" as "${pillText}"`);
+        foundInterests.push(interest);
+        found = true;
+        break;
       }
+    }
+    
+    if (!found) {
+      console.log(`Interest pill not found: "${interest}"`);
+      notFoundInterests.push(interest);
     }
   }
   
   // Log summary of found and not found interests
   console.log(`Found ${foundInterests.length} out of ${this.interests.length} interests as pills`);
   console.log("Found interests:", foundInterests);
+  console.log("Not found interests:", notFoundInterests);
   
+  // If we found at least some interests, consider the test passed
+  if (foundInterests.length > 0) {
+    console.log(`✓ Found ${foundInterests.length} interests as pills`);
+    
+    // If some interests were not found, log a warning but don't fail the test
+    if (notFoundInterests.length > 0) {
+      console.log(`⚠️ Note: ${notFoundInterests.length} interests were not found as pills`);
+    }
+  } else {
+    // If no interests were found but we have pills, the test might still be valid
+    if (allPillTexts.length > 0) {
+      console.log(`⚠️ No exact interest matches found, but ${allPillTexts.length} pills are present`);
+    } else {
+      console.log("❌ No interest pills found on the page");
+    }
+  }
   
   // Assert that at least some interests were found
   expect(foundInterests.length).toBeGreaterThan(0);
@@ -1122,4 +1098,3 @@ Then('interests should be visible as pills in responsive pill list', async funct
     await this.browser.close();
   }
 });
-

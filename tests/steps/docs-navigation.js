@@ -101,16 +101,16 @@ Then('breadcrumb should be displayed with the clicked item name', async function
 
 Then('all h2 headings should be displayed in mini-toc', async function() {
   // Find the mini-toc wrapper
-  const miniTocWrapper = this.page.locator('.mini-toc-wrapper');
+  const miniTocWrapper = this.page.locator('.mini-toc-wrapper .scrollable-div');
   
   // Verify the mini-toc is visible
   await expect(miniTocWrapper).toBeVisible();
   console.log("✓ Mini-TOC wrapper is displayed");
   
-  // Get all h2 headings on the page
-  const h2Headings = this.page.locator('h2');
+  // Get all h2 headings within the specific container
+  const h2Headings = this.page.locator('.section.breadcrumbs-container.guides-list-container.tutorial-list-container h2');
   const h2Count = await h2Headings.count();
-  console.log(`Found ${h2Count} h2 headings on the page`);
+  console.log(`Found ${h2Count} h2 headings in the specified container`);
   
   // Get all links in the mini-toc
   const miniTocLinks = miniTocWrapper.locator('a');
@@ -218,20 +218,34 @@ Then('page should scroll to the respective section', async function() {
   
   // Find the target section element by ID
   const targetSection = this.page.locator(`#${this.targetSectionId}`);
-  //await expect(targetSection).toBeVisible();
+  await expect(targetSection).toBeVisible();
   
-  // Verify the target section is in the viewport
-  const isInViewport = await targetSection.evaluate(element => {
+  // Wait longer for scrolling to complete
+  await this.page.waitForTimeout(2000);
+  
+  // Verify the target section is at least partially in the viewport
+  // We're relaxing the check to only require the top of the element to be visible
+  const isPartiallyInViewport = await targetSection.evaluate(element => {
     const rect = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    
+    // Log viewport dimensions and element position for debugging
+    console.log(`Viewport: ${windowWidth}x${windowHeight}`);
+    console.log(`Element position: top=${rect.top}, bottom=${rect.bottom}, left=${rect.left}, right=${rect.right}`);
+    
+    // Check if at least the top of the element is in the viewport
+    // This allows for elements that are taller than the viewport
     return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      rect.top < windowHeight &&
+      rect.bottom > 0 &&
+      rect.left < windowWidth &&
+      rect.right > 0
     );
   });
   
-  expect(isInViewport).toBeTruthy();
+  console.log(`Element visibility check result: ${isPartiallyInViewport}`);
+  expect(isPartiallyInViewport).toBeTruthy();
   console.log(`✓ Page scrolled to section with ID: ${this.targetSectionId}`);
   
   // Helper function to normalize text for comparison (same as in previous step)
@@ -399,6 +413,128 @@ Then('TOC header should match first item in the cloud solutions list', async fun
   // Check if the TOC header contains the cloud solutions list item text
   expect(normalizedClickedItemText).toContain(normalizedTocHeaderText);
   console.log(`✓ Clicked item text "${normalizedClickedItemText}" contains the TOC header text "${normalizedTocHeaderText}"`);
+});
+
+Then('the last update date in article metadata should match the meta tag', async function() {
+  // Find the article metadata wrapper
+  const articleMetadataWrapper = this.page.locator('.article-metadata-wrapper .article-metadata');
+  await expect(articleMetadataWrapper).toBeVisible();
+  console.log("✓ Found article metadata wrapper");
+  
+  // Get the last update date from the article metadata
+  const lastUpdateText = await articleMetadataWrapper.locator('div > span:nth-child(2)').textContent();
+  console.log(`Last update text from UI: "${lastUpdateText}"`);
+  
+  // Get the last update date from the meta tag
+  const metaLastUpdate = await this.page.locator('meta[name="last-update"]').getAttribute('content');
+  console.log(`Last update from meta tag: "${metaLastUpdate}"`);
+  
+  // Parse the meta tag date (format: "Thu Mar 07 2024 00:00:00 GMT+0000 (Coordinated Universal Time)")
+  const metaDate = new Date(metaLastUpdate);
+  
+  // Format the meta date to match the UI format (e.g., "March 7, 2024")
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const formattedMetaDate = `${months[metaDate.getMonth()]} ${metaDate.getDate()}, ${metaDate.getFullYear()}`;
+  console.log(`Formatted meta date: "${formattedMetaDate}"`);
+  
+  // Compare the formatted meta date with the UI date
+  expect(lastUpdateText.trim()).toBe(formattedMetaDate);
+  console.log(`✓ Last update date in UI "${lastUpdateText.trim()}" matches meta tag date "${formattedMetaDate}"`);
+});
+
+Then('the topics in article metadata should match the feature meta tag', async function() {
+  // Find the article metadata topics section
+  const articleMetadataTopics = this.page.locator('.article-metadata-topics.block');
+  await expect(articleMetadataTopics).toBeVisible();
+  console.log("✓ Found article metadata topics section");
+  
+  // Get all topic links from the article metadata
+  const topicLinks = articleMetadataTopics.locator('ul li a');
+  const topicCount = await topicLinks.count();
+  console.log(`Found ${topicCount} topic links in the article metadata`);
+  
+  // Collect all topic texts
+  const topicTexts = [];
+  for (let i = 0; i < topicCount; i++) {
+    const topicText = await topicLinks.nth(i).textContent();
+    topicTexts.push(topicText.trim());
+  }
+  console.log(`Topics from UI: ${JSON.stringify(topicTexts)}`);
+  
+  // Get the feature meta tag content
+  const featureMetaContent = await this.page.locator('meta[name="feature"]').getAttribute('content');
+  console.log(`Feature meta tag content: "${featureMetaContent}"`);
+  
+  // The feature meta tag may contain multiple topics separated by commas
+  const featureTopics = featureMetaContent.split(',').map(topic => topic.trim());
+  console.log(`Feature topics from meta tag: ${JSON.stringify(featureTopics)}`);
+  
+  // Check if all UI topics are in the meta tag
+  for (const uiTopic of topicTexts) {
+    const matchFound = featureTopics.some(metaTopic => 
+      uiTopic.toLowerCase() === metaTopic.toLowerCase()
+    );
+    expect(matchFound).toBeTruthy();
+    console.log(`✓ UI topic "${uiTopic}" found in meta tag`);
+  }
+  
+  // Check if all meta tag topics are in the UI
+  for (const metaTopic of featureTopics) {
+    const matchFound = topicTexts.some(uiTopic => 
+      uiTopic.toLowerCase() === metaTopic.toLowerCase()
+    );
+    expect(matchFound).toBeTruthy();
+    console.log(`✓ Meta tag topic "${metaTopic}" found in UI`);
+  }
+});
+
+Then('the created for roles in article metadata should match the role meta tag', async function() {
+  // Find the article metadata created for section
+  const articleMetadataCreatedFor = this.page.locator('.article-metadata-createdby-wrapper .article-metadata-createdby');
+  await expect(articleMetadataCreatedFor).toBeVisible();
+  console.log("✓ Found article metadata created for section");
+  
+  // Get all role list items from the article metadata
+  const roleItems = articleMetadataCreatedFor.locator('ul li');
+  const roleCount = await roleItems.count();
+  console.log(`Found ${roleCount} role items in the article metadata`);
+  
+  // Collect all role texts (skip the first item which is the "CREATED FOR:" label)
+  const roleTexts = [];
+  for (let i = 0; i < roleCount; i++) {
+    const roleText = await roleItems.nth(i).textContent();
+    roleTexts.push(roleText.trim());
+  }
+  console.log(`Roles from UI: ${JSON.stringify(roleTexts)}`);
+  
+  // Get the role meta tag content
+  const roleMetaContent = await this.page.locator('meta[name="role"]').getAttribute('content');
+  console.log(`Role meta tag content: "${roleMetaContent}"`);
+  
+  // The role meta tag may contain multiple roles separated by commas
+  const metaRoles = roleMetaContent.split(',').map(role => role.trim());
+  console.log(`Roles from meta tag: ${JSON.stringify(metaRoles)}`);
+  
+  // Check if all UI roles are in the meta tag
+  for (const uiRole of roleTexts) {
+    // Skip the "CREATED FOR:" label if it's in the list
+    if (uiRole.toUpperCase() === "CREATED FOR:") continue;
+    
+    const matchFound = metaRoles.some(metaRole => 
+      uiRole.toLowerCase() === metaRole.toLowerCase()
+    );
+    expect(matchFound).toBeTruthy();
+    console.log(`✓ UI role "${uiRole}" found in meta tag`);
+  }
+  
+  // Check if all meta tag roles are in the UI
+  for (const metaRole of metaRoles) {
+    const matchFound = roleTexts.some(uiRole => 
+      uiRole.toLowerCase() === metaRole.toLowerCase()
+    );
+    expect(matchFound).toBeTruthy();
+    console.log(`✓ Meta tag role "${metaRole}" found in UI`);
+  }
 });
 
 When('user clicks on right rail toggle', async function() {

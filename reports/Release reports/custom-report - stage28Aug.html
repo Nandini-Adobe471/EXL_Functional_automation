@@ -387,7 +387,7 @@
                 },
                 {
                     "name": "Add and remove bookmarks for browse cards",
-                    "status": "passed",
+                    "status": "failed",
                     "steps": [
                         {
                             "keyword": "Given",
@@ -417,17 +417,18 @@
                         {
                             "keyword": "Then",
                             "text": "user should see the bookmarked card with the same title",
-                            "status": "passed"
+                            "status": "failed",
+                            "error_message": "locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.browse-card-content .browse-card-title-text').first()\u001b[22m\n\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\browse.js:1118:102)"
                         },
                         {
                             "keyword": "When",
                             "text": "user removes the bookmark from the card",
-                            "status": "passed"
+                            "status": "skipped"
                         },
                         {
                             "keyword": "And",
                             "text": "user navigates back to browse page",
-                            "status": "passed"
+                            "status": "skipped"
                         }
                     ]
                 }
@@ -1155,7 +1156,7 @@
                 },
                 {
                     "name": "Bookmark content on Experience League",
-                    "status": "passed",
+                    "status": "failed",
                     "steps": [
                         {
                             "keyword": "Given",
@@ -1165,12 +1166,13 @@
                         {
                             "keyword": "When",
                             "text": "user bookmarks the first content card",
-                            "status": "passed"
+                            "status": "failed",
+                            "error_message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('.browse-card-content').first()\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"to.be.visible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.browse-card-content').first()\u001b[22m\n\u001b[2m    - waiting for\" https://sso-stage.adobe.net/ims/cdsc_redirect/AVS6uF8z0jAuhGFXwK8MkyyhPLhJnuLJOW0d9y7l-2vU4jmHl7S57celTFBLaI1tQQ5KWR6inWIjg85D3-8EmlwR9yrkMtrIIa1IcjwJ37zlLbilDSMOXDmVaf8thbrKKOqm9KWzRfLmDNHoBkuEAbNv4…\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"https://experienceleague-stage.adobe.com/#old_hash=&from_ims=true?client_id=ExperienceLeague&api=authorize&scope=AdobeID,additional_info.company,additional_info.ownerOrg,avatar,openid,read_organizati…\"\u001b[22m\n\u001b[2m    - waiting for\" https://experienceleague-stage.adobe.com/en/home\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"https://experienceleague-stage.adobe.com/en/home#\"\u001b[22m\n\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\php.js:590:29)"
                         },
                         {
                             "keyword": "Then",
                             "text": "ensure bookmarked card appears in bookmarks page",
-                            "status": "passed"
+                            "status": "skipped"
                         }
                     ]
                 },

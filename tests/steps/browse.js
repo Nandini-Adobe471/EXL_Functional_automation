@@ -82,7 +82,7 @@ When('the browse page filters loads completely', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(`${ENV.URL}/browse/`);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -339,7 +339,7 @@ When('user navigates back to the browse page', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
   console.log("✓ Successfully navigated back to the browse page"); 
 });
 
@@ -363,7 +363,7 @@ When('the browse page loads completely', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(`${ENV.URL}/browse/`);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -487,7 +487,7 @@ When('the browse page loads completelya', async function() {
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the browse page
-  await expect(this.page).toHaveURL(`${ENV.URL}/browse/`);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
   console.log("✓ Browse page loaded successfully");
 });
 
@@ -596,7 +596,7 @@ When('user clicks on the browse breadcrumb', async function() {
 
 Then('user should navigate back to the browse page', async function() {
   // Verify we're back on the browse page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
   console.log("✓ Successfully navigated back to the browse page");
 });
 
@@ -953,7 +953,7 @@ Then('user should navigate back to the browse page in mobile view', async functi
     }
     
     // Now verify we're on the staging browse page
-    await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/en\/browse/);
+    await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
     console.log("✓ Successfully verified we're on the staging browse page in mobile view");
     
     // Clean up - close the browser

@@ -245,7 +245,7 @@ Given('user logs in and lands on the home page for mobile search validation', as
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(`${ENV.URL}/home`);
+  await expect(this.page).toHaveURL(`${ENV.URL}/home#`);
   console.log("✓ Successfully logged in and landed on the home page for mobile search validation");
 });
 
@@ -278,13 +278,13 @@ Then('user should land on search result page in mobile view', async function() {
 
 When('user navigates back to home page in mobile view', async function() {
   // Navigate back to the home page
-  await this.page.goto('https://experienceleague.adobe.com/');
+  await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to load
   await this.page.waitForTimeout(3000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com(\/en\/home.*)?$/);
+  await expect(this.page).toHaveURL(`${ENV.URL}/home`);
   console.log("✓ Navigated back to home page in mobile view");
 });
 

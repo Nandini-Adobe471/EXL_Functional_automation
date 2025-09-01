@@ -35,6 +35,20 @@ Scenario: Navigate to docs page and click on first guide in the guides section
     When user clicks on right rail toggle
     Then right rail should be hidden with closed
 
+@docs-navigation-metadata @skip-login
+Scenario: Validate article metadata on guide page
+    Given user navigates to the docs page
+    When user locates the first cloud solutions block
+    Then the cloud solutions list should be visible
+    When user clicks on the first item in the cloud solutions list
+    Then user should be redirected to the selected solution page
+    And breadcrumb should be displayed with the clicked item name
+    When user clicks on the first li item in the guides
+    Then user should be redirected to the guide page
+    And the last update date in article metadata should match the meta tag
+    And the topics in article metadata should match the feature meta tag
+    And the created for roles in article metadata should match the role meta tag
+
 @docs-navigation-left-rail @skip-login
 Scenario: Toggle left rail on docs page
     Given user navigates to the docs page
