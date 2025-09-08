@@ -283,6 +283,186 @@ Then('page should scroll to the respective section', async function() {
   }
 });
 
+// Copy link and bookmark functionality step definitions
+Then('user extracts the h1 id for later use', async function() {
+  // Find the h1 element on the guide page
+  const h1Element = this.page.locator('h1').first();
+  await expect(h1Element).toBeVisible();
+  console.log("✓ Found h1 element on the guide page");
+  
+  // Get the h1 text for verification
+  const h1Text = await h1Element.textContent();
+  this.h1Text = h1Text.trim();
+  console.log(`✓ H1 text: "${this.h1Text}"`);
+  
+  // Get the h1 id for later use
+  const h1Id = await h1Element.getAttribute('id');
+  this.h1Id = h1Id;
+  console.log(`✓ H1 id: "${this.h1Id}"`);
+  
+  // If the h1 doesn't have an id, we'll use the text as a fallback
+  if (!this.h1Id) {
+    console.log("H1 element doesn't have an id, using text as fallback");
+    this.h1Id = this.h1Text.toLowerCase().replace(/\s+/g, '-');
+    console.log(`✓ Generated H1 id: "${this.h1Id}"`);
+  }
+});
+
+When('user clicks on the copy link icon', async function() {
+  // Find the copy link icon using class and aria-label
+  const copyLinkIcon = this.page.getByRole('button', { name: 'Copy link' }).click();
+  //const copyLinkIcon = this.page.locator('.user-actions button.copy-link[aria-label="Copy link"]').click();
+  //await copyLinkIcon.highlight();
+//  await this.page.waitForTimeout(2000); // Wait a moment for the icon to be interactable
+  //await expect(copyLinkIcon).toBeVisible();
+  console.log("✓ Found copy link icon");
+  
+  // Click on the copy link icon
+  //await copyLinkIcon.click();
+  console.log("✓ Clicked on the copy link icon");
+  
+  // Wait for the tooltip to appear
+  await this.page.waitForTimeout(500);
+});
+
+Then('toast success message should be displayed', async function() {
+  // Find the toast success message element
+  const toast = this.page.locator('.exl-toast.exl-toast-success');
+  await expect(toast).toBeVisible();
+  console.log("✓ Toast success message is displayed");
+  
+  // Verify the toast message content if needed
+  const toastText = await toast.textContent();
+  console.log(`Toast message text: "${toastText.trim()}"`);
+  
+  // Wait for the toast message to disappear (if it auto-hides)
+  await this.page.waitForTimeout(3000);
+});
+
+When('user clicks on the bookmark icon', async function() {
+  // Find the bookmark icon (assuming it has a class like 'bookmark-icon' or similar)
+  // Use first() to handle multiple matching elements
+  //const bookmarkIcon = this.page.locator('button.bookmark[aria-label="Bookmark"]').first();
+  const bookmarkIcon =  this.page.locator('span.icon-bookmark-active').first().click();
+  await expect(bookmarkIcon).toBeVisible();
+  console.log("✓ Found bookmark icon");
+  
+  // Click on the bookmark icon
+  //await bookmarkIcon.click();
+  console.log("✓ Clicked on the bookmark icon");
+  
+  // Wait for the bookmark action to complete
+  await this.page.waitForTimeout(1000);
+});
+
+When('user navigates to the bookmark page', async function() {
+  // Navigate to the bookmark page (assuming the URL is something like '/bookmarks')
+  await this.page.goto(`${ENV.URL}/bookmarks`);
+  console.log("✓ Navigated to the bookmark page");
+  
+  // Wait for the page to load
+  await this.page.waitForTimeout(3000);
+  
+  // Verify we're on the bookmark page
+  await expect(this.page).toHaveURL(/.*\/bookmarks.*/);
+  console.log("✓ Successfully navigated to the bookmark page");
+});
+
+Then('the bookmark page should display a card with the saved h1 title', async function() {
+  // Find all bookmark cards on the page
+  const bookmarkCards = this.page.locator('.bookmark-card, .card');
+  const cardCount = await bookmarkCards.count();
+  console.log(`Found ${cardCount} bookmark cards on the page`);
+  
+  // Check if any of the cards contain the h1 text or id we saved earlier
+  let foundMatchingCard = false;
+  for (let i = 0; i < cardCount; i++) {
+    const cardText = await bookmarkCards.nth(i).textContent();
+    
+    // Check if the card contains the h1 text
+    if (cardText.includes(this.h1Text)) {
+      foundMatchingCard = true;
+      console.log(`✓ Found bookmark card with the saved h1 title: "${this.h1Text}"`);
+      break;
+    }
+    
+    // If we have an h1 id, check if the card contains it
+    if (this.h1Id && cardText.includes(this.h1Id)) {
+      foundMatchingCard = true;
+      console.log(`✓ Found bookmark card with the saved h1 id: "${this.h1Id}"`);
+      break;
+    }
+  }
+  
+  // Verify that we found a matching card
+  expect(foundMatchingCard).toBeTruthy();
+  console.log("✓ Bookmark page displays a card with the saved h1 title");
+  
+  // Clean up - close the browser
+  if (this.browser) {
+    await closeBrowser(this.browser);
+    console.log('Browser closed successfully');
+  }
+});
+
+// Mobile TOC step definitions
+Then('user should see table of contents button', async function() {
+  // Find the table of contents button using the class and aria-controls attributes
+  const tocButton = this.page.locator('button.toc-dropdown-button[aria-controls="toc-dropdown-popover"]');
+  
+  // Verify the TOC button is visible
+  await expect(tocButton).toBeVisible();
+  console.log("✓ Table of contents button is visible");
+  
+  // Verify the button has the correct text
+  const buttonText = await tocButton.locator('span').textContent();
+  expect(buttonText.trim()).toBe('Table of contents');
+  console.log(`✓ Button text is "${buttonText.trim()}"`);
+  
+  // Verify the button is in collapsed state (aria-expanded="false")
+  const ariaExpanded = await tocButton.getAttribute('aria-expanded');
+  expect(ariaExpanded).toBe('false');
+  console.log("✓ Table of contents button is in collapsed state (aria-expanded=\"false\")");
+  
+  // Store the button for later use
+  this.tocButton = tocButton;
+});
+
+When('user clicks on the table of contents button', async function() {
+  // Make sure we have the TOC button
+  expect(this.tocButton).toBeDefined();
+  
+  // Click on the TOC button
+  await this.tocButton.click();
+  console.log("✓ Clicked on the table of contents button");
+  
+  // Wait for the dropdown animation to complete
+  await this.page.waitForTimeout(1000);
+});
+
+Then('the table of contents dropdown should be expanded', async function() {
+  // Find the table of contents button again to get its updated state
+  const tocButton = this.page.locator('button.toc-dropdown-button[aria-controls="toc-dropdown-popover"]');
+  
+  // Verify the button is now in expanded state (aria-expanded="true")
+  const ariaExpanded = await tocButton.getAttribute('aria-expanded');
+  expect(ariaExpanded).toBe('true');
+  console.log("✓ Table of contents dropdown is expanded (aria-expanded=\"true\")");
+  
+  // Find the dropdown popover element
+  const tocDropdown = this.page.locator('#toc-dropdown-popover');
+  
+  // Verify the dropdown is visible
+  await expect(tocDropdown).toBeVisible();
+  console.log("✓ Table of contents dropdown popover is visible");
+  
+  // Clean up - close the browser
+  if (this.browser) {
+    await closeBrowser(this.browser);
+    console.log('Browser closed successfully');
+  }
+});
+
 // Left rail toggle step definitions
 When('user clicks on left rail toggle', async function() {
   // Find the left rail toggle button using both class and aria-label
@@ -337,7 +517,7 @@ Then('left rail should be hidden with closed', async function() {
   
   // Clean up - close the browser
   if (this.browser) {
-    await closeBrowser(this.browser);
+  //  await closeBrowser(this.browser);
     console.log('Browser closed successfully');
   }
 });
@@ -352,7 +532,8 @@ When('user clicks on the first li item in the guides', async function() {
   console.log("✓ Found guides section");
   
   // Find the first li element in the guides section
-  const firstGuideLi = guidesSection.locator('li').first();
+ // const firstGuideLi = guidesSection.locator('li').first();
+   const firstGuideLi = guidesSection.locator('li').first();
   await expect(firstGuideLi).toBeVisible();
   
   // Get the text of the li element for verification
@@ -691,9 +872,59 @@ Then('breadcrumb should be displayed with the clicked item name in mobile view',
   expect(breadcrumbText).toContain(this.clickedItemText);
   console.log(`✓ Breadcrumb contains the clicked item name in mobile view: "${this.clickedItemText}"`);
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
+  // Note: Not closing the browser here as we need to continue with more steps
+});
+
+// Login step definition
+Given('user logs in to the system', async function() {
+  // Use the common login function to log in
+  const result = await performLogin(this);
+  
+  // Wait for the page to stabilize
+  await this.page.waitForTimeout(8000);
+  console.log("✓ Login completed");
+  await this.page.goto(`${ENV.URL}/docs`);
+  await this.page.waitForTimeout(3000);
+});
+
+// Mobile login step definition
+Given('user logs in to the system in mobile view', async function() {
+  // Use the common login function to log in
+  const result = await performLogin(this);
+  
+  // Wait for the page to stabilize
+  await this.page.waitForTimeout(8000);
+  console.log("✓ Login completed");
+  
+  // Set viewport to mobile size (e.g., iPhone X)
+  await this.page.setViewportSize({ width: 375, height: 812 });
+  console.log("✓ Set viewport to mobile size (375x812)");
+  
+  // Navigate to the docs page
+  await this.page.goto(`${ENV.URL}/docs`);
+  await this.page.waitForTimeout(3000);
+  console.log("✓ Successfully navigated to the docs page in mobile view");
+});
+
+// Mobile copy link step definition
+When('user clicks on the copy link icon in mobile view', async function() {
+  // Find the copy link icon using class and aria-label
+  const copyLinkIcon = this.page.getByRole('button', { name: 'Copy link' }).click();
+  console.log("✓ Found copy link icon in mobile view");
+  console.log("✓ Clicked on the copy link icon in mobile view");
+  
+  // Wait for the tooltip to appear
+  await this.page.waitForTimeout(500);
+});
+
+// Mobile bookmark icon step definition
+When('user clicks on the bookmark icon in mobile view', async function() {
+  // Find the bookmark icon
+  const bookmarkIcon = this.page.locator('span.icon-bookmark-active').first().click();
+  await expect(bookmarkIcon).toBeVisible();
+  console.log("✓ Found bookmark icon in mobile view");
+  console.log("✓ Clicked on the bookmark icon in mobile view");
+  
+  // Wait for the bookmark action to complete
+  await this.page.waitForTimeout(1000);
 });

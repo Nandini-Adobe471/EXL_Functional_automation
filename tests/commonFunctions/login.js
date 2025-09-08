@@ -30,9 +30,10 @@ async function performLogin(world, email = ENV.EMAIL, password = ENV.PASSWORD) {
 
     // Enter email address
     await page.waitForTimeout(2000);
-    const emailInput = page.locator('input[aria-label="Email address"]');
-    await emailInput.waitFor({ state: 'visible' });
-    await page.waitForTimeout(2000);
+    const emailInput = page.locator('.EmailOrPhoneField__inputs .EmailOrPhoneField__textfield input');
+   // await emailInput.click() ;
+    //await emailInput.waitFor({ state: 'visible' });
+    await page.waitForTimeout(3000);
     await emailInput.fill(email);
     await page.waitForTimeout(2000);
 
