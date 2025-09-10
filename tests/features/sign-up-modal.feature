@@ -37,7 +37,7 @@ Scenario: Complete sign-up process validation
 
 @sign-up-modal-mobile @skip-login 
 Scenario: Complete sign-up process validation on mobile
-    When user sets viewport to mobile size
+    When user sets viewport to mobile size for signup
     When user clicks on sign in button
     Then user should see create account link
     When user clicks on create account link

@@ -9,7 +9,7 @@ Feature: Perspective Page
     And user selects author type as "Adobe"
     Then verify first card displays with "By Adobe" badge
     # Mobile view testing
-    When user sets viewport to mobile size
+    When user sets viewport to mobile size for breadcrumb validation
     And user navigates to the perspective page
     And user selects author type as "Adobe" in mobile view
     Then verify first card displays with "By Adobe" badge in mobile view

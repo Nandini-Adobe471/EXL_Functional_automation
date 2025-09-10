@@ -19,7 +19,7 @@ Scenario: Verify secondary search functionality
 @search-php-mobile @skip-login
 Scenario: Verify search functionality in mobile view
     Given user logs in and lands on the home page for mobile search validation
-    When user sets viewport to mobile size
+    When user changes viewport to mobile
     Then search icon in mobile view should be visible
     When user clicks on search icon in mobile view
     Then user should land on search result page in mobile view

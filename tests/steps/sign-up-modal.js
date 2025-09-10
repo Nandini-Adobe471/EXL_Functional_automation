@@ -5,10 +5,10 @@ const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
 
-When('user sets viewport to mobile size', async function() {
+When('user sets viewport to mobile size for signup', async function() {
   // Set viewport to mobile size (e.g., iPhone X)
   await this.page.setViewportSize({ width: 375, height: 812 });
-  console.log("✓ Set viewport to mobile size (375x812)");
+  console.log("✓ Set viewport to mobile size (375x812) for signup process");
   await this.page.waitForTimeout(1000); // Wait for any responsive adjustments
 });
 
@@ -421,13 +421,38 @@ Then('home page should load', async function() {
 });
 
 When('user clicks on customize your learning link', async function() {
-  // Find the customize your learning link
-  const customizeLearningLink = this.page.getByRole('link', { name: 'Customize your learning' });
-  await expect(customizeLearningLink).toBeVisible({ timeout: 10000 });
+  // Check if we're in mobile view
+  const viewportSize = await this.page.viewportSize();
+  const isMobileView = viewportSize.width <= 768;
   
-  // Click on the customize your learning link
-  await customizeLearningLink.click();
-  console.log("✓ Clicked on customize your learning link");
+  if (isMobileView) {
+    console.log("Mobile view detected, using mobile navigation flow");
+    
+    // First click on the profile toggle button
+    const profileToggleButton = this.page.locator('button.profile-toggle');
+    await expect(profileToggleButton).toBeVisible({ timeout: 10000 });
+    await profileToggleButton.click();
+    console.log("✓ Clicked on profile toggle button");
+    
+    // Wait for the dropdown to appear
+    await this.page.waitForTimeout(1000);
+    
+    // Then click on "My learning profile" link
+    const learningProfileLink = this.page.getByRole('link', { name: 'My learning profile' });
+    await expect(learningProfileLink).toBeVisible({ timeout: 5000 });
+    await learningProfileLink.click();
+    console.log("✓ Clicked on My learning profile link");
+  } else {
+    console.log("Desktop view detected, using direct link");
+    
+    // Find the customize your learning link
+    const customizeLearningLink = this.page.getByRole('link', { name: 'Customize your learning' });
+    await expect(customizeLearningLink).toBeVisible({ timeout: 10000 });
+    
+    // Click on the customize your learning link
+    await customizeLearningLink.click();
+    console.log("✓ Clicked on customize your learning link");
+  }
   
   // Wait for the profile settings page to load
   await this.page.waitForTimeout(3000);

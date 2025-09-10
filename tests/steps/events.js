@@ -81,7 +81,7 @@ Then('user should see upcoming events cards', async function() {
 });
 
 Then('events content should match the upcoming-events.json data', async function() {
-  // Function to convert ISO timestamp to "DD MMM | HH:MM am/pm IST" format
+  // Function to convert ISO timestamp to "MMM DD | HH:MM am/pm IST" format
   const convertTimestampToCardFormat = (timestamp) => {
     if (!timestamp) return null;
     
@@ -95,14 +95,14 @@ Then('events content should match the upcoming-events.json data', async function
         minute: 'numeric', 
         hour12: true 
       };
-      const timeString = date.toLocaleTimeString('en-US', istOptions);
+      const timeString = date.toLocaleTimeString('en-US', istOptions).toUpperCase();
       
       // Get day and month
-      const day = date.getDate();
+      const day = date.getDate().toString().padStart(2, '0'); // Pad with leading zero if needed
       const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
       const month = monthNames[date.getMonth()];
       
-      return `${day} ${month} | ${timeString} IST`;
+      return `${month} ${day} | ${timeString} IST`;
     } catch (error) {
       console.error(`Error converting timestamp ${timestamp}:`, error.message);
       return null;
@@ -157,9 +157,9 @@ Then('events content should match the upcoming-events.json data', async function
         console.log("✓ JSON data is an object, extracting events");
         
         // Try different approaches to extract events
-        if (jsonData.events && Array.isArray(jsonData.events)) {
-          jsonEvents = jsonData.events;
-          console.log(`✓ Extracted ${jsonEvents.length} events from jsonData.events`);
+        if (jsonData.eventList && jsonData.eventList.events && Array.isArray(jsonData.eventList.events)) {
+          jsonEvents = jsonData.eventList.events;
+          console.log(`✓ Extracted ${jsonEvents.length} events from jsonData.eventList.events`);
         } else if (jsonData.events && typeof jsonData.events === 'object') {
           // If events is an object but not an array, extract its values
           console.log("✓ jsonData.events is an object, extracting its values");
@@ -205,7 +205,12 @@ Then('events content should match the upcoming-events.json data', async function
         console.log(`  Start Time: ${item.startTime || 'N/A'}`);
         console.log(`  End Time: ${item.endTime || 'N/A'}`);
         console.log(`  Time: ${item.time || 'N/A'}`);
-        console.log(`  Tags: ${item.tags || item.eventTags || 'No tags'}`);
+        
+        // Convert timestamps to card format for debugging
+        if (item.time) {
+          const formattedTime = convertTimestampToCardFormat(item.time);
+          console.log(`  Formatted Time: ${formattedTime || 'N/A'}`);
+        }
         console.log('---');
       });
       
