@@ -743,10 +743,27 @@ Then('waits for additional recommendations to load', async function() {
   }
 });
 
-Then('verifies that See Less Recommendations is displayed', async function() {
+Then('verifies that See fewer recommendations is displayed', async function() {
   if (this.seeMoreButtonAvailable) {
     // Check for the See Less Recommendations button
-    const seeLessButton = this.page.locator('button:text("See Less recommendations"), a:text("See Less recommendations")');
+    const seeLessButton = this.page.locator('button:text("See fewer recommendations"), a:text("See fewer recommendations")');
+    // Basic assertion to check See Less button visibility
+    await expect(seeLessButton).toBeVisible({ timeout: 10000 });
+    console.log("See fewer recommendations button is displayed");
+  } else {
+    console.log("Skipping verification as See More Recommendations button was not available");
+  }
+  
+  // Clean up - close the browser
+  if (this.browser) {
+    await this.browser.close();
+  }
+});
+
+Then('verifies that See fewer Recommendations is displayed', async function() {
+  if (this.seeMoreButtonAvailable) {
+    // Check for the See Less Recommendations button
+    const seeLessButton = this.page.locator('button:text("See fewer recommendations"), a:text("See fewer recommendations")');
     // Basic assertion to check See Less button visibility
     await expect(seeLessButton).toBeVisible({ timeout: 10000 });
     console.log("See Less Recommendations button is displayed");

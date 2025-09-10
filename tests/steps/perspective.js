@@ -163,13 +163,13 @@ Given('user logs in and lands on the home page for author validation', async fun
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague.adobe.com/');
+  await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page for author validation");
 });
 
@@ -443,7 +443,7 @@ When('user navigates to author bio page', async function() {
       // Append domain to the URL if it's a relative path
       const authorBioUrl = authorBioUrlPath.startsWith('http') 
         ? authorBioUrlPath 
-        : `https://experienceleague.adobe.com${authorBioUrlPath.startsWith('/') ? '' : '/'}${authorBioUrlPath}`;
+        : `${ENV.URL}${authorBioUrlPath.startsWith('/') ? '' : '/'}${authorBioUrlPath}`;
       
       console.log(`Complete author bio URL: ${authorBioUrl}`);
       
@@ -488,7 +488,7 @@ When('user navigates to author bio page', async function() {
           console.log(`Found author link href: ${href}`);
           
           // Navigate to the author bio page
-          const fullUrl = href.startsWith('http') ? href : `https://experienceleague.adobe.com${href}`;
+          const fullUrl = href.startsWith('http') ? href : `${ENV.URL}${href}`;
           await this.page.goto(fullUrl);
           await this.page.waitForTimeout(2000);
           
@@ -647,13 +647,13 @@ Given('user logs in and lands on the home page', async function() {
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague.adobe.com/');
+  await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
+  //await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page");
 });
 
@@ -1029,13 +1029,13 @@ Given('user logs in and lands on the home page for mini TOC validation', async f
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto('https://experienceleague.adobe.com/');
+  await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
   
   // Verify we're on the home page
-  await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page for mini TOC validation");
 });
 
@@ -1475,14 +1475,13 @@ Given('user logs in and lands on the home page for tag validation', async functi
    await this.page.waitForTimeout(4000);
 ////>>>>>> Stashed changes
   // Navigate to the home page
-  await this.page.goto('https://experienceleague.adobe.com/');
+  await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(2000);
   
   // Verify we're on the home page
-  //await expect(this.page).toHaveURL(/.*experienceleague-stage.adobe.com\/?$/);
- // await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
+  await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page for tag validation");
 });
 

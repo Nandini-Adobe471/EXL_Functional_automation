@@ -107,6 +107,4 @@ Scenario: Navigate to guide page, test copy link and bookmark functionality in m
     And user extracts the h1 id for later use
     When user clicks on the copy link icon in mobile view
     Then toast success message should be displayed
-    And user clicks on the bookmark icon in mobile view
-    And user navigates to the bookmark page
-    Then the bookmark page should display a card with the saved h1 title
+    

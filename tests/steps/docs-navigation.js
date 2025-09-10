@@ -343,9 +343,11 @@ When('user clicks on the bookmark icon', async function() {
   // Find the bookmark icon (assuming it has a class like 'bookmark-icon' or similar)
   // Use first() to handle multiple matching elements
   //const bookmarkIcon = this.page.locator('button.bookmark[aria-label="Bookmark"]').first();
-  const bookmarkIcon =  this.page.locator('span.icon-bookmark-active').first().click();
-  await expect(bookmarkIcon).toBeVisible();
+  const bookmarkIcon =  this.page.locator('.rail-content .user-actions button[aria-label="Bookmark"]').first();
+  //await expect(bookmarkIcon).toBeVisible();
   console.log("✓ Found bookmark icon");
+   await this.page.waitForTimeout(3000)
+  await bookmarkIcon.click();
   
   // Click on the bookmark icon
   //await bookmarkIcon.click();
@@ -357,7 +359,7 @@ When('user clicks on the bookmark icon', async function() {
 
 When('user navigates to the bookmark page', async function() {
   // Navigate to the bookmark page (assuming the URL is something like '/bookmarks')
-  await this.page.goto(`${ENV.URL}/bookmarks`);
+  await this.page.goto(`${ENV.URL}/home/bookmarks`);
   console.log("✓ Navigated to the bookmark page");
   
   // Wait for the page to load

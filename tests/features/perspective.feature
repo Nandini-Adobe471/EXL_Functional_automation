@@ -9,7 +9,7 @@ Feature: Perspective Page
     And user selects author type as "Adobe"
     Then verify first card displays with "By Adobe" badge
     # Mobile view testing
-    When user sets viewport to mobile size for breadcrumb validation
+    When user sets viewport to mobile size
     And user navigates to the perspective page
     And user selects author type as "Adobe" in mobile view
     Then verify first card displays with "By Adobe" badge in mobile view
@@ -22,7 +22,7 @@ Scenario: Validate author information consistency across pages
     And user navigates to author bio page
     Then author info from article should match author bio page
     
-@perspective-breadcrumb
+@perspective-breadcrumb @skip-login
 Scenario: Validate breadcrumb text matches page heading on redirected page
     Given user logs in and lands on the home page
     When user navigates to the perspectives page for breadcrumb validation

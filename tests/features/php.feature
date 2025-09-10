@@ -1,6 +1,5 @@
 Feature: php validation
-
-@skip-login
+@home-page-essential-ui-elements @skip-login
  Scenario: verify essential UI elements on the home page
     
     Given I navigate to the Experience League homepage

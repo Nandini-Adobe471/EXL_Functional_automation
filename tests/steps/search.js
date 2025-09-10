@@ -228,6 +228,15 @@ Then('user should land on search result page again', async function() {
 });
 
 // Mobile view step definitions
+When('user changes viewport to mobile', async function() {
+  // Set viewport to mobile size (e.g., iPhone X)
+  await this.page.setViewportSize({ width: 375, height: 812 });
+  console.log('✓ Changed viewport to mobile size (375x812)');
+  
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+});
+
 Given('user logs in and lands on the home page for mobile search validation', async function() {
   // Launch browser
   const result = await launchBrowser();
@@ -589,7 +598,7 @@ When('user enters {string} and presses enter', async function(searchText) {
   console.log("✓ Pressed Enter key");
   
   // Wait for navigation
-  await this.page.waitForTimeout(3000);
+  await this.page.waitForTimeout(5000);
 });
 
 Then('user should land on search results page', async function() {
@@ -1459,4 +1468,3 @@ When('user selects {string} from search picker dropdown', async function(optionT
   // Wait for dropdown to appear
   await this.page.waitForTimeout(1000);
 });
-

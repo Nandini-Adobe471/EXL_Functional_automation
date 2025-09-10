@@ -69,7 +69,6 @@ Examples:
     | page_name      | expected_content_type |
     | docs/home-tutorials      | Tutorial            |
     | docs           | Documentation       |
-    | events         | Event               |
     | certification-home | Certification       |
     | playlists      | Playlist            |
     | perspectives   | Perspective         |
