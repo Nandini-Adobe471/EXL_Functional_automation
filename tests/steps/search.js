@@ -911,7 +911,7 @@ When('the user checks the {string} parent checkbox', async function(parentLabel)
   // Locate the parent checkbox for "Experience Manager"
   const parentCheckbox = this.page.locator(`atomic-facet-manager >>  atomic-facet >> div ul li[data-contenttype="${parentLabel}"] button[role="checkbox"]`);
   await expect(parentCheckbox).toBeVisible();
-  
+//  ${parentLabel}
   // Store the parent checkbox for later use
   this.parentCheckbox = parentCheckbox;
   
@@ -1348,6 +1348,65 @@ When('user clicks on close icon', async function() {
   await this.page.waitForTimeout(2000);
 });
 
+When('the user clicks on {string} for product list', async function(buttonText) {
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+  
+  // Find the "Show More" button for the product facet
+  const showMoreButton = this.page.locator('atomic-facet#facetProduct >> button.facet-show-more-btn');
+  
+  // Make sure the button is visible
+  await expect(showMoreButton).toBeVisible({ timeout: 10000 });
+  
+  // Scroll the button into view if needed
+  await showMoreButton.scrollIntoViewIfNeeded();
+  
+  // Click the button
+  await showMoreButton.click();
+  console.log(`✓ Clicked on "${buttonText}" button for product list`);
+  
+  // Wait for the UI to update after expanding
+  await this.page.waitForTimeout(2000);
+});
+
+When('the user clicks on the {string} button for a subchild', async function(buttonType) {
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+  
+  // Find a specific child facet that we know exists
+  const specificChildFacet = this.page.locator(`atomic-facet#facetProduct >> ul li[data-parent="Experience Manager"]`).first();
+  
+  // Make sure the child facet is visible
+  await expect(specificChildFacet).toBeVisible({ timeout: 10000 });
+  
+  // Find the "only" button within this facet (the third span element)
+  const onlyButton = specificChildFacet.locator('span').nth(2);
+  
+  // Make sure the only button is visible
+  await expect(onlyButton).toBeVisible({ timeout: 10000 });
+  
+  // Store the child name for later reference
+  const childCheckbox = specificChildFacet.locator('button[role="checkbox"]');
+  const ariaLabel = await childCheckbox.getAttribute('aria-label');
+  if (ariaLabel) {
+    const childNameParts = ariaLabel.split('|');
+    if (childNameParts.length > 1) {
+      this.selectedChildName = childNameParts[1].split(';')[0].trim();
+      console.log(`Selected child facet: ${this.selectedChildName}`);
+    }
+  }
+  
+  // Store the child index for later reference
+  this.hoveredChildIndex = 0;
+  
+  // Click the only button
+  await onlyButton.click();
+  console.log(`✓ Clicked on the "${buttonType}" button for subchild`);
+  
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+});
+
 Then('facet items in {string} should be alphabetically ordered', async function(facetId) {
  // try {
     // Wait for facets to load
@@ -1467,4 +1526,83 @@ When('user selects {string} from search picker dropdown', async function(optionT
   
   // Wait for dropdown to appear
   await this.page.waitForTimeout(1000);
+});
+
+// Mobile-specific step definition for clicking the "only" button
+When('the user clicks on the {string} button for a subchild', async function(buttonType) {
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+  
+  // Find a specific child facet under Experience Manager using the DOM structure provided
+  // First find a label with a span that has title="Experience Manager"
+  const childFacets = this.page.locator(`atomic-facet-manager >> atomic-facet >> div ul li[data-parent="Experience Manager"] button[role="checkbox"]`);
+ 
+await childFacets.click();
+  // Get the count of child facets
+  const childCount = await childFacets.count();
+  console.log(`Found ${childCount} child facets under Experience Manager`);
+  
+  if (childCount > 0) {
+    // Select the first child facet
+    const specificChildFacet = childFacets.first();
+    
+    // Make sure the child facet is visible
+    await expect(specificChildFacet).toBeVisible({ timeout: 10000 });
+    
+    // Find the label element within the child facet
+    const label = specificChildFacet.locator('label.group.items-center');
+    
+    // Find the "only" button (span with part attribute containing "only")
+    // In mobile view, this is typically a button or span element that appears next to the label
+    const onlyButton = specificChildFacet.locator('span[part*="only-facet-btn"]');
+    
+    // If the specific "only" button selector doesn't work, fall back to the third span
+    if (await onlyButton.count() === 0) {
+      console.log('Using fallback selector for "only" button');
+      // Use the third span as a fallback
+      const fallbackOnlyButton = specificChildFacet.locator('span').nth(2);
+      await expect(fallbackOnlyButton).toBeVisible({ timeout: 10000 });
+      
+      // Store the child name for later reference
+      const valueLabel = specificChildFacet.locator('span[part="value-label"]');
+      if (await valueLabel.count() > 0) {
+        this.selectedChildName = await valueLabel.getAttribute('title');
+        console.log(`Selected child facet (from title): ${this.selectedChildName}`);
+      } else {
+        // Fallback to getting text content
+        this.selectedChildName = await specificChildFacet.locator('label span').first().textContent();
+        console.log(`Selected child facet (from text): ${this.selectedChildName}`);
+      }
+      
+      // Store the child index for later reference
+      this.hoveredChildIndex = 0;
+      
+      // Click the fallback only button
+      await fallbackOnlyButton.click();
+      console.log(`✓ Clicked on the "${buttonType}" button for subchild using fallback selector`);
+    } else {
+      // Store the child name for later reference
+      const valueLabel = specificChildFacet.locator('span[part="value-label"]');
+      if (await valueLabel.count() > 0) {
+        this.selectedChildName = await valueLabel.getAttribute('title');
+        console.log(`Selected child facet (from title): ${this.selectedChildName}`);
+      } else {
+        // Fallback to getting text content
+        this.selectedChildName = await specificChildFacet.locator('label span').first().textContent();
+        console.log(`Selected child facet (from text): ${this.selectedChildName}`);
+      }
+      
+      // Store the child index for later reference
+      this.hoveredChildIndex = 0;
+      
+      // Click the only button
+      await onlyButton.click();
+      console.log(`✓ Clicked on the "${buttonType}" button for subchild`);
+    }
+    
+    // Wait for the UI to update
+    await this.page.waitForTimeout(2000);
+  } else {
+    throw new Error('No child facets found under Experience Manager');
+  }
 });
