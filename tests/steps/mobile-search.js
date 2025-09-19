@@ -344,21 +344,84 @@ Then('the breadcrumb list should show {string} button', async function(buttonTex
   
   // Find the breadcrumb list container with a more specific locator to avoid strict mode violation
   // Use first() to explicitly handle multiple matches
-  const breadcrumbContainer = this.page.locator('atomic-breadbox >> div ul li >> button.btn-outline-primary.btn-pill[part="show-more"]').first();
-  //await expect(breadcrumbContainer).toBeVisible({ timeout: 2000 });
+  const breadcrumbContainer = this.page.locator('atomic-breadbox div[part="breadcrumb-list-container"]').first();
+  await expect(breadcrumbContainer).toBeVisible({ timeout: 10000 });
   
   // Find the show more button with the specified text
-  //const showMoreButton = breadcrumbContainer.locator(`button[part="show-more"]`);
-  //await expect(showMoreButton).toBeVisible({ timeout: 2000 });
+  const showMoreButton = breadcrumbContainer.locator(`button[part="show-more"]`);
+  await expect(showMoreButton).toBeVisible({ timeout: 10000 });
   
   // Get the text of the button to verify
-  const actualButtonText = await breadcrumbContainer.textContent();
+  const actualButtonText = await showMoreButton.textContent();
   expect(actualButtonText.trim()).toContain(buttonText);
   console.log(`✓ Verified breadcrumb list shows "${buttonText}" button`);
   
-  // Clean up - close the browser
-  if (this.browser) {
+  // Check if there's a clear button visible, which indicates we're in a scenario
+  // that will continue with clear filter functionality
+  const clearButton = this.page.locator('atomic-breadbox div button[part="clear"][aria-label="Clear All Filters"]');
+  const isClearButtonVisible = await clearButton.isVisible().catch(() => false);
+  
+/*  // Don't close the browser if we're in a scenario with clear button
+  if (!isClearButtonVisible && this.browser) {
     await closeBrowser(this.browser);
     console.log('Browser closed successfully');
+  } else {
+    console.log('Keeping browser open for subsequent steps');
+  }*/
+});
+
+// Step definitions for clear filter functionality
+When('the user clicks on the clear all filters button', async function() {
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+  
+  // Find the clear all filters button
+  const clearButton = this.page.locator('atomic-breadbox div button[part="clear"][aria-label="Clear All Filters"]').first();
+  await expect(clearButton).toBeVisible({ timeout: 5000 });
+  
+  // Scroll the button into view if needed
+  await clearButton.scrollIntoViewIfNeeded();
+  
+  // Click the clear button
+  await clearButton.click();
+  console.log('✓ Clicked on the clear all filters button');
+  
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+});
+
+Then('the {string} checkbox in {string} facet should be unchecked', async function(checkboxValue, facetId) {
+  // Wait for the UI to update
+  await this.page.waitForTimeout(2000);
+  
+  // Determine which facet to use based on facetId
+  let facetSelector = 'facetProduct'; // Default to Product facet
+  if (facetId === 'Content Type') {
+    facetSelector = 'facetContentType';
+  } else if (facetId === 'Role') {
+    facetSelector = 'facetRole';
+  }
+  
+  // Expand the facet if it's collapsed
+  await this.page.locator(`atomic-facet#${facetSelector} >> button[data-expanded="false"].facet-show-more-btn`).click().catch(() => {
+    console.log(`No need to expand the ${facetId} facet or it's already expanded`);
+  });
+  await this.page.waitForTimeout(1000);
+  
+  // Locate the checkbox with the specified value
+  const checkbox = this.page.locator(`atomic-facet#${facetSelector} >> ul li[data-contenttype="${checkboxValue}"] button[role="checkbox"]`);
+  await expect(checkbox).toBeVisible({ timeout: 5000 });
+  
+  // Verify it's unchecked
+  await expect(checkbox).toHaveAttribute('aria-checked', 'false');
+  console.log(`✓ Verified "${checkboxValue}" checkbox in "${facetId}" facet is unchecked`);
+  
+  // If this is the last check in the scenario, clean up
+  if (facetId === 'Product' && checkboxValue === 'Analytics') {
+    // Clean up - close the browser
+    if (this.browser) {
+      await closeBrowser(this.browser);
+      console.log('Browser closed successfully');
+    }
   }
 });

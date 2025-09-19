@@ -81,7 +81,7 @@ Then('user should see upcoming events cards', async function() {
 });
 
 Then('events content should match the upcoming-events.json data', async function() {
-  // Function to convert ISO timestamp to "MMM DD | HH:MM am/pm IST" format
+  // Function to convert ISO timestamp to "MMM DD | HH:MM AM/PM IST" format
   const convertTimestampToCardFormat = (timestamp) => {
     if (!timestamp) return null;
     
@@ -91,15 +91,15 @@ Then('events content should match the upcoming-events.json data', async function
       // Convert to IST (UTC+5:30)
       const istOptions = { 
         timeZone: 'Asia/Kolkata',
-        hour: 'numeric', 
-        minute: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
         hour12: true 
       };
       const timeString = date.toLocaleTimeString('en-US', istOptions).toUpperCase();
       
       // Get day and month
-      const day = date.getDate().toString().padStart(2, '0'); // Pad with leading zero if needed
-      const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+      const day = date.getDate().toString(); // Don't pad with leading zero to match card format
+      const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
       const month = monthNames[date.getMonth()];
       
       return `${month} ${day} | ${timeString} IST`;
