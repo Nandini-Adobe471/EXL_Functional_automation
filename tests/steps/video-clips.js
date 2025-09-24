@@ -578,3 +578,265 @@ Then('only the close player button should be visible', async function() {
     throw error; // Re-throw the error to fail the test
   }
 });
+
+// Step definitions for "See more recommendations" button functionality
+Then('the {string} button should be visible', async function(buttonText) {
+  // Define the selector for the button based on the button text
+  let buttonSelector;
+  
+  if (buttonText === "See more recommendations" || buttonText === "See fewer recommendations") {
+    // Target the button within the section that has id="keep-learning-with-video-clips"
+    buttonSelector = 'div.recommended-content[data-block-name="recommended-content"] div.recommended-content-see-more-btn button';
+  } else {
+    throw new Error(`Button text "${buttonText}" not recognized`);
+  }
+  
+  try {
+    // Wait for the button to be visible
+    await this.page.waitForSelector(buttonSelector, { state: 'visible', timeout: 5000 });
+    
+    // Get all buttons with the specified selector
+    const buttons = this.page.locator(buttonSelector);
+    const buttonCount = await buttons.count();
+    console.log(`Found ${buttonCount} buttons with the selector`);
+    
+    // Check if the first button is visible
+    const buttonVisible = await buttons.first().isVisible();
+    
+    if (buttonVisible) {
+      console.log(`✓ "${buttonText}" button is visible as expected`);
+    } else {
+      console.warn(`⚠️ "${buttonText}" button is not visible when it should be`);
+    }
+    
+    // Assert that the button is visible
+    expect(buttonVisible).toBeTruthy();
+    
+    // Store the button selector for later use
+    this[`${buttonText.replace(/\s+/g, '_').toLowerCase()}_selector`] = buttonSelector;
+    
+    // Take a screenshot to verify button visibility
+    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-visible.png` });
+    console.log(`✓ Screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-visible.png`);
+  } catch (error) {
+    console.error(`❌ Error verifying "${buttonText}" button visibility: ${error.message}`);
+    // Take a screenshot of the error state
+    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-error.png` });
+    console.log(`✓ Error screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-error.png`);
+    throw error; // Re-throw the error to fail the test
+  }
+});
+
+Then('the {string} button should not be visible', async function(buttonText) {
+  // Define the selector for the button based on the button text
+  let buttonSelector;
+  
+  if (buttonText === "See more recommendations" || buttonText === "See fewer recommendations") {
+    // Target the button within the section that has id="keep-learning-with-video-clips"
+    buttonSelector = 'div.recommended-content[data-block-name="recommended-content"] div.recommended-content-see-more-btn button';
+  } else {
+    throw new Error(`Button text "${buttonText}" not recognized`);
+  }
+  
+  try {
+    // Get all buttons with the specified selector
+    const buttons = this.page.locator(buttonSelector);
+    const buttonCount = await buttons.count();
+    console.log(`Found ${buttonCount} buttons with the selector`);
+    
+    // Check if the first button is not visible or has different text
+    let buttonVisible = false;
+    if (buttonCount > 0) {
+      const actualButtonText = await buttons.first().textContent();
+      buttonVisible = await buttons.first().isVisible() && actualButtonText.includes(buttonText);
+    }
+    
+    if (!buttonVisible) {
+      console.log(`✓ "${buttonText}" button is not visible as expected`);
+    } else {
+      console.warn(`⚠️ "${buttonText}" button is visible when it should not be`);
+    }
+    
+    // Assert that the button is not visible
+    expect(buttonVisible).toBeFalsy();
+    
+    // Take a screenshot to verify button is not visible
+    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible.png` });
+    console.log(`✓ Screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible.png`);
+  } catch (error) {
+    console.error(`❌ Error verifying "${buttonText}" button is not visible: ${error.message}`);
+    // Take a screenshot of the error state
+    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible-error.png` });
+    console.log(`✓ Error screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible-error.png`);
+    throw error; // Re-throw the error to fail the test
+  }
+});
+
+When('the user clicks on the {string} button', async function(buttonText) {
+  // Define the selector for the button based on the button text
+  let buttonSelector = 'div.recommended-content[data-block-name="recommended-content"] div.recommended-content-see-more-btn button';
+  
+  try {
+    // Check if the button is visible
+    await this.page.waitForSelector(buttonSelector, { state: 'visible', timeout: 5000 });
+    
+    // Get all buttons with the specified text
+    const buttons = this.page.locator(buttonSelector);
+    const buttonCount = await buttons.count();
+    console.log(`Found ${buttonCount} "${buttonText}" buttons on the page`);
+    
+    // Store the current number of video clip cards for later comparison
+    if (buttonText === "See more recommendations") {
+      const videoClipCardsSelector = 'div.card-wrapper[data-analytics-content-type="Video Clip"]';
+      this.initialCardCount = await this.page.locator(videoClipCardsSelector).count();
+      console.log(`Initial card count before clicking: ${this.initialCardCount}`);
+    }
+    
+    // Click on the first button as specified by the user
+    await buttons.first().click();
+    console.log(`✓ Clicked on the first "${buttonText}" button`);
+    
+    // Wait for the page to update after clicking
+    await this.page.waitForTimeout(6000);
+    
+    // Take a screenshot after clicking the button
+    await this.page.screenshot({ path: `after-clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}.png` });
+    console.log(`✓ Screenshot saved as after-clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}.png`);
+  } catch (error) {
+    console.error(`❌ Error clicking on "${buttonText}" button: ${error.message}`);
+    // Take a screenshot of the error state
+    await this.page.screenshot({ path: `clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}-error.png` });
+    console.log(`✓ Error screenshot saved as clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}-error.png`);
+    throw error; // Re-throw the error to fail the test
+  }
+});
+
+Then('the button text should change to {string}', async function(expectedButtonText) {
+  // Define the selector for the button
+  const buttonSelector = 'div.recommended-content[data-block-name="recommended-content"] div.recommended-content-see-more-btn button';
+  
+  try {
+    // Wait for the button to be visible
+    await this.page.waitForSelector(buttonSelector, { state: 'visible', timeout: 5000 });
+    
+    // Get the actual button text of the first button
+    const actualButtonText = await this.page.locator(buttonSelector).first().textContent();
+    console.log(`Button text after clicking: "${actualButtonText}"`);
+    
+    // Check if the button text matches the expected text
+    if (actualButtonText.trim() === expectedButtonText) {
+      console.log(`✓ Button text changed to "${expectedButtonText}" as expected`);
+    } else {
+      console.warn(`⚠️ Button text is "${actualButtonText}" instead of "${expectedButtonText}"`);
+    }
+    
+    // Assert that the button text matches the expected text
+    expect(actualButtonText.trim()).toBe(expectedButtonText);
+    
+    // Take a screenshot to verify button text change
+    await this.page.screenshot({ path: `button-text-changed-to-${expectedButtonText.replace(/\s+/g, '-').toLowerCase()}.png` });
+    console.log(`✓ Screenshot saved as button-text-changed-to-${expectedButtonText.replace(/\s+/g, '-').toLowerCase()}.png`);
+  } catch (error) {
+    console.error(`❌ Error verifying button text change: ${error.message}`);
+    // Take a screenshot of the error state
+    await this.page.screenshot({ path: `button-text-change-error.png` });
+    console.log(`✓ Error screenshot saved as button-text-change-error.png`);
+    throw error; // Re-throw the error to fail the test
+  }
+});
+
+Then('more video clip cards should be displayed', async function() {
+  // Define the selector for video clip cards
+  const videoClipCardsSelector = 'div.card-wrapper[data-analytics-content-type="Video Clip"]';
+  
+  try {
+    // Wait for the cards to be visible
+    await this.page.waitForSelector(videoClipCardsSelector, { state: 'visible', timeout: 5000 });
+    
+    // Count the number of video clip cards after clicking
+    const currentCardCount = await this.page.locator(videoClipCardsSelector).count();
+    console.log(`Current card count after clicking: ${currentCardCount}`);
+    
+    // Check if more cards are displayed
+    if (currentCardCount > this.initialCardCount) {
+      console.log(`✓ More video clip cards are displayed (${this.initialCardCount} -> ${currentCardCount})`);
+    } else {
+      console.warn(`⚠️ No additional video clip cards are displayed (${this.initialCardCount} -> ${currentCardCount})`);
+    }
+    
+    // Assert that more cards are displayed
+    expect(currentCardCount).toBeGreaterThan(this.initialCardCount);
+    
+    // Take a screenshot to verify more cards are displayed
+    await this.page.screenshot({ path: 'more-video-clip-cards-displayed.png' });
+    console.log('✓ Screenshot saved as more-video-clip-cards-displayed.png');
+  } catch (error) {
+    console.error(`❌ Error verifying more video clip cards: ${error.message}`);
+    // Take a screenshot of the error state
+    await this.page.screenshot({ path: 'more-video-clip-cards-error.png' });
+    console.log('✓ Error screenshot saved as more-video-clip-cards-error.png');
+    throw error; // Re-throw the error to fail the test
+  }
+});
+
+Then('the bookmark icon should not be visible in video clip cards', async function() {
+  // Define the selector for video clip cards
+  const videoClipCardsSelector = 'div.card-wrapper[data-analytics-content-type="Video Clip"]';
+  
+  try {
+    // Wait for the cards to be visible
+    await this.page.waitForSelector(videoClipCardsSelector, { state: 'visible', timeout: 5000 });
+    
+    // Get all video clip cards
+    const videoClipCards = this.page.locator(videoClipCardsSelector);
+    const cardsCount = await videoClipCards.count();
+    console.log(`Found ${cardsCount} video clip cards`);
+    
+    // Check each card for bookmark icon
+    let bookmarkIconFound = false;
+    
+    for (let i = 0; i < cardsCount; i++) {
+      const card = videoClipCards.nth(i);
+      
+      // Define the selector for bookmark icon within the card
+      // Common selectors for bookmark icons include:
+      const bookmarkSelectors = [
+        '.bookmark-icon',
+        '.icon-bookmark',
+        'button.bookmark',
+        'button[aria-label="Bookmark"]',
+        '.browse-card-bookmark'
+      ];
+      
+      for (const selector of bookmarkSelectors) {
+        const bookmarkCount = await card.locator(selector).count();
+        if (bookmarkCount > 0) {
+          bookmarkIconFound = true;
+          console.warn(`⚠️ Bookmark icon found in card ${i+1} using selector "${selector}"`);
+          break;
+        }
+      }
+      
+      if (bookmarkIconFound) {
+        break;
+      }
+    }
+    
+    // Assert that no bookmark icon was found
+    expect(bookmarkIconFound).toBeFalsy();
+    
+    if (!bookmarkIconFound) {
+      console.log('✓ No bookmark icon found in any video clip card as expected');
+    }
+    
+    // Take a screenshot for evidence
+    await this.page.screenshot({ path: 'video-clip-cards-no-bookmark-icon.png' });
+    console.log('✓ Screenshot saved as video-clip-cards-no-bookmark-icon.png');
+  } catch (error) {
+    console.error(`❌ Error verifying absence of bookmark icon: ${error.message}`);
+    // Take a screenshot of the error state
+    await this.page.screenshot({ path: 'video-clip-cards-bookmark-icon-error.png' });
+    console.log('✓ Error screenshot saved as video-clip-cards-bookmark-icon-error.png');
+    throw error; // Re-throw the error to fail the test
+  }
+});

@@ -99,3 +99,26 @@ Scenario: Verify test fails when video clips section is not visible
     And the "Keep learning with video clips" header is not visible
     Then the test should fail with "Video clips not visible" message
     And the test should capture a screenshot of the error state
+
+@video-clips-see-more @skip-login
+Scenario: Verify "See more recommendations" button functionality
+    Given the user logs in to the application with valid credentials
+    When the user modifies the URL to append "?adobeQA=videoClips"
+    And the page is fully loaded
+    Then the "Keep learning with video clips" header should be visible
+    And there should be at least one video clip card displayed
+    And the "See more recommendations" button should be visible
+    When the user clicks on the "See more recommendations" button
+    Then the button text should change to "See fewer recommendations"
+    And more video clip cards should be displayed
+    And the test should capture a screenshot for evidence
+
+@video-clips-bookmark @skip-login
+Scenario: Verify bookmark icon is not visible in video clip cards
+    Given the user logs in to the application with valid credentials
+    When the user modifies the URL to append "?adobeQA=videoClips"
+    And the page is fully loaded
+    Then the "Keep learning with video clips" header should be visible
+    And there should be at least one video clip card displayed
+    And the bookmark icon should not be visible in video clip cards
+    And the test should capture a screenshot for evidence
