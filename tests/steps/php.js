@@ -201,7 +201,7 @@ When('user submits the search', async function() {
 
 Then('search results page should display', async function() {
   // Verify URL contains "search"
-  await expect(this.page).toHaveURL(/.*search.*/, { timeout: 40000 });
+  await expect(this.page).toHaveURL(/search.*/, { timeout: 40000 });
   
   // Verify search results summary is visible
   const resultsSummary = this.page.locator('#query-summary');

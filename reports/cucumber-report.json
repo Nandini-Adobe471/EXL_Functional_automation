@@ -1,142 +1,78 @@
 [
   {
-    "description": "  As a user\n  I want to see the \"Keep learning with video clips\" section after login\n  So that I can access video clip content and use the miniplayer functionality",
+    "description": "",
     "elements": [
       {
         "description": "",
-        "id": "video-clips-visibility;verify-\"see-more-recommendations\"-button-functionality",
+        "id": "ai-training-page-navigation;launch-url-with-adobeqa-parameter,-click-ai-training-link,-and-reload-page",
         "keyword": "Scenario",
-        "line": 104,
-        "name": "Verify \"See more recommendations\" button functionality",
+        "line": 4,
+        "name": "Launch URL with adobeQA parameter, click AI training link, and reload page",
         "steps": [
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 105,
-            "name": "the user logs in to the application with valid credentials",
+            "line": 5,
+            "name": "user navigates to Experience League with adobeQA parameter",
             "match": {
-              "location": "tests\\steps\\video-clips.js:11"
+              "location": "tests\\steps\\ai-training.js:7"
             },
             "result": {
               "status": "passed",
-              "duration": 26549178099
+              "duration": 3940400899
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 106,
-            "name": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+            "line": 6,
+            "name": "user clicks on AI training link",
             "match": {
-              "location": "tests\\steps\\video-clips.js:23"
+              "location": "tests\\steps\\ai-training.js:33"
             },
             "result": {
-              "status": "passed",
-              "duration": 3117305800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 107,
-            "name": "the page is fully loaded",
-            "match": {
-              "location": "tests\\steps\\video-clips.js:53"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 7061739900
+              "status": "failed",
+              "duration": 3067460000,
+              "error_message": "page.waitForTimeout: Target page, context or browser has been closed\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\ai-training.js:50:19)"
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 108,
-            "name": "the \"Keep learning with video clips\" header should be visible",
+            "line": 7,
+            "name": "user should be redirected to AI training page",
             "match": {
-              "location": "tests\\steps\\video-clips.js:78"
+              "location": "tests\\steps\\ai-training.js:53"
             },
             "result": {
-              "status": "passed",
-              "duration": 6096927199
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 109,
-            "name": "there should be at least one video clip card displayed",
-            "match": {
-              "location": "tests\\steps\\video-clips.js:98"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 23267199
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 110,
-            "name": "the \"See more recommendations\" button should be visible",
-            "match": {
-              "location": "tests\\steps\\video-clips.js:583"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 218208900
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 111,
-            "name": "the user clicks on the \"See more recommendations\" button",
+            "line": 8,
+            "name": "user reloads the page",
             "match": {
-              "location": "tests\\steps\\video-clips.js:675"
+              "location": "tests\\steps\\ai-training.js:73"
             },
             "result": {
-              "status": "passed",
-              "duration": 6579410700
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 112,
-            "name": "the button text should change to \"See fewer recommendations\"",
+            "line": 9,
+            "name": "AI training page should be displayed",
             "match": {
-              "location": "tests\\steps\\video-clips.js:714"
+              "location": "tests\\steps\\ai-training.js:95"
             },
             "result": {
-              "status": "passed",
-              "duration": 242900499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 113,
-            "name": "more video clip cards should be displayed",
-            "match": {
-              "location": "tests\\steps\\video-clips.js:748"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 236079799
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 114,
-            "name": "the test should capture a screenshot for evidence",
-            "match": {
-              "location": "tests\\steps\\video-clips.js:477"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 810382400
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
@@ -144,28 +80,36 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 838600
+              "duration": 378591900
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1416199
             }
           }
         ],
         "tags": [
           {
-            "name": "@video-clips-see-more",
-            "line": 103
+            "name": "@ai-training",
+            "line": 3
           },
           {
             "name": "@skip-login",
-            "line": 103
+            "line": 3
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "video-clips-visibility",
+    "id": "ai-training-page-navigation",
     "line": 1,
     "keyword": "Feature",
-    "name": "Video Clips Visibility",
+    "name": "AI Training page navigation",
     "tags": [],
-    "uri": "tests\\features\\video-clips.feature"
+    "uri": "tests\\features\\ai-training.feature"
   }
 ]

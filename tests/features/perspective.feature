@@ -2,7 +2,7 @@ Feature: Perspective Page
   As a user
   I want to filter perspectives by author type
   So that I can view perspectives authored by Adobe
-@skip-login @perspective-author-badge
+@perspective-author-badge
   Scenario: Filter perspectives by author type '&nbsp;Adobe' and verify badge
     Given user logs in and lands on PHP page
     When user navigates to the perspective page
@@ -47,3 +47,9 @@ Scenario: Validate card tag matches article tag products on redirected page
     When user navigates to the perspective page for tag validation
     And user stores the tag text from a card and clicks it
     Then the card tag text should match the article tag products on redirected page
+
+  @mini-toc-all-cards @skip-login
+  Scenario: Validate mini TOC is present on perspective article pages that have more than one h2 or h3
+    Given user logs in and lands on the home page for all cards mini TOC validation
+    When user navigates to the perspectives listing page
+    Then for each perspective card link user validates mini TOC presence based on heading count

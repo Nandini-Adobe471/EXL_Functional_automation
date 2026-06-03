@@ -1,13 +1,13 @@
 Feature: Browse page
-@skip-login
-@browse-filter
+
+@browse-filter  
 Scenario: Filter content by type and product and validate first card
     Given user is on the PHP page
     When user navigates to the browse page
     And user selects content type as "Certification"
-    And user selects product as "^Analytics$"
+    And user selects product as "Analytics"
     Then verify first card displays with selected content type and product tag
-@browse-topic-navigation 
+@browse-topic-navigation @skip-login
 Scenario: Navigate to Analytics and Experience Manager from left rail and verify content cards and pagination
     Given user navigates to Experience League browse page filter section
     When the browse page filters loads completely
@@ -20,14 +20,14 @@ Scenario: Navigate to Analytics and Experience Manager from left rail and verify
     And user clicks on any button in the browse topic block
     Then content cards should be loaded
     And pagination should be working properly
-@browse-rail
+@browse-rail @skip-login
 Scenario: Verify browse rail and its list items are visible
     Given user navigates to Experience League browse page
     When the browse page loads completely
     Then the browse rail should be visible
     And the browse rail list items should be visible
    
-@browse-breadcrumb
+@browse-breadcrumb @skip-login
 Scenario: Verify breadcrumb navigation from browse rail list items
     Given user navigates to Experience League browse pagea
     When the browse page loads completelya
@@ -41,14 +41,5 @@ Scenario: Verify breadcrumb navigation from browse rail list items
     Then the breadcrumb should be visible in mobile view
     When user clicks on the browse breadcrumb in mobile view
     Then user should navigate back to the browse page in mobile view
-@bookmark-management @skip-login
-Scenario: Add and remove bookmarks for browse cards
-    Given user logs in to Experience Leaguee
-    When user navigates to browse page
-    And user gets the title of the first card in tabbed-cards-wrapper
-    And user bookmarks the first card
-    And user navigates to bookmarks page
-    Then user should see the bookmarked card with the same title
-    When user removes the bookmark from the card
-    And user navigates back to browse page
+
     

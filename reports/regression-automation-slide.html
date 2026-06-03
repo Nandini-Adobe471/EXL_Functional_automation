@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EXL Regression Automation Suite</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Adobe+Clean:wght@400;700&family=Inter:wght@300;400;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    }
+
+    /* Background decorative elements */
+    .bg-circle-1 {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(235,0,26,0.08) 0%, transparent 70%);
+      top: -200px; right: -100px;
+    }
+    .bg-circle-2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,100,255,0.06) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+    }
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Top bar */
+    .top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #eb001a, #ff6b35, #eb001a);
+    }
+
+    /* Adobe logo area */
+    .brand-bar {
+      position: absolute;
+      top: 22px; left: 50px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .adobe-logo {
+      width: 38px; height: 38px;
+      background: #eb001a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      color: white;
+      font-style: italic;
+      clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+    }
+    .brand-name {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    /* Top right badge */
+    .badge {
+      position: absolute;
+      top: 26px; right: 50px;
+      background: rgba(235,0,26,0.15);
+      border: 1px solid rgba(235,0,26,0.4);
+      color: #ff6b6b;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Main title area */
+    .title-area {
+      position: absolute;
+      top: 80px; left: 50px;
+      width: 520px;
+    }
+    .title-area .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #eb001a;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .title-area h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .title-area h1 span {
+      color: #eb001a;
+    }
+    .title-area .subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      line-height: 1.6;
+      max-width: 420px;
+    }
+
+    /* Stats row */
+    .stats-row {
+      position: absolute;
+      top: 82px; right: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 360px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid #eb001a;
+      border-radius: 8px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      min-width: 60px;
+    }
+    .stat-number span {
+      font-size: 14px;
+      color: #eb001a;
+      font-weight: 600;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.4;
+    }
+    .stat-label strong {
+      display: block;
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Divider */
+    .divider {
+      position: absolute;
+      top: 310px; left: 50px; right: 50px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    /* Feature grid */
+    .features-grid {
+      position: absolute;
+      top: 330px; left: 50px; right: 50px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .feature-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 16px 14px;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      background: rgba(235,0,26,0.08);
+      border-color: rgba(235,0,26,0.3);
+    }
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .feature-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .feature-desc {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    .feature-tag {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #eb001a;
+      border: 1px solid rgba(235,0,26,0.3);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    /* MCP Servers row */
+    .mcp-section {
+      position: absolute;
+      bottom: 56px; left: 50px; right: 50px;
+    }
+    .mcp-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 9px;
+    }
+    .mcp-row {
+      display: flex;
+      gap: 10px;
+    }
+    .mcp-pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 500;
+    }
+    .mcp-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+      flex-shrink: 0;
+    }
+    .mcp-dot.blue { background: #2196f3; box-shadow: 0 0 6px #2196f3; }
+    .mcp-dot.orange { background: #ff9800; box-shadow: 0 0 6px #ff9800; }
+    .mcp-dot.purple { background: #9c27b0; box-shadow: 0 0 6px #9c27b0; }
+    .mcp-dot.teal { background: #00bcd4; box-shadow: 0 0 6px #00bcd4; }
+
+    /* Bottom bar */
+    .bottom-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 50px;
+    }
+    .bottom-bar span {
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 1px;
+    }
+    .bottom-bar .version {
+      color: rgba(235,0,26,0.5);
+      font-weight: 600;
+    }
+
+    /* Arch flow */
+    .arch-flow {
+      position: absolute;
+      top: 240px; left: 50px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .arch-step {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .arch-arrow {
+      color: rgba(235,0,26,0.6);
+      font-size: 16px;
+      padding: 0 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="slide">
+  <!-- Background -->
+  <div class="bg-grid"></div>
+  <div class="bg-circle-1"></div>
+  <div class="bg-circle-2"></div>
+  <div class="top-bar"></div>
+
+  <!-- Brand -->
+  <div class="brand-bar">
+    <div class="adobe-logo">A</div>
+    <span class="brand-name">Adobe Experience League</span>
+  </div>
+
+  <div class="badge">Regression Suite</div>
+
+  <!-- Title -->
+  <div class="title-area">
+    <div class="eyebrow">⚡ AI-Powered Quality Engineering</div>
+    <h1>EXL Functional<br/><span>Automation</span> Suite</h1>
+    <div class="subtitle">
+      End-to-end BDD regression automation built on Playwright + Cucumber.js,
+      AI-amplified with MCP servers for zero-context-switch QA.
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">18<span>+</span></div>
+      <div class="stat-label">
+        <strong>Feature Modules</strong>
+        Auth · Browse · Search · Navigation · Mobile · Courses
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">170<span>+</span></div>
+      <div class="stat-label">
+        <strong>Screenshots Captured</strong>
+        On-failure + checkpoint captures, full-page debug
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">5<span>x</span></div>
+      <div class="stat-label">
+        <strong>Report Formats</strong>
+        Custom HTML · Cucumber · Allure · JSON · Text
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow -->
+  <div class="arch-flow">
+    <div class="arch-step">🧩 Gherkin Feature</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">⚙️ Step Definitions</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">🌐 Playwright Browser</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">📊 Allure + HTML Reports</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-step">🤖 AI-Generated Insights</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Feature Cards -->
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <div class="feature-title">Cross-Browser</div>
+      <div class="feature-desc">Chromium, Firefox & WebKit with mobile viewport emulation support</div>
+      <div class="feature-tag">3 Browsers</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎭</div>
+      <div class="feature-title">BDD Framework</div>
+      <div class="feature-desc">Gherkin scenarios, Scenario Outlines, data-driven tests, tag-based filtering</div>
+      <div class="feature-tag">Cucumber.js</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📐</div>
+      <div class="feature-title">Figma Comparison</div>
+      <div class="feature-desc">Design-fidelity reports with node-level spec comparison via Figma MCP API</div>
+      <div class="feature-tag">92% Accuracy</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title">AI Test Gen</div>
+      <div class="feature-desc">Auto-generate JUnit tests, AEM components & test scenarios via MCP servers</div>
+      <div class="feature-tag">ACS Amplify</div>
+    </div>
+  </div>
+
+  <!-- MCP Row -->
+  <div class="mcp-section">
+    <div class="mcp-label">⬡ Active MCP Servers</div>
+    <div class="mcp-row">
+      <div class="mcp-pill"><div class="mcp-dot"></div> AEM Backend — Component &amp; Servlet Gen</div>
+      <div class="mcp-pill"><div class="mcp-dot blue"></div> AEM JUnit — Test Class Generation</div>
+      <div class="mcp-pill"><div class="mcp-dot orange"></div> EDS — Block Code from Image</div>
+      <div class="mcp-pill"><div class="mcp-dot purple"></div> Figma — Design Fidelity Comparison</div>
+      <div class="mcp-pill"><div class="mcp-dot teal"></div> GitHub — PR Code Review</div>
+    </div>
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottom-bar">
+    <span>EXL FUNCTIONAL AUTOMATION · ADOBE EXPERIENCE LEAGUE</span>
+    <span>github.com/Nandini-Adobe471/EXL_Functional_automation</span>
+    <span class="version">v1.0 · 2026</span>
+  </div>
+</div>
+</body>
+</html>

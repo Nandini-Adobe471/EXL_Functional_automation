@@ -9,7 +9,7 @@ Feature: php validation
      Then the footer should be visible
    
    
-@home-page @search @skip-login
+@home-page-search @search @skip-login
 Scenario: Validate search functionality from home page
   Given user navigates to Experience League home page
   When user enters "Analytics" in the search bar

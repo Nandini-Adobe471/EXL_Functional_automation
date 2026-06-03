@@ -1,0 +1,4054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cucumber Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .chart-box {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .chart-title {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+        header {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 5px solid #4CAF50;
+        }
+        h1 {
+            color: #4CAF50;
+            margin: 0;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .summary-box {
+            flex: 1;
+            margin: 0 10px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .passed {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4CAF50;
+        }
+        .failed {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+        .skipped {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196F3;
+        }
+        .feature {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .feature-header {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .feature-name {
+            margin: 0;
+            color: #333;
+        }
+        .scenario {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .scenario:last-child {
+            border-bottom: none;
+        }
+        .scenario-name {
+            margin-top: 0;
+            color: #333;
+        }
+        .steps {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        .step {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .step-passed::before {
+            content: "✅";
+            margin-right: 10px;
+        }
+        .step-failed::before {
+            content: "❌";
+            margin-right: 10px;
+        }
+        .step-skipped::before {
+            content: "⏭️";
+            margin-right: 10px;
+        }
+        .step-pending::before {
+            content: "⏳";
+            margin-right: 10px;
+        }
+        .error-message {
+            background-color: #ffebee;
+            padding: 10px;
+            border-left: 5px solid #f44336;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .screenshot {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cucumber Test Report</h1>
+        <p>Generated on <span id="report-date"></span></p>
+    </header>
+
+    <div class="summary">
+        <div class="summary-box passed">
+            <h2>Passed</h2>
+            <p id="passed-count">0</p>
+        </div>
+        <div class="summary-box failed">
+            <h2>Failed</h2>
+            <p id="failed-count">0</p>
+        </div>
+        <div class="summary-box skipped">
+            <h2>Skipped</h2>
+            <p id="skipped-count">0</p>
+        </div>
+        <div class="summary-box">
+            <h2>Total</h2>
+            <p id="total-count">0</p>
+        </div>
+    </div>
+
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Test Results Overview</h3>
+            <canvas id="results-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios by Feature</h3>
+            <canvas id="feature-chart"></canvas>
+        </div>
+    </div>
+    
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3 class="chart-title">Step Status Distribution</h3>
+            <canvas id="steps-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 class="chart-title">Scenarios Per Feature</h3>
+            <canvas id="scenarios-chart"></canvas>
+        </div>
+    </div>
+
+    <div id="features-container">
+        <!-- Features will be inserted here by JavaScript -->
+    </div>
+
+    <footer>
+        <p>EXL Automation Report - Powered by Cucumber.js</p>
+    </footer>
+
+    <script>
+        // This script will be replaced with actual data when the report is generated
+        document.getElementById('report-date').textContent = new Date().toLocaleString();
+        
+        // Sample data structure - will be replaced with actual test results
+        const testResults = {
+    "features": [
+        {
+            "name": "Asset Documentation Tabs and Mini TOC Validation",
+            "description": "  As a user of Experience League documentation\n  I want to verify the visibility of tabs and correct display of H2 tags in the mini TOC\n  So that navigation and content structure are correct",
+            "scenarios": [
+                {
+                    "name": "Validate specific tabs block structure on asset ingestion page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user launches the asset ingestion documentation page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "check if the specific tabs block is visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "if tabs block exists, verify it contains tab titles and panels",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "if tabs block exists, verify H2 tags under it are not in mini TOC",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Browse page",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Filter content by type and product and validate first card",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the PHP page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects content type as \"Certification\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects product as \"^Analytics$\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "verify first card displays with selected content type and product tag",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to Analytics and Experience Manager from left rail and verify content cards and pagination",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League browse page filter section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the browse page filters loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects \"Analytics\" from the left rail",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on any button in the browse topic block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "content cards should be loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "pagination should be working properly",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates back to the browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects \"Experience Manager\" from the left rail",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on any button in the browse topic block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "content cards should be loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "pagination should be working properly",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify browse rail and its list items are visible",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the browse page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the browse rail should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the browse rail list items should be visible",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify breadcrumb navigation from browse rail list items",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League browse pagea",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the browse page loads completelya",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on a list item in the browse rail",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the breadcrumb should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the browse breadcrumb",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should navigate back to the browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user sets viewport to mobile size1",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on a list item in the browse rail in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the breadcrumb should be visible in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the browse breadcrumb in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should navigate back to the browse page in mobile view",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Add and remove bookmarks for browse cards",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in to Experience Leaguee",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to browse page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user gets the title of the first card in tabbed-cards-wrapper",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user bookmarks the first card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user navigates to bookmarks page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see the bookmarked card with the same title",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user removes the bookmark from the card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user navigates back to browse page",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Certification Page Validation",
+            "description": "  As a user\n  I want to access the certification page\n  So that I can view certification information",
+            "scenarios": [
+                {
+                    "name": "Verify GET CERTIFIED text is displayed on certification page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League for certification validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to certification home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see \"GET CERTIFIED\" text in the marquee eyebrow",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify marquee-cta button href points to certification.adobe.com",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League for certification validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to certification home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on the marquee-cta button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to certification.adobe.com",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify primary media-wrapper CTA button href points to certifications page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League for certification validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to certification home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on first media-wrapper cta button primary",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user is navigated to certification certifications page",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify secondary media-wrapper CTA button href points to courses page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League for certification validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to certification home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on first media-wrapper cta button secondary",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user is redirected to certification courses page",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Docs page navigation functionality",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Navigate to docs page and click on first cloud solution",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to the docs page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:98:26)"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "all h2 headings should be displayed in mini-toc",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on a link in the mini-toc",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "page should scroll to the respective section",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to docs page and click on first cloud solution in mobile view",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to the docs page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name in mobile view",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:874:26)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to docs page and click on first guide in the guides section",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to the docs page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:98:26)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first li item in the guides",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the guide page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "TOC header should match first item in the cloud solutions list",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on right rail toggle",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "right rail should be hidden with closed",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate article metadata on guide page",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to the docs page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:98:26)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first li item in the guides",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the guide page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the last update date in article metadata should match the meta tag",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the topics in article metadata should match the feature meta tag",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the created for roles in article metadata should match the role meta tag",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Toggle left rail on docs page",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to the docs page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:98:26)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first li item in the guides",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the guide page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "TOC header should match first item in the cloud solutions list",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on left rail toggle",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "left rail should be hidden with closed",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to docs page and interact with table of contents in mobile view",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to the docs page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name in mobile view",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:874:26)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first li item in the guides",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the guide page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see table of contents button",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the table of contents button",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the table of contents dropdown should be expanded",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to guide page, test copy link and bookmark functionality",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in to the system",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:98:26)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first li item in the guides",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the guide page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user extracts the h1 id for later use",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the copy link icon",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "toast success message should be displayed",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on the bookmark icon",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user navigates to the bookmark page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the bookmark page should display a card with the saved h1 title",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Navigate to guide page, test copy link and bookmark functionality in mobile view",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in to the system in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user locates the first cloud solutions block in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the cloud solutions list should be visible in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first item in the cloud solutions list in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the selected solution page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "breadcrumb should be displayed with the clicked item name in mobile view",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"AI documentation and video tutorials\"\u001b[39m\nReceived string:    \u001b[31m\"···········\u001b[39m\n\u001b[31m            DocumentationExperience Cloud···········\u001b[39m\n\u001b[31m        \"\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\docs-navigation.js:874:26)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the first li item in the guides",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should be redirected to the guide page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user extracts the h1 id for later use",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the copy link icon in mobile view",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "toast success message should be displayed",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Events Page Validation",
+            "description": "  As a user\n  I want to access the events page\n  So that I can view upcoming events",
+            "scenarios": [
+                {
+                    "name": "Verify Events page navigation and content after login",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League for events validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on Events link in the navigation menu",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see upcoming events cards",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('.upcoming-event-v2 > .browse-cards-block-content')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"to.be.visible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('.upcoming-event-v2 > .browse-cards-block-content')\u001b[22m\n\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\events.js:42:38)"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "events content should match the upcoming-events.json data",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Footer Fragment Validation",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Validate footer fragment elements across pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for footer validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the footer fragment page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see footer breadcrumb",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see footer item h2 tag texts",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see language selector",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see social media links",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see footer copyright section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the main site",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see the same footer elements on main site",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify all list items in the footer are clickable",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for footer validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the main site",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all list items in the footer should be clickable",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Mobile Search functionality",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Verify only button functionality for subchild in mobile search filter",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the mobile search page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the mobile search icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the filter button in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user checks the mobile \"Experience Manager\" parent checkbox",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all mobile child checkboxes under \"Experience Manager\" should be checked",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the mobile \"only\" button for a subchild",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "only that mobile child should be selected",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "all other mobile children should be unselected",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the mobile parent checkbox should be unchecked",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify multiple filter selection and breadcrumb display in mobile view",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the mobile search page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the mobile search icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the filter button in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user selects \"Certification\" from \"Content Type\" facet in mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user selects \"Analytics\" from \"Product\" facet in mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the close icon in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the breadcrumb list should show \"+ 2\" button",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify clear filter functionality in mobile view",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the mobile search page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the mobile search icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the filter button in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user selects \"Certification\" from \"Content Type\" facet in mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user selects \"Analytics\" from \"Product\" facet in mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the close icon in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the breadcrumb list should show \"+ 2\" button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the clear all filters button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the filter button in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Certification\" checkbox in \"Content Type\" facet should be unchecked",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the \"Analytics\" checkbox in \"Product\" facet should be unchecked",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Navigation Menu Validation",
+            "description": "  As a user\n  I want to verify that all navigation menu items are clickable\n  So that I can navigate to different sections of the application",
+            "scenarios": [
+                {
+                    "name": "Verify all navigation menu items are clickable and navigate to correct URLs",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League for navigation validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user identifies all navigation menu items",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all navigation menu items should be clickable",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "each navigation menu item should navigate to its targeted URL",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Perspective Page",
+            "description": "  As a user\n  I want to filter perspectives by author type\n  So that I can view perspectives authored by Adobe",
+            "scenarios": [
+                {
+                    "name": "Filter perspectives by author type '&nbsp;Adobe' and verify badge",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on PHP page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the perspective page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects author type as \"Adobe\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "verify first card displays with \"By Adobe\" badge",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user sets viewport to mobile size",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user navigates to the perspective page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects author type as \"Adobe\" in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "verify first card displays with \"By Adobe\" badge in mobile view",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate author information consistency across pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for author validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the perspective page for author validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on a card with author information",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user extracts author info text from article marquee",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user navigates to author bio page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "author info from article should match author bio page",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate breadcrumb text matches page heading on redirected page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the perspectives page for breadcrumb validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on a card from the authorable-card data block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the breadcrumb span text should match the page heading on redirected page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user sets viewport to mobile size for breadcrumb validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the breadcrumb span text should match the page heading on redirected page in mobile view",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate mini TOC functionality on perspective article pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for mini TOC validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the perspective page for mini TOC validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on the last card of an authorable card block",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the mini TOC should be checked for visibility",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "if mini TOC is visible verify clicking on TOC items scrolls to respective sections",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "if mini TOC is not visible try another card from next authorable card block",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate card tag matches article tag products on redirected page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for tag validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to the perspective page for tag validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user stores the tag text from a card and clicks it",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the card tag text should match the article tag products on redirected page",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "php validation",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "verify essential UI elements on the home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "I navigate to the Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the header navigation should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the search bar should be visible and enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the marquee section should be displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the footer should be visible",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate search functionality from home page",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters \"Analytics\" in the search bar",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user submits the search",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search results page should display",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[31mTimed out 40000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#query-summary')\n\u001b[32m- Expected string  - 1\u001b[39m\n\u001b[31m+ Received string  + 3\u001b[39m\n\n\u001b[32m- Search Results for\u001b[7m:\u001b[27m Analytics\u001b[39m\n\u001b[31m+\u001b[39m\n\u001b[31m+ \u001b[43m                \u001b[49m\u001b[39m\n\u001b[31m+ \u001b[7m              Results 1-10 of 84,468 for Analytics in 1.31 second\u001b[27mSearch Results for Analytics\u001b[7m1-10 of 84,468\u001b[27m\u001b[39m\nCall log:\n\u001b[2m  - Expect \"to.have.text\" with timeout 40000ms\u001b[22m\n\u001b[2m  - waiting for locator('#query-summary')\u001b[22m\n\u001b[2m    43 × locator resolved to <atomic-query-summary class=\"hydrated\" id=\"query-summary\" data-view=\"desktop\" data-observed=\"true\" data-atomic-loaded=\"true\" data-atomic-rendered=\"true\">…</atomic-query-summary>\u001b[22m\n\u001b[2m       - unexpected value \"\u001b[22m\n\u001b[2m                \u001b[22m\n\u001b[2m              Results 1-10 of 84,468 for Analytics in 1.31 secondSearch Results for Analytics1-10 of 84,468\"\u001b[22m\n\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\php.js:209:32)"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search results should contain items related to \"Analytics\"",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify main navigation links functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on each main navigation link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "each page should load successfully",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "each page should display relevant content",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Validate responsive behavior of home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to EX League home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "viewport size is changed to the following dimensions",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "page layout should adapt appropriately to each viewport",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify home page performance metrics",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League home page to verify performsnce metrics",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "page should load within acceptable time threshold",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "core web vitals should meet performance standards",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "images should be properly optimized",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify Recently viewed block disappears when cookies are disabled",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League application",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the home page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user checks if Recently viewed block is available",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on Cookie preferences in the footer",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user disables cookies in the preferences modal",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user refreshes the page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the Recently viewed block should not be visible",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Bookmark content on Experience League",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on Experience League home",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user bookmarks the first content card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "ensure bookmarked card appears in bookmarks page",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Check and interact with See More Recommendations button",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user checks if See More Recommendations button is available",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks the See More Recommendations button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "waits for additional recommendations to load",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "verifies that See fewer recommendations is displayed",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify recommendation count matches between recs count and recommended content blocks on PHP page",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in to Experience League application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "wait till the page loads completely",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user captures the target recs count from console",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user finds the recommended content blocks count on the page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user verifies the count matches between target recs and recommended content blocks on php page",
+                            "status": "failed",
+                            "error_message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m6\u001b[39m\nReceived: \u001b[31m5\u001b[39m\n    at Proxy.<anonymous> (C:\\EXLAutomationReportEnabled\\node_modules\\playwright\\lib\\matchers\\expect.js:221:24)\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\php.js:878:38)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify interests from customize learning appear as pills on home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in to Experience League",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on customize learning link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see element with class user-interests",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see interests separated by pipe symbol",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates back to home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "interests should be visible as pills in responsive pill list",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Search functionality",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Verify secondary search functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for search validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user verifies secondary search is visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks in the search input and presses enter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search result page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "header search is not visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "all filters in the left side are expanded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search results are displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "sort by option is displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "result header contains columns \"Name, Content Type, Product, Updated\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates back to home page for search testing",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search bar in header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search picker should have text \"All\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks in the search input and presses enter again",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search result page again",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search functionality in mobile view",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and lands on the home page for mobile search validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user changes viewport to mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search icon in mobile view should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search icon in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search result page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates back to home page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user checks if secondary search is visible in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on the secondary search icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search result page in mobile view again",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify pagination and results per page functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user logs in and navigates to search page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search results are displayed with pagination",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "default results per page should be \"10\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user changes results per page to \"25\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "number of results displayed should be \"25\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to page \"2\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "page \"2\" should be active in pagination",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker navigation functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "dropdown should open with list of values",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to \"docs/home-tutorials\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker should show \"Tutorials\"",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker navigation functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "dropdown should open with list of values",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to \"docs\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker should show \"Documentation\"",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker navigation functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "dropdown should open with list of values",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to \"events\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker should show \"Events\"",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker navigation functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "dropdown should open with list of values",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to \"certification-home\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker should show \"Certification\"",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker navigation functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "dropdown should open with list of values",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to \"playlists\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker should show \"Playlists\"",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker navigation functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "dropdown should open with list of values",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user navigates to \"perspectives\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker should show \"Perspectives\"",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search content type from different pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to \"docs/home-tutorials\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search input",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters \"experience\" and presses enter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search results should contain content type \"Tutorial\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "content type filter should have \"Tutorial\" selected",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search content type from different pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to \"docs\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search input",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters \"experience\" and presses enter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search results should contain content type \"Documentation\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "content type filter should have \"Documentation\" selected",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search content type from different pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to \"certification-home\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search input",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters \"experience\" and presses enter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search results should contain content type \"Certification\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "content type filter should have \"Certification\" selected",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search content type from different pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to \"playlists\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search input",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters \"experience\" and presses enter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search results should contain content type \"Playlist\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "content type filter should have \"Playlist\" selected",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search content type from different pages",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to \"perspectives\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search input",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters \"experience\" and presses enter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should land on search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "search results should contain content type \"Perspective\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "content type filter should have \"Perspective\" selected",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Only button selects only that child facet",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the search results page for only facet test",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user checks the \"Experience Manager\" parent checkbox for only facet test",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child checkboxes under \"Experience Manager\" should be checked for only facet test",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user hovers over a child facet",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the only button should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks the only button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "only that child should be selected",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "all other children should be unselected",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the parent checkbox should be unchecked",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Parent checkbox controls child checkboxes",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user checks the \"Experience Manager\" parent checkbox",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child checkboxes under \"Experience Manager\" should be checked",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child elements in atomic-breadbox should display with pattern \"Product:Experience Manager | child name\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user unchecks the first child under \"Experience Manager\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the unchecked child should not appear in the breadcrumb",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Experience Manager\" parent checkbox should be unchecked",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Removing breadcrumb element unchecks corresponding facet",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user checks the \"Experience Manager\" parent checkbox",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child checkboxes under \"Experience Manager\" should be checked",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child elements in atomic-breadbox should display with pattern \"Product:Experience Manager | child name\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user removes a breadcrumb element",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the corresponding facet should be unchecked",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Filter selection in mobile view",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user changes viewport to mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the search icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the mobile filter button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user checks the \"Experience Manager\" parent checkbox",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child checkboxes under \"Experience Manager\" should be checked",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Parent checkbox controls child checkboxes in mobile view",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the search results page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user changes viewport to mobile",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the search icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the mobile filter button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user checks the \"Experience Manager\" parent checkbox",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child checkboxes under \"Experience Manager\" should be checked",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all child elements in atomic-breadbox should display with pattern \"Product:Experience Manager | child name\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user unchecks the first child under \"Experience Manager\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the unchecked child should not appear in the breadcrumb",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Experience Manager\" parent checkbox should be unchecked",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search facets are alphabetically ordered",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to search page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "facet items in \"facetRole\" should be alphabetically ordered",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "facet items in \"facetContentType\" should be alphabetically ordered",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "facet items in \"facetProduct\" should be alphabetically ordered",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify multiple facet selection and breadcrumb display",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to search page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects \"Experience Manager\" from \"Product\" facet",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects \"Documentation\" from \"Content Type\" facet",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all selected facets should appear in the breadcrumb list",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify multiple facet selection and breadcrumb display on mobile",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to search page in mobile view",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects \"Experience Manager\" from \"Product\" facet",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects \"Documentation\" from \"Content Type\" facet",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on close icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "all selected facets should appear in the breadcrumb list",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify search picker dropdown shows checkmark against selected values",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to home page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on search picker button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "search picker dropdown should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "a checkmark should be displayed against \"All\" in search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects \"Documentation\" from search picker dropdown",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "a checkmark should be displayed against \"Documentation\" in search picker",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects \"All\" from search picker dropdown",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "a checkmark should be displayed against \"All\" in search picker",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Sign-Up modal validation",
+            "description": "",
+            "scenarios": [
+                {
+                    "name": "Complete sign-up process validation",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage for signup validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on sign in button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see create account link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on create account link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "create account page should be displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters a unique email address",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters a unique password",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on continue button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see the personal information form",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters first name as \"Functional\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters last name as \"Automation\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects birth month as \"May\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters birth year as \"1990\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on create account button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see account created successfully",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "account details should match entered information",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see role selection section with \"Business User\" selected by default",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects \"Developer\" role from user roles section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects \"Administrator\" role from user roles section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on next button in role selection section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see the product interests form",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects 5 random interests",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on next button in interests section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see selected roles in profile card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see selected interests in profile card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on complete button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "home page should load",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on customize your learning link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user role in profile settings should match selected roles",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user interests in profile settings should match selected interests",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Complete sign-up process validation on mobile",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League homepage for signup validation",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user sets viewport to mobile size for signup",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on sign in button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see create account link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on create account link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "create account page should be displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters a unique email address",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters a unique password",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on continue button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see the personal information form",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user enters first name as \"Functional\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters last name as \"Automation\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects birth month as \"May\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user enters birth year as \"1990\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on create account button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see account created successfully",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "account details should match entered information",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see role selection section with \"Business User\" selected by default",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects \"Developer\" role from user roles section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user selects \"Administrator\" role from user roles section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on next button in role selection section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see the product interests form",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user selects 5 random interests",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user clicks on next button in interests section",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see selected roles in profile card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user should see selected interests in profile card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on complete button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "home page should load",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on customize your learning link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user role in profile settings should match selected roles",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "user interests in profile settings should match selected interests",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Slides Functionality",
+            "description": "  As a user\n  I want to use the slides feature\n  So that I can navigate through step-by-step content",
+            "scenarios": [
+                {
+                    "name": "Verify slides controls and functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the slides page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the slides page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the controls div should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the next button should be enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the previous button should be disabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the audio should be muted",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the autoplay should be enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the step label should display \"Step 1 of\" text",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the slides test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify expand all steps functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the slides page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the slides page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the step label should display \"Step 1 of\" text",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the expand all steps button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the number of active steps should equal the total steps",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "each active step should have the correct step label",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "each active step should have a copy link icon",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the slides test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify view as slides functionality after expanding",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the slides page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the slides page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the expand all steps button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the view as slides button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the controls bar should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the slides test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify navigation and copy link functionality",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the slides page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the slides page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user clicks on the next button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the previous button should be enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the step label value is captured",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the copy link",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the copied link is opened in a new window",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the step label in the new window should match the captured value",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the slides test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify slides functionality in mobile view",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user navigates to the slides page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user sets the viewport to mobile size for slides",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the slides page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the view as slides button should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the controls div should not be visible",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Tutorials Page Validation",
+            "description": "  As a user\n  I want to access the tutorials page\n  So that I can view available tutorials",
+            "scenarios": [
+                {
+                    "name": "Verify Tutorials breadcrumb is displayed on tutorials page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user navigates to Experience League tutorials page",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "user should see \"Tutorials\" in the breadcrumb navigation",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Video Clips Visibility",
+            "description": "  As a user\n  I want to see the \"Keep learning with video clips\" section after login\n  So that I can access video clip content and use the miniplayer functionality",
+            "scenarios": [
+                {
+                    "name": "Verify \"Keep learning with video clips\" section is visible after login",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the video clip card should have \"Video Clip\" in the banner",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the first video clip card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video clip content should open",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify miniplayer functionality for video clips",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the first video clip card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video clip content should open",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the activate miniplayer button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the miniplayer should be activated",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify expand video player functionality from miniplayer mode",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the first video clip card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video clip content should open",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the activate miniplayer button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the miniplayer should be activated",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the expand video player button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the MPC player should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the play button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video should be playing",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify close player functionality from miniplayer mode",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the first video clip card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video clip content should open",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the activate miniplayer button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the miniplayer should be activated",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the expand video player button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the MPC player should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the play button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video should be playing",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the close player button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the MPC player should not be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify watch full video button opens in a new window",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the first video clip card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video clip content should open",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the watch full video button",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "a new window should open with the full video",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify video clip player on mobile devices",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user sets the viewport to mobile size for video clips",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the first video clip card",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the video clip content should open",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the activate miniplayer button should not be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "only the close player button should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify test fails when video clips section is not visible",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the \"Keep learning with video clips\" header is not visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the test should fail with \"Video clips not visible\" message",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot of the error state",
+                            "status": "passed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify \"See more recommendations\" button functionality",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the \"See more recommendations\" button should be visible",
+                            "status": "failed",
+                            "error_message": "page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('div.recommended-content[data-block-name=\"recommended-content\"] div.recommended-content-see-more-btn button') to be visible\u001b[22m\n\u001b[2m    14 × locator resolved to 5 elements. Proceeding with the first one: <button>See more recommendations</button>\u001b[22m\n\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\video-clips.js:590:21)"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user clicks on the \"See more recommendations\" button",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the button text should change to \"See fewer recommendations\"",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "more video clip cards should be displayed",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "skipped"
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify bookmark icon is not visible in video clip cards",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "the user logs in to the application with valid credentials",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "the user modifies the URL to append \"?adobeQA=videoClips\"",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the page is fully loaded",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the \"Keep learning with video clips\" header should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "there should be at least one video clip card displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the bookmark icon should not be visible in video clip cards",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "And",
+                            "text": "the test should capture a screenshot for evidence",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
+        
+        function renderReport(data) {
+            const featuresContainer = document.getElementById('features-container');
+            let passedCount = 0;
+            let failedCount = 0;
+            let skippedCount = 0;
+            let totalCount = 0;
+            
+            // For step status chart
+            let passedSteps = 0;
+            let failedSteps = 0;
+            let skippedSteps = 0;
+            let pendingSteps = 0;
+            
+            // For feature chart
+            const featureData = {};
+            
+            data.features.forEach(feature => {
+                const featureElement = document.createElement('div');
+                featureElement.className = 'feature';
+                
+                const featureHeader = document.createElement('div');
+                featureHeader.className = 'feature-header';
+                featureHeader.innerHTML = `<h2 class="feature-name">${feature.name}</h2>`;
+                
+                featureElement.appendChild(featureHeader);
+                
+                // Initialize feature data for charts
+                if (!featureData[feature.name]) {
+                    featureData[feature.name] = {
+                        total: 0,
+                        passed: 0,
+                        failed: 0,
+                        skipped: 0
+                    };
+                }
+                
+                feature.scenarios.forEach(scenario => {
+                    totalCount++;
+                    featureData[feature.name].total++;
+                    
+                    if (scenario.status === 'passed') {
+                        passedCount++;
+                        featureData[feature.name].passed++;
+                    }
+                    else if (scenario.status === 'failed') {
+                        failedCount++;
+                        featureData[feature.name].failed++;
+                    }
+                    else {
+                        skippedCount++;
+                        featureData[feature.name].skipped++;
+                    }
+                    
+                    const scenarioElement = document.createElement('div');
+                    scenarioElement.className = `scenario scenario-${scenario.status}`;
+                    
+                    let scenarioContent = `<h3 class="scenario-name">${scenario.name}</h3>`;
+                    scenarioContent += '<ul class="steps">';
+                    
+                    scenario.steps.forEach(step => {
+                        scenarioContent += `<li class="step step-${step.status}">${step.keyword} ${step.text}</li>`;
+                        
+                        // Count steps by status for chart
+                        if (step.status === 'passed') passedSteps++;
+                        else if (step.status === 'failed') failedSteps++;
+                        else if (step.status === 'skipped') skippedSteps++;
+                        else if (step.status === 'pending') pendingSteps++;
+                        
+                        if (step.status === 'failed' && step.error_message) {
+                            scenarioContent += `<div class="error-message">${step.error_message}</div>`;
+                        }
+                        
+                        // Screenshots are disabled as per user request
+                    });
+                    
+                    scenarioContent += '</ul>';
+                    scenarioElement.innerHTML = scenarioContent;
+                    featureElement.appendChild(scenarioElement);
+                });
+                
+                featuresContainer.appendChild(featureElement);
+            });
+            
+            document.getElementById('passed-count').textContent = passedCount;
+            document.getElementById('failed-count').textContent = failedCount;
+            document.getElementById('skipped-count').textContent = skippedCount;
+            document.getElementById('total-count').textContent = totalCount;
+            
+            // Render charts
+            renderResultsChart(passedCount, failedCount, skippedCount);
+            renderFeatureChart(featureData);
+            renderStepsChart(passedSteps, failedSteps, skippedSteps, pendingSteps);
+            renderScenariosPerFeatureChart(featureData);
+        }
+        
+        function renderResultsChart(passed, failed, skipped) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped'],
+                    datasets: [{
+                        data: [passed, failed, skipped],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const passedData = featureNames.map(name => featureData[name].passed);
+            const failedData = featureNames.map(name => featureData[name].failed);
+            const skippedData = featureNames.map(name => featureData[name].skipped);
+            
+            const ctx = document.getElementById('feature-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [
+                        {
+                            label: 'Passed',
+                            data: passedData,
+                            backgroundColor: '#4CAF50',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Failed',
+                            data: failedData,
+                            backgroundColor: '#f44336',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Skipped',
+                            data: skippedData,
+                            backgroundColor: '#2196F3',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderStepsChart(passed, failed, skipped, pending) {
+            const ctx = document.getElementById('steps-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped', 'Pending'],
+                    datasets: [{
+                        data: [passed, failed, skipped, pending],
+                        backgroundColor: ['#4CAF50', '#f44336', '#2196F3', '#FFC107'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderScenariosPerFeatureChart(featureData) {
+            const featureNames = Object.keys(featureData);
+            const scenarioCounts = featureNames.map(name => featureData[name].total);
+            
+            const ctx = document.getElementById('scenarios-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: featureNames,
+                    datasets: [{
+                        label: 'Number of Scenarios',
+                        data: scenarioCounts,
+                        backgroundColor: '#9C27B0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // This will be replaced with actual data when the report is generated
+        renderReport(testResults);
+    </script>
+</body>
+</html>

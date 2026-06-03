@@ -1,5 +1,6 @@
 const { Before, After, Status } = require('@cucumber/cucumber');
 const { performLogin } = require('../commonFunctions/login');
+const { closeBrowser } = require('../commonFunctions/launchbrowser');
 
 // Before hook to perform login before each scenario
 // Skip login for scenarios that already handle login
@@ -33,5 +34,23 @@ After(async function(scenario) {
     } catch (error) {
       console.error('Error capturing screenshot:', error.message);
     }
+  }
+});
+
+// Close browser after each scenario completes
+After(async function() {
+  try {
+    // Only close the browser if it exists and if keepBrowserOpen flag is not set
+    if (this.browser && !this.keepBrowserOpen) {
+      console.log('Closing browser after scenario');
+      await closeBrowser(this.browser);
+      console.log('Browser closed successfully');
+    } else if (this.keepBrowserOpen) {
+      console.log('Browser kept open as requested by scenario');
+      // Reset the flag for the next scenario
+      this.keepBrowserOpen = false;
+    }
+  } catch (error) {
+    console.error('Error closing browser:', error.message);
   }
 });

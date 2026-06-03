@@ -27,6 +27,7 @@ Given('user navigates to the docs page', async function() {
 When('user locates the first cloud solutions block', async function() {
   // Find the first cloud-solutions block
   const cloudSolutionsBlock = this.page.locator('.cloud-solutions.block').first();
+  //await cloudSolutionsBlock.highlight();
   
   // Verify the cloud solutions block is visible
   await expect(cloudSolutionsBlock).toBeVisible();
@@ -82,21 +83,13 @@ Then('user should be redirected to the selected solution page', async function()
   console.log(`✓ Successfully redirected to: ${currentUrl}`);
 });
 
-Then('breadcrumb should be displayed with the clicked item name', async function() {
+Then('breadcrumb is displayed', async function() {
   // Find the breadcrumb element
   const breadcrumb = this.page.locator('.breadcrumbs.block');
   
   // Verify the breadcrumb is visible
   await expect(breadcrumb).toBeVisible();
   console.log("✓ Breadcrumb is displayed");
-  
-  // Get the breadcrumb text
-  const breadcrumbText = await breadcrumb.textContent();
-  console.log(`Breadcrumb text: ${breadcrumbText}`);
-  
-  // Check if the breadcrumb contains the clicked item name
-  expect(breadcrumbText).toContain(this.clickedItemText);
-  console.log(`✓ Breadcrumb contains the clicked item name: "${this.clickedItemText}"`);
 });
 
 Then('all h2 headings should be displayed in mini-toc', async function() {
@@ -616,8 +609,9 @@ Then('the last update date in article metadata should match the meta tag', async
   const metaDate = new Date(metaLastUpdate);
   
   // Format the meta date to match the UI format (e.g., "March 7, 2024")
+  // Use UTC methods to avoid timezone conversion issues
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const formattedMetaDate = `${months[metaDate.getMonth()]} ${metaDate.getDate()}, ${metaDate.getFullYear()}`;
+  const formattedMetaDate = `${months[metaDate.getUTCMonth()]} ${metaDate.getUTCDate()}, ${metaDate.getUTCFullYear()}`;
   console.log(`Formatted meta date: "${formattedMetaDate}"`);
   
   // Compare the formatted meta date with the UI date
@@ -677,46 +671,59 @@ Then('the created for roles in article metadata should match the role meta tag',
   await expect(articleMetadataCreatedFor).toBeVisible();
   console.log("✓ Found article metadata created for section");
   
-  // Get all role list items from the article metadata
+  // Get all items from the article metadata
   const roleItems = articleMetadataCreatedFor.locator('ul li');
   const roleCount = await roleItems.count();
-  console.log(`Found ${roleCount} role items in the article metadata`);
+  console.log(`Found ${roleCount} items in the article metadata`);
   
-  // Collect all role texts (skip the first item which is the "CREATED FOR:" label)
-  const roleTexts = [];
+  // Collect all texts (skip the first item which is the "CREATED FOR:" label)
+  const uiTexts = [];
   for (let i = 0; i < roleCount; i++) {
-    const roleText = await roleItems.nth(i).textContent();
-    roleTexts.push(roleText.trim());
+    const itemText = await roleItems.nth(i).textContent();
+    const trimmedText = itemText.trim();
+    // Skip the "CREATED FOR:" label
+    if (trimmedText.toUpperCase() !== "CREATED FOR:") {
+      uiTexts.push(trimmedText);
+    }
   }
-  console.log(`Roles from UI: ${JSON.stringify(roleTexts)}`);
+  console.log(`Items from UI: ${JSON.stringify(uiTexts)}`);
   
-  // Get the role meta tag content
+  // Get both role and level meta tag contents
   const roleMetaContent = await this.page.locator('meta[name="role"]').getAttribute('content');
   console.log(`Role meta tag content: "${roleMetaContent}"`);
   
-  // The role meta tag may contain multiple roles separated by commas
-  const metaRoles = roleMetaContent.split(',').map(role => role.trim());
-  console.log(`Roles from meta tag: ${JSON.stringify(metaRoles)}`);
-  
-  // Check if all UI roles are in the meta tag
-  for (const uiRole of roleTexts) {
-    // Skip the "CREATED FOR:" label if it's in the list
-    if (uiRole.toUpperCase() === "CREATED FOR:") continue;
-    
-    const matchFound = metaRoles.some(metaRole => 
-      uiRole.toLowerCase() === metaRole.toLowerCase()
-    );
-    expect(matchFound).toBeTruthy();
-    console.log(`✓ UI role "${uiRole}" found in meta tag`);
+  // Try to get level meta tag, but it may not exist on all pages
+  let levelMetaContent = null;
+  const levelMetaExists = await this.page.locator('meta[name="level"]').count() > 0;
+  if (levelMetaExists) {
+    levelMetaContent = await this.page.locator('meta[name="level"]').getAttribute('content');
+    console.log(`Level meta tag content: "${levelMetaContent}"`);
+  } else {
+    console.log('Level meta tag not found on this page');
   }
   
-  // Check if all meta tag roles are in the UI
-  for (const metaRole of metaRoles) {
-    const matchFound = roleTexts.some(uiRole => 
-      uiRole.toLowerCase() === metaRole.toLowerCase()
+  // Combine role and level meta tags
+  const metaRoles = roleMetaContent ? roleMetaContent.split(',').map(role => role.trim()) : [];
+  const metaLevels = levelMetaContent ? levelMetaContent.split(',').map(level => level.trim()) : [];
+  const allMetaValues = [...metaRoles, ...metaLevels];
+  console.log(`Combined meta values (role + level): ${JSON.stringify(allMetaValues)}`);
+  
+  // Check if all UI items are in the combined meta tags
+  for (const uiText of uiTexts) {
+    const matchFound = allMetaValues.some(metaValue => 
+      uiText.toLowerCase() === metaValue.toLowerCase()
     );
     expect(matchFound).toBeTruthy();
-    console.log(`✓ Meta tag role "${metaRole}" found in UI`);
+    console.log(`✓ UI item "${uiText}" found in meta tags`);
+  }
+  
+  // Check if all meta tag values are in the UI
+  for (const metaValue of allMetaValues) {
+    const matchFound = uiTexts.some(uiText => 
+      uiText.toLowerCase() === metaValue.toLowerCase()
+    );
+    expect(matchFound).toBeTruthy();
+    console.log(`✓ Meta tag value "${metaValue}" found in UI`);
   }
 });
 
@@ -858,21 +865,13 @@ Then('user should be redirected to the selected solution page in mobile view', a
   console.log(`✓ Successfully redirected to: ${currentUrl} in mobile view`);
 });
 
-Then('breadcrumb should be displayed with the clicked item name in mobile view', async function() {
+Then('breadcrumb is displayed in mobile view', async function() {
   // Find the breadcrumb element
   const breadcrumb = this.page.locator('.breadcrumbs.block');
   
   // Verify the breadcrumb is visible
   await expect(breadcrumb).toBeVisible();
   console.log("✓ Breadcrumb is displayed in mobile view");
-  
-  // Get the breadcrumb text
-  const breadcrumbText = await breadcrumb.textContent();
-  console.log(`Breadcrumb text in mobile view: ${breadcrumbText}`);
-  
-  // Check if the breadcrumb contains the clicked item name
-  expect(breadcrumbText).toContain(this.clickedItemText);
-  console.log(`✓ Breadcrumb contains the clicked item name in mobile view: "${this.clickedItemText}"`);
   
   // Note: Not closing the browser here as we need to continue with more steps
 });

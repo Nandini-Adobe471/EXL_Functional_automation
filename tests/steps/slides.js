@@ -703,26 +703,7 @@ Then('the controls div should not be visible', async function() {
   }
 });
 
-When('the user sets the viewport to mobile size', async function() {
-  // Set viewport to a common mobile device size (e.g., iPhone 12)
-  await this.page.setViewportSize({ width: 390, height: 844 });
-  
-  // Wait for the page to adjust to the new viewport size
-  await this.page.waitForTimeout(1000);
-  
-  // Reload the page after changing viewport
-  await this.page.reload();
-  
-  // Wait for the page to reload
-  await this.page.waitForTimeout(2000);
-  
-  // Take a screenshot after changing viewport and reloading
-  await this.page.screenshot({ path: 'mobile-viewport.png' });
-  
-  console.log('✓ Viewport set to mobile size: 390x844 and page reloaded');
-});
-
-// Add a more specific step definition for slides feature to avoid ambiguity
+// Step definition for slides feature to set mobile viewport
 When('the user sets the viewport to mobile size for slides', async function() {
   // Set viewport to a common mobile device size (e.g., iPhone 12)
   await this.page.setViewportSize({ width: 390, height: 844 });

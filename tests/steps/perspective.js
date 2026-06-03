@@ -12,7 +12,7 @@ Given('user logs in and lands on PHP page', async function() {
   // Use the common login function to log in
   await performLogin(this);
   // Wait for the page to fully load after login
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(8000);
 });
 
 When('user navigates to the perspective page', async function() {
@@ -35,8 +35,10 @@ When('user selects author type as {string}', async function(authorType) {
   
   // Wait for dropdown to appear and select the author type
   const authorOption = this.page.locator('main').getByText(authorType, { exact: true });
+  await authorOption.highlight();
   await authorOption.waitFor({ state: 'visible' });
-  await authorOption.click();
+  await authorOption.first().click();
+  //await this.page.waitForTimeout(10000);
  // await this.page.locator('form').getByText(authorType).click();
  //await page.getByRole('main').getByText('Adobe', { exact: true }).click();
   //await this.page.waitForTimeout(2000);
@@ -50,7 +52,7 @@ When('user selects author type as {string}', async function(authorType) {
 
 Then('verify first card displays with {string} badge', async function(badgeText) {
   // Get the first perspective card
-  const firstCard = this.page.locator('.browse-card-content').first();
+  const firstCard = this.page.locator('.browse-filters .browse-card-content').first();
   await firstCard.waitFor({ state: 'visible' });
   
   // Get the author badge from the first card
@@ -59,6 +61,7 @@ Then('verify first card displays with {string} badge', async function(badgeText)
   
   // Get the badge text
   const badgeContent = await authorBadge.textContent();
+  console.log(`Badge content: ${badgeContent.trim()}`);
   
   // Verify that the badge contains the expected text
   expect(badgeContent.trim()).toContain(badgeText);
@@ -129,7 +132,7 @@ When('user selects author type as {string} in mobile view', async function(autho
 
 Then('verify first card displays with {string} badge in mobile view', async function(badgeText) {
   // Get the first perspective card in mobile view
-  const firstCard = this.page.locator('.browse-card-content').first();
+  const firstCard = this.page.locator('.browse-filters .browse-card-content').first();
   await firstCard.waitFor({ state: 'visible' });
   
   // Get the author badge from the first card
@@ -653,10 +656,10 @@ Given('user logs in and lands on the home page', async function() {
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto(`${ENV.URL}`);
+  //await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to fully load after login
-  await this.page.waitForTimeout(4000);
+  await this.page.waitForTimeout(8000);
   
   // Verify we're on the home page
   //await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
@@ -665,6 +668,7 @@ Given('user logs in and lands on the home page', async function() {
 
 When('user navigates to the perspectives page for breadcrumb validation', async function() {
   // Navigate directly to the perspectives page
+   //await this.page.waitForTimeout(4000);
   await this.page.goto(`${ENV.URL}/perspectives`);
   
   // Wait for the page to load completely
@@ -710,7 +714,28 @@ When('user clicks on a card from the authorable-card data block', async function
             
             // Click the card
             await card.click();
+            console.log('Card clicked, waiting for page to load...');
+            
+            // Wait for navigation and page to load
             await this.page.waitForTimeout(2000);
+            
+            // Wait specifically for breadcrumb to be visible
+            const breadcrumbSelectors = ['.breadcrumb', '.breadcrumbs', 'nav[aria-label="Breadcrumb"]'];
+            let breadcrumbLoaded = false;
+            
+            for (const selector of breadcrumbSelectors) {
+              const breadcrumb = this.page.locator(selector);
+              if (await breadcrumb.isVisible().catch(() => false)) {
+                console.log(`✓ Breadcrumb loaded with selector: ${selector}`);
+                breadcrumbLoaded = true;
+                break;
+              }
+            }
+            
+            if (!breadcrumbLoaded) {
+              console.log('Waiting additional time for breadcrumb to load...');
+              await this.page.waitForTimeout(2000);
+            }
             
             // Store the current URL for later verification
             this.cardPageUrl = this.page.url();
@@ -852,7 +877,7 @@ Then('the breadcrumb span text should match the page heading on redirected page'
     console.log('Checking if breadcrumb span text matches page heading');
     
     // Wait for the page to load completely
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForTimeout(3000);
     
     // Find the page heading (h1)
     const heading = this.page.locator('h1').first();
@@ -884,21 +909,89 @@ Then('the breadcrumb span text should match the page heading on redirected page'
     
     expect(breadcrumbFound).toBeTruthy();
     
-    // Find the last span in the breadcrumb (current page)
+    // Wait a bit more to ensure breadcrumb content is fully loaded
+    await this.page.waitForTimeout(1000);
+    
+    // Get the full breadcrumb text
+    const breadcrumbText = await breadcrumbElement.textContent();
+    console.log(`Full breadcrumb text: "${breadcrumbText.trim()}"`);
+    
+    // The breadcrumb structure has spans - get all spans
     const breadcrumbSpans = breadcrumbElement.locator('span');
+    
+    // Wait for spans to be attached to DOM
+    await breadcrumbSpans.first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {
+      console.log('Warning: Could not wait for spans to be attached');
+    });
+    
     const spanCount = await breadcrumbSpans.count();
-    const lastSpan = breadcrumbSpans.nth(spanCount - 1);
-    const spanText = await lastSpan.textContent();
-    console.log(`Last breadcrumb span text: ${spanText.trim()}`);
+    console.log(`Found ${spanCount} span elements in breadcrumb`);
+    
+    // The last span should contain the current page title
+    let lastBreadcrumbText = '';
+    if (spanCount > 0) {
+      const lastSpan = breadcrumbSpans.nth(spanCount - 1);
+      
+      // Wait for the last span to be visible and have text
+      await lastSpan.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {
+        console.log('Warning: Last span not visible within timeout');
+      });
+      
+      lastBreadcrumbText = await lastSpan.textContent();
+      console.log(`Last span text: "${lastBreadcrumbText.trim()}"`);
+      
+      // If last span is empty, try getting text from title attribute
+      if (!lastBreadcrumbText || lastBreadcrumbText.trim() === '') {
+        console.log('Last span text is empty, trying title attribute');
+        const titleAttr = await lastSpan.getAttribute('title');
+        if (titleAttr) {
+          lastBreadcrumbText = titleAttr;
+          console.log(`Got text from title attribute: "${lastBreadcrumbText}"`);
+        }
+      }
+    } else {
+      // Fallback: if no spans, use the full breadcrumb text
+      console.log('No spans found, using full breadcrumb text');
+      lastBreadcrumbText = breadcrumbText;
+    }
+    
+    // If still empty, try alternative approaches
+    if (!lastBreadcrumbText || lastBreadcrumbText.trim() === '') {
+      console.log('Breadcrumb text is empty, trying alternative approach');
+      
+      // Try getting text after the link
+      const breadcrumbLinks = breadcrumbElement.locator('a');
+      const linkCount = await breadcrumbLinks.count();
+      console.log(`Found ${linkCount} links in breadcrumb`);
+      
+      if (linkCount > 0) {
+        // Get full breadcrumb text and remove all link texts
+        let remainingText = breadcrumbText;
+        for (let i = 0; i < linkCount; i++) {
+          const linkText = await breadcrumbLinks.nth(i).textContent();
+          remainingText = remainingText.replace(linkText, '');
+        }
+        lastBreadcrumbText = remainingText.trim();
+        console.log(`Text after removing links: "${lastBreadcrumbText}"`);
+      }
+    }
     
     // Compare the texts (ignoring case, whitespace, and special characters)
     const normalizedHeadingText = headingText.trim().toLowerCase().replace(/[^\w\s]/g, '');
-    const normalizedSpanText = spanText.trim().toLowerCase().replace(/[^\w\s]/g, '');
+    const normalizedBreadcrumbText = lastBreadcrumbText.trim().toLowerCase().replace(/[^\w\s]/g, '');
     
-    expect(normalizedSpanText).toContain(normalizedHeadingText) || 
-    expect(normalizedHeadingText).toContain(normalizedSpanText);
+    console.log(`Normalized h1 heading: "${normalizedHeadingText}"`);
+    console.log(`Normalized breadcrumb: "${normalizedBreadcrumbText}"`);
     
-    console.log("✓ Breadcrumb span text matches page heading");
+    // Check if the breadcrumb text contains the heading text
+    if (normalizedBreadcrumbText.length > 0) {
+      expect(normalizedBreadcrumbText).toContain(normalizedHeadingText);
+      console.log("✓ Breadcrumb span text matches page heading");
+    } else {
+      console.error('Breadcrumb text is still empty after all attempts');
+      await this.page.screenshot({ path: 'breadcrumb-empty-error.png' });
+      throw new Error('Breadcrumb text is empty - unable to validate against page heading');
+    }
     
   } catch (error) {
     console.error(`Error checking breadcrumb and heading: ${error.message}`);
@@ -1035,7 +1128,7 @@ Given('user logs in and lands on the home page for mini TOC validation', async f
   await performLogin(this);
   
   // Navigate to the home page
-  await this.page.goto(`${ENV.URL}`);
+  //await this.page.goto(`${ENV.URL}`);
   
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
@@ -1462,6 +1555,291 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
       await closeBrowser(this.browser);
     }
     
+    throw error;
+  }
+});
+
+Given('user logs in and lands on the home page for all cards mini TOC validation', async function() {
+  // Launch browser
+  const result = await launchBrowser();
+  this.page = result.page;
+  this.browser = result.browser;
+  this.context = result.context;
+
+  // Use the common login function to log in
+  await performLogin(this);
+
+  // Wait for the page to fully load after login
+  await this.page.waitForTimeout(4000);
+
+  console.log("✓ Successfully logged in and landed on the home page for all cards mini TOC validation");
+});
+
+When('user navigates to the perspectives listing page', async function() {
+  // Navigate directly to the perspectives page
+  await this.page.goto(`${ENV.URL}/perspectives`);
+
+  // Wait for the page to load completely
+  await this.page.waitForTimeout(4000);
+
+  // Wait for the perspective cards to load
+  await this.page.waitForSelector('.browse-card-content', { state: 'visible', timeout: 30000 });
+
+  console.log("✓ Successfully navigated to the perspectives listing page");
+});
+
+Then('for each perspective card link user validates mini TOC presence based on heading count', async function() {
+  try {
+    console.log('Starting mini TOC validation for all perspective card links');
+
+    // Collect all anchor links from the main content area, excluding header and footer
+    const mainContent = this.page.locator('main');
+    const allLinks = await mainContent.locator('a[href]').all();
+
+    // Build a deduplicated list of perspective article URLs
+    const perspectiveLinks = [];
+    const seenHrefs = new Set();
+
+    for (const link of allLinks) {
+      const href = await link.getAttribute('href').catch(() => null);
+      if (!href) continue;
+
+      // Build absolute URL
+      let absoluteUrl = href;
+      if (href.startsWith('/')) {
+        const baseUrl = ENV.URL.replace(/\/en$/, '');
+        absoluteUrl = `${baseUrl}${href}`;
+      } else if (!href.startsWith('http')) {
+        continue;
+      }
+
+      // Only include perspective article pages, skip the listing page itself and duplicates
+      if (
+        absoluteUrl.includes('/perspectives/') &&
+        !absoluteUrl.endsWith('/perspectives') &&
+        !absoluteUrl.endsWith('/perspectives/') &&
+        !absoluteUrl.includes('#') &&
+        !seenHrefs.has(absoluteUrl)
+      ) {
+        seenHrefs.add(absoluteUrl);
+        perspectiveLinks.push(absoluteUrl);
+      }
+    }
+
+    console.log(`Found ${perspectiveLinks.length} unique perspective article links to validate`);
+
+    if (perspectiveLinks.length === 0) {
+      console.log('No perspective article links found. Test cannot proceed.');
+      throw new Error('No perspective article links found on the perspectives page.');
+    }
+
+    const results = [];
+
+    for (let i = 0; i < perspectiveLinks.length; i++) {
+      const articleUrl = perspectiveLinks[i];
+      console.log(`\n[${i + 1}/${perspectiveLinks.length}] Navigating to: ${articleUrl}`);
+
+      // Wrap each individual page check in try/catch so one failure never stops the loop
+      try {
+        // Navigate to the article page
+        await this.page.goto(articleUrl, { timeout: 30000 });
+
+        // Wait for page to load
+        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForTimeout(3000);
+
+        const currentUrl = this.page.url();
+
+        // Check if the page contains a tab list - if so, skip mini TOC validation for this page
+        const hasTabList = await this.page.evaluate(() => {
+          const tabList = document.querySelector('div.tab-list[role="tablist"], [role="tablist"]');
+          return !!tabList;
+        });
+
+        if (hasTabList) {
+          console.log(`  ⏭️  IGNORED - Page contains a tab list, skipping mini TOC validation`);
+          console.log(`  URL: ${currentUrl}`);
+          results.push({
+            url: currentUrl,
+            h2Count: 0,
+            h3Count: 0,
+            totalHeadings: 0,
+            miniTocPresent: false,
+            shouldHaveMiniToc: false,
+            status: 'IGNORED',
+            message: '⏭️  IGNORED - Page has a tab list, excluded from mini TOC validation'
+          });
+          continue;
+        }
+
+        // Count h2 and h3 tags inside the main content (excluding header/footer)
+        const h2Count = await this.page.evaluate(() => {
+          const main = document.querySelector('main');
+          if (!main) return 0;
+          return main.querySelectorAll('h2').length;
+        });
+
+        const h3Count = await this.page.evaluate(() => {
+          const main = document.querySelector('main');
+          if (!main) return 0;
+          return main.querySelectorAll('h3').length;
+        });
+
+        const headingCount = h2Count + h3Count;
+
+        console.log(`  h2 count: ${h2Count}, h3 count: ${h3Count}, total: ${headingCount}`);
+
+        // Check for mini TOC presence
+        const miniTocPresent = await this.page.evaluate(() => {
+          const selectors = [
+            '.mini-toc-container',
+            '.mini-toc-wrapper',
+            '.mini-toc',
+            '.mini-toc-section',
+            '.mini-toc-block',
+            '[data-block-name="mini-toc"]'
+          ];
+          for (const sel of selectors) {
+            const el = document.querySelector(sel);
+            if (el) return true;
+          }
+          return false;
+        });
+
+        const shouldHaveMiniToc = headingCount > 1;
+
+        let status = 'PASS';
+        let message = '';
+
+        if (shouldHaveMiniToc && miniTocPresent) {
+          message = `✅ PASS - ${headingCount} headings found and mini TOC is present`;
+        } else if (!shouldHaveMiniToc && !miniTocPresent) {
+          message = `✅ PASS - Only ${headingCount} heading(s) found and mini TOC is correctly absent`;
+        } else if (shouldHaveMiniToc && !miniTocPresent) {
+          status = 'FAIL';
+          message = `❌ FAIL - ${headingCount} headings found but mini TOC is MISSING`;
+        } else {
+          // headingCount <= 1 but mini TOC present - unusual but not necessarily a failure
+          message = `⚠️  WARN - Only ${headingCount} heading(s) but mini TOC is present (unexpected)`;
+          status = 'WARN';
+        }
+
+        console.log(`  ${message}`);
+        console.log(`  URL: ${currentUrl}`);
+
+        results.push({
+          url: currentUrl,
+          h2Count,
+          h3Count,
+          totalHeadings: headingCount,
+          miniTocPresent,
+          shouldHaveMiniToc,
+          status,
+          message
+        });
+
+        if (status === 'FAIL') {
+          console.error(`  → Mini TOC missing for: ${currentUrl}`);
+        }
+
+      } catch (pageError) {
+        // Record the error but continue processing remaining cards
+        console.error(`  ⚠️  ERROR navigating to ${articleUrl}: ${pageError.message}`);
+        results.push({
+          url: articleUrl,
+          h2Count: 0,
+          h3Count: 0,
+          totalHeadings: 0,
+          miniTocPresent: false,
+          shouldHaveMiniToc: false,
+          status: 'ERROR',
+          message: `⚠️  ERROR - ${pageError.message}`
+        });
+        // Continue to the next card — do NOT re-throw here
+      }
+    }
+
+    // ===== FINAL SUMMARY =====
+    const passed   = results.filter(r => r.status === 'PASS').length;
+    const failed   = results.filter(r => r.status === 'FAIL').length;
+    const warned   = results.filter(r => r.status === 'WARN').length;
+    const ignored  = results.filter(r => r.status === 'IGNORED').length;
+    const total    = results.length;
+
+    console.log('\n╔══════════════════════════════════════════════════════════╗');
+    console.log('║          MINI TOC VALIDATION - FINAL SUMMARY             ║');
+    console.log('╠══════════════════════════════════════════════════════════╣');
+    console.log(`║  Total cards launched       : ${String(total).padEnd(26)}║`);
+    console.log(`║  ✅ Displaying correctly    : ${String(passed).padEnd(26)}║`);
+    console.log(`║  ❌ Not displaying (FAIL)   : ${String(failed).padEnd(26)}║`);
+    console.log(`║  ⚠️  Warnings               : ${String(warned).padEnd(25)}║`);
+    console.log(`║  ⏭️  Ignored (tab list)      : ${String(ignored).padEnd(25)}║`);
+    console.log('╠══════════════════════════════════════════════════════════╣');
+
+    if (passed > 0) {
+      console.log('║  ✅ PASSED PAGES:                                         ║');
+      results.filter(r => r.status === 'PASS').forEach((r, idx) => {
+        console.log(`║   [${idx + 1}] h2:${r.h2Count} h3:${r.h3Count} | miniTOC:${r.miniTocPresent ? 'YES' : 'NO '} | ${r.url.substring(0, 40)}...`);
+      });
+    }
+
+    if (failed > 0) {
+      console.log('╠══════════════════════════════════════════════════════════╣');
+      console.log('║  ❌ FAILED PAGES (mini TOC missing):                      ║');
+      results.filter(r => r.status === 'FAIL').forEach((r, idx) => {
+        console.log(`║   [${idx + 1}] h2:${r.h2Count} h3:${r.h3Count} | ${r.url.substring(0, 50)}...`);
+      });
+    }
+
+    if (warned > 0) {
+      console.log('╠══════════════════════════════════════════════════════════╣');
+      console.log('║  ⚠️  WARNING PAGES (unexpected mini TOC):                 ║');
+      results.filter(r => r.status === 'WARN').forEach((r, idx) => {
+        console.log(`║   [${idx + 1}] h2:${r.h2Count} h3:${r.h3Count} | ${r.url.substring(0, 50)}...`);
+      });
+    }
+
+    if (ignored > 0) {
+      console.log('╠══════════════════════════════════════════════════════════╣');
+      console.log('║  ⏭️  IGNORED PAGES (contain tab list):                    ║');
+      results.filter(r => r.status === 'IGNORED').forEach((r, idx) => {
+        console.log(`║   [${idx + 1}] ${r.url.substring(0, 55)}...`);
+      });
+    }
+
+    console.log('╚══════════════════════════════════════════════════════════╝\n');
+
+    // Detailed per-page log
+    console.log('---------- DETAILED RESULTS ----------');
+    results.forEach((r, idx) => {
+      console.log(`[${idx + 1}] ${r.status.padEnd(7)} | h2:${r.h2Count} h3:${r.h3Count} | miniTOC:${r.miniTocPresent ? 'YES' : 'NO '} | ${r.url}`);
+    });
+    console.log('--------------------------------------\n');
+
+    // Assert all pages that should have mini TOC actually have it
+    const failures = results.filter(r => r.status === 'FAIL');
+    if (failures.length > 0) {
+      const failMessages = failures.map(r => `\n  - ${r.url}\n    → ${r.message}`).join('');
+      throw new Error(`Mini TOC validation failed for ${failures.length} page(s):${failMessages}`);
+    }
+
+    console.log(`✓ Mini TOC validation complete. ${passed} passed, ${ignored} ignored (tab list pages), ${warned} warnings.`);
+
+    // Clean up - close the browser
+    if (this.browser) {
+      await closeBrowser(this.browser);
+      console.log('Browser closed successfully');
+    }
+
+  } catch (error) {
+    console.error(`Error during mini TOC validation for all cards: ${error.message}`);
+    await this.page.screenshot({ path: 'mini-toc-all-cards-error.png' }).catch(() => {});
+
+    // Clean up even if there's an error
+    if (this.browser) {
+      await closeBrowser(this.browser).catch(() => {});
+    }
+
     throw error;
   }
 });

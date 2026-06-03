@@ -50,10 +50,29 @@ async function performLogin(world, email = ENV.EMAIL, password = ENV.PASSWORD) {
 
     // Submit password form
     await page.click('button[data-id="PasswordPage-ContinueButton"]');
-    
-    // Wait for login to complete
-    await page.waitForTimeout(2000);
-    
+
+    // Wait for post-login redirect and full page load
+    // First wait for the login/IMS page to navigate away
+    await page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {
+      console.log('waitForNavigation timed out — page may have already navigated');
+    });
+
+    // Wait for the Experience League page to fully load
+    // (profile icon or nav is a reliable indicator that the user is logged in)
+    try {
+      await page.waitForSelector(
+        '.profile-button, .account, [data-toggle="account"], .nav-sign-in .profile-picture',
+        { state: 'visible', timeout: 20000 }
+      );
+      console.log('✅ Login confirmed — profile element visible');
+    } catch (e) {
+      console.warn('⚠️  Profile element not found after login — waiting additional time for page to settle');
+      await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+    }
+
+    // Extra buffer to allow any post-login JS initialization to complete
+    await page.waitForTimeout(3000);
+
     console.log('Login successful');
     return { page, browser, context };
   } catch (error) {

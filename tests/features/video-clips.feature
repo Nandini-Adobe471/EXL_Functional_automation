@@ -80,7 +80,7 @@ Scenario: Verify watch full video button opens in a new window
 @video-clips-mobile @skip-login
 Scenario: Verify video clip player on mobile devices
     Given the user logs in to the application with valid credentials
-    When the user sets the viewport to mobile size
+    When the user sets the viewport to mobile size for video clips
     And the user modifies the URL to append "?adobeQA=videoClips"
     And the page is fully loaded
     Then the "Keep learning with video clips" header should be visible

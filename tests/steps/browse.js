@@ -14,11 +14,15 @@ Given('user is on the PHP page', async function() {
 });
 
 When('user navigates to the browse page', async function() {
-  // Click on the browse link in the navigation
-  await this.page.click('a[href*="browse"]');
+  // Navigate directly to the browse page using config URL
+  await this.page.goto(`${ENV.URL}/browse`);
   
   // Wait for the browse page to load
-  await this.page.waitForSelector('.browse-card-content', { timeout: 30000 });
+  await this.page.waitForTimeout(3000);
+  
+  // Verify we're on the browse page
+  await expect(this.page).toHaveURL(/.*\/browse/);
+  console.log("✓ Navigated to browse page");
 });
 
 When('user selects content type as {string}', async function(contentType) {
@@ -39,17 +43,26 @@ When('user selects product as {string}', async function(product) {
   await this.page.getByRole('button', { name: 'Product' }).click();
   await this.page.waitForTimeout(2000);
   
-  // Check if product contains regex pattern indicators
+  // Handle regex pattern if present
   if (product.startsWith('^') || product.endsWith('$')) {
-    // Handle regex pattern
     const regex = new RegExp(product);
-    await this.page.locator('span').filter({ hasText: regex }).click();
+    const checkbox = this.page.locator(`input[type="checkbox"][data-label]`).filter({ hasText: regex }).first();
+    const checkboxId = await checkbox.getAttribute('id');
+    await this.page.locator(`label[for="${checkboxId}"]`).click();
   } else {
-    // Handle plain text
-    await this.page.locator('span').filter({ hasText: product }).click();
+    // Find the checkbox input with exact matching value or data-label
+    const checkbox = this.page.locator(`input[type="checkbox"][value="${product}"], input[type="checkbox"][data-label="${product}"]`).first();
+    
+    // Get the id of the checkbox
+    const checkboxId = await checkbox.getAttribute('id');
+    
+    // Click on the corresponding label
+    await this.page.locator(`label[for="${checkboxId}"]`).click();
+    console.log(`✓ Selected product: ${product}`);
   }
-  await this.page.waitForTimeout(2000);
   
+  await this.page.waitForTimeout(2000);
+    
   // Store the selected product for verification (without regex symbols)
   this.selectedProduct = product.replace(/[\^\$]/g, '');
 });

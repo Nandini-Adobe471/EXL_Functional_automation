@@ -226,7 +226,7 @@ When('user clicks on create account button', async function() {
   console.log("✓ Clicked on create account button");
   
   // Wait for navigation or next step
-  await this.page.waitForTimeout(9000); // Increased wait time for account creation
+  await this.page.waitForTimeout(15000); // Increased wait time for account creation
 });
 
 Then('user should see account created successfully', async function() {
@@ -279,10 +279,33 @@ When('user selects {string} role from user roles section', async function(role) 
   
   await expect(roleCard).toBeVisible();
   
-  // Find the checkbox within the role card and click it
+  // Scroll the card into view
+  await roleCard.scrollIntoViewIfNeeded();
+  await this.page.waitForTimeout(500);
+  
+  // Find the checkbox within the role card
   const checkbox = roleCard.locator('input[type="checkbox"]');
-  await checkbox.click();
-  console.log(`✓ Selected ${role} role`);
+  
+  // Check if already selected
+  const isAlreadyChecked = await checkbox.isChecked().catch(() => false);
+  
+  if (!isAlreadyChecked) {
+    // Try clicking the checkbox with force option
+    await checkbox.click({ force: true });
+    console.log(`✓ Clicked ${role} role checkbox`);
+    await this.page.waitForTimeout(1000);
+    
+    // Verify checkbox is now checked
+    const isNowChecked = await checkbox.isChecked();
+    if (!isNowChecked) {
+      // If still not checked, try clicking the card itself
+      console.log(`Checkbox not selected, trying to click the card directly...`);
+      await roleCard.click();
+      await this.page.waitForTimeout(1000);
+    }
+  } else {
+    console.log(`✓ ${role} role was already selected`);
+  }
   
   // Verify that the role card now has the highlight class
   const hasHighlightClass = await roleCard.evaluate(el => el.classList.contains('role-cards-highlight'));
@@ -496,4 +519,146 @@ Then('user interests in profile settings should match selected interests', async
     await closeBrowser(this.browser);
     console.log('Browser closed successfully');
   }
+});
+
+// Step definitions for community validation after signup
+When('user logs out from the application', async function() {
+  // Click on the profile button/icon
+  const profileButton = this.page.locator('.profile.profile-toggle, button.profile-toggle, img.profile-picture').first();
+  await expect(profileButton).toBeVisible({ timeout: 10000 });
+  await profileButton.click();
+  console.log("✓ Clicked on profile button");
+  
+  // Wait for dropdown to appear
+  await this.page.waitForTimeout(2000);
+  
+  // Click on sign out link
+  const signOutLink = this.page.locator('a:has-text("Sign out"), a[href*="logout"]').first();
+  await expect(signOutLink).toBeVisible({ timeout: 5000 });
+  await signOutLink.click();
+  console.log("✓ Clicked on sign out");
+  
+  // Wait for logout to complete
+  await this.page.waitForTimeout(3000);
+  console.log("✓ Successfully logged out from the application");
+});
+
+When('user logs in with newly created credentials', async function() {
+  // Navigate to the homepage to start fresh
+  await this.page.goto(ENV.URL);
+  await this.page.waitForTimeout(3000);
+  
+  console.log("=== LOGGING IN WITH NEW CREDENTIALS ===");
+  console.log(`Email: ${this.email}`);
+  console.log(`Password: ${this.password}`);
+  console.log("========================================");
+  
+  // Click on sign in button
+  const signInButton = this.page.locator('.marquee .marquee-cta a, a:has-text("Sign in")').first();
+  await expect(signInButton).toBeVisible({ timeout: 10000 });
+  await signInButton.click();
+  console.log("✓ Clicked on sign in button");
+  
+  // Wait for the sign in modal/page to appear
+  await this.page.waitForTimeout(3000);
+  
+  // Enter email
+  const emailField = this.page.locator('input[type="email"], input[name="username"], input[data-id="EmailPage-EmailField"]').first();
+  await expect(emailField).toBeVisible({ timeout: 10000 });
+  await emailField.fill(this.email);
+  console.log(`✓ Entered email: ${this.email}`);
+  await this.page.waitForTimeout(1000);
+  
+  // Click continue/next button
+  const continueButton = this.page.locator('button:has-text("Continue"), button[type="submit"]').first();
+  await expect(continueButton).toBeVisible({ timeout: 5000 });
+  await continueButton.click();
+  console.log("✓ Clicked continue button");
+  await this.page.waitForTimeout(3000);
+  
+  // Enter password
+  const passwordField = this.page.locator('input[type="password"], input[name="password"]').first();
+  await expect(passwordField).toBeVisible({ timeout: 10000 });
+  await passwordField.fill(this.password);
+  console.log(`✓ Entered password`);
+  await this.page.waitForTimeout(1000);
+  
+  // Click sign in/login button
+  const loginButton = this.page.locator('button:has-text("Continue"), button:has-text("Sign in"), button[type="submit"]').first();
+  await expect(loginButton).toBeVisible({ timeout: 5000 });
+  await loginButton.click();
+  console.log("✓ Clicked login button");
+  
+  // Wait for login to complete and redirect to home
+  await this.page.waitForTimeout(10000);
+  
+  // Verify we're logged in by checking URL or profile element
+  const currentUrl = await this.page.url();
+  console.log(`Current URL after login: ${currentUrl}`);
+  console.log("✓ Successfully logged in with newly created credentials");
+});
+
+When('user waits for 3 seconds after profile hover', async function() {
+  await this.page.waitForTimeout(3000);
+  console.log("✓ Waited for 3 seconds after profile hover");
+});
+
+When('user selects 3 random interests', async function() {
+  // Get all interest checkboxes
+  const interestCheckboxes = this.page.locator('.interest input[type="checkbox"]');
+  
+  // Get the count of all interests
+  const count = await interestCheckboxes.count();
+  console.log(`Found ${count} interests`);
+  
+  // Generate 3 random unique indices
+  const selectedIndices = new Set();
+  while (selectedIndices.size < 3) {
+    const randomIndex = Math.floor(Math.random() * count);
+    selectedIndices.add(randomIndex);
+  }
+  
+  // Convert Set to Array for easier iteration
+  const indices = Array.from(selectedIndices);
+  
+  // Select the 3 random interests
+  for (let i = 0; i < indices.length; i++) {
+    const checkbox = interestCheckboxes.nth(indices[i]);
+    
+    // Get the interest name for logging
+    const interestName = await checkbox.getAttribute('title');
+    
+    // Click the checkbox
+    await checkbox.click();
+    console.log(`✓ Selected interest: ${interestName}`);
+    
+    // Wait a bit between clicks
+    await this.page.waitForTimeout(500);
+  }
+  
+  console.log("✓ Selected 3 random interests");
+});
+
+// NOTE: "user refreshes the page" step definition is in php.js - not duplicated here
+
+When('user clicks on profile toggle button', async function() {
+  // Wait for the page to stabilize after refresh
+  await this.page.waitForTimeout(2000);
+  
+  // Find and click the profile toggle button
+  const profileToggleButton = this.page.locator('button.profile-toggle, button.profile.profile-toggle').first();
+  
+  // Verify the button is visible
+  await expect(profileToggleButton).toBeVisible({ timeout: 10000 });
+  console.log("✓ Found profile toggle button");
+  
+  // Click on the profile toggle button
+  await profileToggleButton.click();
+  console.log("✓ Clicked on profile toggle button");
+  
+  // Wait for the profile menu to appear
+  await this.page.waitForTimeout(1000);
+  
+  // Take a screenshot
+  await this.page.screenshot({ path: 'screenshots/after-profile-toggle-click.png' });
 });
