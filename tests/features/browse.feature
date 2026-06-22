@@ -1,6 +1,6 @@
 Feature: Browse page
 
-@browse-filter  
+@browse-filter  @skip-login
 Scenario: Filter content by type and product and validate first card
     Given user is on the PHP page
     When user navigates to the browse page

@@ -4,45 +4,45 @@
     "elements": [
       {
         "description": "",
-        "id": "ai-training-page-navigation;launch-url-with-adobeqa-parameter,-click-ai-training-link,-and-reload-page",
+        "id": "community-profile-validation;validate-community-links-are-displayed-in-spanish-after-language-change",
         "keyword": "Scenario",
-        "line": 4,
-        "name": "Launch URL with adobeQA parameter, click AI training link, and reload page",
+        "line": 55,
+        "name": "Validate community links are displayed in Spanish after language change",
         "steps": [
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 5,
-            "name": "user navigates to Experience League with adobeQA parameter",
+            "line": 56,
+            "name": "user logs in to Experience League for community profile",
             "match": {
-              "location": "tests\\steps\\ai-training.js:7"
+              "location": "tests\\steps\\community-profile.js:12"
             },
             "result": {
               "status": "passed",
-              "duration": 3940400899
+              "duration": 77783713199
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 6,
-            "name": "user clicks on AI training link",
+            "line": 57,
+            "name": "user clicks on language selector button",
             "match": {
-              "location": "tests\\steps\\ai-training.js:33"
+              "location": "tests\\steps\\community-profile.js:570"
             },
             "result": {
               "status": "failed",
-              "duration": 3067460000,
-              "error_message": "page.waitForTimeout: Target page, context or browser has been closed\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\ai-training.js:50:19)"
+              "duration": 33095243700,
+              "error_message": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\community-profile.js:586:19)"
             }
           },
           {
             "arguments": [],
-            "keyword": "Then ",
-            "line": 7,
-            "name": "user should be redirected to AI training page",
+            "keyword": "And ",
+            "line": 58,
+            "name": "user selects \"Español\" from language list",
             "match": {
-              "location": "tests\\steps\\ai-training.js:53"
+              "location": "tests\\steps\\community-profile.js:589"
             },
             "result": {
               "status": "skipped",
@@ -51,11 +51,24 @@
           },
           {
             "arguments": [],
-            "keyword": "When ",
-            "line": 8,
-            "name": "user reloads the page",
+            "keyword": "And ",
+            "line": 59,
+            "name": "user hovers on the profile button",
             "match": {
-              "location": "tests\\steps\\ai-training.js:73"
+              "location": "tests\\steps\\community-profile.js:25"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 60,
+            "name": "user waits for 2 seconds for community profile",
+            "match": {
+              "location": "tests\\steps\\community-profile.js:71"
             },
             "result": {
               "status": "skipped",
@@ -65,10 +78,58 @@
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 9,
-            "name": "AI training page should be displayed",
+            "line": 61,
+            "name": "verify community section header is displayed in Spanish as \"Comunidad\"",
             "match": {
-              "location": "tests\\steps\\ai-training.js:95"
+              "location": "tests\\steps\\community-profile.js:631"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "Spanish Link Name",
+                      "Expected URL Pattern"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Mi perfil en la comunidad",
+                      "https://experienceleaguecommunities-beta.adobe.com/members/"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Mensajes privados",
+                      "https://experienceleaguecommunities-beta.adobe.com/inbox/overview"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Configuración de la cuenta",
+                      "https://experienceleaguecommunities-beta.adobe.com/settings/profile"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Suscripciones",
+                      "https://experienceleaguecommunities-beta.adobe.com/favorite/overview"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 62,
+            "name": "verify all community links are displayed in Spanish:",
+            "match": {
+              "location": "tests\\steps\\community-profile.js:650"
             },
             "result": {
               "status": "skipped",
@@ -80,7 +141,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 378591900
+              "duration": 240599600
             }
           },
           {
@@ -88,28 +149,28 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 1416199
+              "duration": 1071300
             }
           }
         ],
         "tags": [
           {
-            "name": "@ai-training",
-            "line": 3
+            "name": "@community-profile-spanish-language",
+            "line": 54
           },
           {
             "name": "@skip-login",
-            "line": 3
+            "line": 54
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "ai-training-page-navigation",
+    "id": "community-profile-validation",
     "line": 1,
     "keyword": "Feature",
-    "name": "AI Training page navigation",
+    "name": "Community Profile Validation",
     "tags": [],
-    "uri": "tests\\features\\ai-training.feature"
+    "uri": "tests\\features\\community-profile.feature"
   }
 ]

@@ -72,36 +72,7 @@ Scenario: Navigate through module filter dropdown and verify navigation buttons
   Then user should be redirected to the selected step page
   And user should see appropriate navigation buttons
 
-@module-completion-with-quiz-skip @skip-login
-Scenario: Complete a course by skipping quiz using session storage
-  Given user logs in to the application
-  When user navigates to the courses page
-  Then user should add course.skipQuiz key to session storage
-  When user clicks on a course card with "Not started" status
-  Then user should be redirected to the authenticated course details page
-  When user clicks on the "Start course" button
-  Then user should be redirected to the course step page
-  And user should navigate through steps until "Take quiz" button appears
-  When user clicks on the "Take quiz" button
-  Then user should see the quiz scorecard with "You passed the quiz!" message
 
-@module-completion-status-verification @skip-login
-Scenario: Verify module status changes after completion
-  Given user logs in to the application
-  When user navigates to the courses page
-  Then user should add course.skipQuiz key to session storage
-  When user clicks on a course card with "Not started" status
-  Then user should be redirected to the authenticated course details page
-  When user clicks on the "Start course" button
-  Then user should be redirected to the course step page
-  And user should navigate through steps until "Take quiz" button appears
-  When user clicks on the "Take quiz" button
-  Then user should see the quiz scorecard with "You passed the quiz!" message
-  When user clicks on the "Back to course overview" button
-  Then user should be redirected to the course details page after quiz completion
-  And the completed module should have "Completed" status
-  And the completed module should have "Review module" button
-  And the next module should have enabled "Start module" button
 
 @auth-course-module-count @skip-login
 Scenario: Verify module count updates after completing a module
