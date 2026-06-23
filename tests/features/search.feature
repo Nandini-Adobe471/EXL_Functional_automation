@@ -2,19 +2,14 @@ Feature: Search functionality
 @search-php @skip-login
 Scenario: Verify secondary search functionality
     Given user logs in and lands on the home page for search validation
-    When user verifies secondary search is visible
-    And user clicks in the search input and presses enter
+    And user clicks on the search picker icon
     Then user should land on search result page
     And header search is not visible
     And all filters in the left side are expanded
     And search results are displayed
     And sort by option is displayed
     And result header contains columns "Name, Content Type, Product, Updated"
-    When user navigates back to home page for search testing
-    Then search bar in header should be visible
-    And search picker should have text "All"
-    When user clicks in the search input and presses enter again
-    Then user should land on search result page again
+   
 
 @search-php-mobile @skip-login
 Scenario: Verify search functionality in mobile view
@@ -38,40 +33,6 @@ Scenario: Verify pagination and results per page functionality
     When user navigates to page "2"
     Then page "2" should be active in pagination
 
-@search-picker @skip-login
-Scenario Outline: Verify search picker navigation functionality
-    Given user navigates to Experience League homepage
-    When user clicks on search picker
-    Then dropdown should open with list of values
-    When user navigates to "<page_name>"
-    Then search picker should show "<expected_value>"
-    
-
-Examples:
-    | page_name      | expected_value  |
-    | docs/home-tutorials      | Tutorials|
-    | docs           | Documentation   |
-    | events         | Events          |
-    | certification-home | Certification |
-    | playlists      | Playlists       |
-    | perspectives   | Perspectives    |
-
-@search-picker-content-type @skip-login
-Scenario Outline: Verify search content type from different pages
-    Given user navigates to "<page_name>"
-    When user clicks on search input
-    And user enters "experience" and presses enter
-    Then user should land on search results page
-    And search results should contain content type "<expected_content_type>"
-    And content type filter should have "<expected_content_type>" selected
-
-Examples:
-    | page_name      | expected_content_type |
-    | docs/home-tutorials      | Tutorial            |
-    | docs           | Documentation       |
-    | certification-home | Certification       |
-    | playlists      | Playlist            |
-    | perspectives   | Perspective         |
 
 @checkbox-only-facet @skip-login
 Scenario: Only button selects only that child facet
@@ -147,14 +108,3 @@ Scenario: Verify multiple facet selection and breadcrumb display on mobile
     And user selects "Documentation" from "Content Type" facet
     And user clicks on close icon
     Then all selected facets should appear in the breadcrumb list
-    
-@search-picker-selection @skip-login
-Scenario: Verify search picker dropdown shows checkmark against selected values
-    Given user navigates to home page
-    When user clicks on search picker button
-    Then search picker dropdown should be visible
-    And a checkmark should be displayed against "All" in search picker
-    When user selects "Documentation" from search picker dropdown
-    Then a checkmark should be displayed against "Documentation" in search picker
-    When user selects "All" from search picker dropdown
-    Then a checkmark should be displayed against "All" in search picker

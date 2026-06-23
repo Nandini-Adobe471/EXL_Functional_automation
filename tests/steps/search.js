@@ -29,32 +29,30 @@ Given('user logs in and lands on the home page for search validation', async fun
   console.log("✓ Successfully logged in and landed on the home page for search validation");
 });
 
-When('user verifies secondary search is visible', async function() {
-  // Look for the secondary search input
+When('user verifies search picker icon is visible', async function() {
+  // Look for the search icon anchor tag (aria-label="Search") in the search-short block
   await this.page.waitForTimeout(2000);
-  const searchInput = this.page.locator('.secondary-search.block #secondary-search');
+  const searchPickerIcon = this.page.locator('.search-short a[aria-label="Search"]');
   
-  // Verify the search input is visible
-  await expect(searchInput).toBeVisible();
-  console.log("✓ Secondary search is visible");
+  // Verify the search picker icon is visible
+  await expect(searchPickerIcon).toBeVisible();
+  console.log("✓ Search picker icon is visible");
   
-  // Store the search input for later use
-  this.searchInput = searchInput;
+  // Store the search picker icon for later use
+  this.searchPickerIcon = searchPickerIcon;
 });
 
-When('user clicks in the search input and presses enter', async function() {
-  // Click in the search input
-  await this.searchInput.click();
-  console.log("✓ Clicked in the search input");
+When('user clicks on the search picker icon', async function() {
+  // Use stored reference if available, otherwise locate the element directly
+  if (!this.searchPickerIcon) {
+    this.searchPickerIcon = this.page.locator('.search-short a[aria-label="Search"]');
+  }
+  await expect(this.searchPickerIcon).toBeVisible({ timeout: 10000 });
+  // Click on the search picker icon to navigate to the search page
+  await this.searchPickerIcon.click();
+  console.log("✓ Clicked on the search picker icon");
   
-  // Wait a moment
-  await this.page.waitForTimeout(1000);
-  
-  // Press Enter key
-  await this.searchInput.press('Enter');
-  console.log("✓ Pressed Enter key");
-  
-  // Wait for navigation
+  // Wait for navigation to search page
   await this.page.waitForTimeout(3000);
 });
 

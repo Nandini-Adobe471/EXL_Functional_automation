@@ -4,136 +4,113 @@
     "elements": [
       {
         "description": "",
-        "id": "community-profile-validation;validate-community-links-are-displayed-in-spanish-after-language-change",
+        "id": "search-functionality;verify-secondary-search-functionality",
         "keyword": "Scenario",
-        "line": 55,
-        "name": "Validate community links are displayed in Spanish after language change",
+        "line": 3,
+        "name": "Verify secondary search functionality",
         "steps": [
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 56,
-            "name": "user logs in to Experience League for community profile",
+            "line": 4,
+            "name": "user logs in and lands on the home page for search validation",
             "match": {
-              "location": "tests\\steps\\community-profile.js:12"
+              "location": "tests\\steps\\search.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 77783713199
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 57,
-            "name": "user clicks on language selector button",
-            "match": {
-              "location": "tests\\steps\\community-profile.js:570"
-            },
-            "result": {
-              "status": "failed",
-              "duration": 33095243700,
-              "error_message": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at World.<anonymous> (C:\\EXLAutomationReportEnabled\\tests\\steps\\community-profile.js:586:19)"
+              "duration": 68511902700
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 58,
-            "name": "user selects \"Español\" from language list",
+            "line": 5,
+            "name": "user clicks on the search picker icon",
             "match": {
-              "location": "tests\\steps\\community-profile.js:589"
+              "location": "tests\\steps\\search.js:45"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 59,
-            "name": "user hovers on the profile button",
-            "match": {
-              "location": "tests\\steps\\community-profile.js:25"
-            },
-            "result": {
-              "status": "skipped",
-              "duration": 0
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 60,
-            "name": "user waits for 2 seconds for community profile",
-            "match": {
-              "location": "tests\\steps\\community-profile.js:71"
-            },
-            "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 3701109600
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 61,
-            "name": "verify community section header is displayed in Spanish as \"Comunidad\"",
+            "line": 6,
+            "name": "user should land on search result page",
             "match": {
-              "location": "tests\\steps\\community-profile.js:631"
+              "location": "tests\\steps\\search.js:59"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 22044599
             }
           },
           {
-            "arguments": [
-              {
-                "rows": [
-                  {
-                    "cells": [
-                      "Spanish Link Name",
-                      "Expected URL Pattern"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "Mi perfil en la comunidad",
-                      "https://experienceleaguecommunities-beta.adobe.com/members/"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "Mensajes privados",
-                      "https://experienceleaguecommunities-beta.adobe.com/inbox/overview"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "Configuración de la cuenta",
-                      "https://experienceleaguecommunities-beta.adobe.com/settings/profile"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "Suscripciones",
-                      "https://experienceleaguecommunities-beta.adobe.com/favorite/overview"
-                    ]
-                  }
-                ]
-              }
-            ],
+            "arguments": [],
             "keyword": "And ",
-            "line": 62,
-            "name": "verify all community links are displayed in Spanish:",
+            "line": 7,
+            "name": "header search is not visible",
             "match": {
-              "location": "tests\\steps\\community-profile.js:650"
+              "location": "tests\\steps\\search.js:68"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 4281399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "all filters in the left side are expanded",
+            "match": {
+              "location": "tests\\steps\\search.js:78"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2020546499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 9,
+            "name": "search results are displayed",
+            "match": {
+              "location": "tests\\steps\\search.js:106"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 301222500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "sort by option is displayed",
+            "match": {
+              "location": "tests\\steps\\search.js:125"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7494800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "result header contains columns \"Name, Content Type, Product, Updated\"",
+            "match": {
+              "location": "tests\\steps\\search.js:134"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 93408299
             }
           },
           {
@@ -141,7 +118,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 240599600
+              "duration": 279984100
             }
           },
           {
@@ -149,28 +126,28 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 1071300
+              "duration": 193100
             }
           }
         ],
         "tags": [
           {
-            "name": "@community-profile-spanish-language",
-            "line": 54
+            "name": "@search-php",
+            "line": 2
           },
           {
             "name": "@skip-login",
-            "line": 54
+            "line": 2
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "community-profile-validation",
+    "id": "search-functionality",
     "line": 1,
     "keyword": "Feature",
-    "name": "Community Profile Validation",
+    "name": "Search functionality",
     "tags": [],
-    "uri": "tests\\features\\community-profile.feature"
+    "uri": "tests\\features\\search.feature"
   }
 ]

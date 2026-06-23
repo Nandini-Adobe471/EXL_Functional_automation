@@ -578,7 +578,7 @@ When('user logs in with newly created credentials', async function() {
   
   // Enter password
   const passwordField = this.page.locator('input[type="password"], input[name="password"]').first();
-  await expect(passwordField).toBeVisible({ timeout: 10000 });
+  await expect(passwordField).toBeVisible({ timeout: 8000 });
   await passwordField.fill(this.password);
   console.log(`✓ Entered password`);
   await this.page.waitForTimeout(1000);
@@ -590,7 +590,7 @@ When('user logs in with newly created credentials', async function() {
   console.log("✓ Clicked login button");
   
   // Wait for login to complete and redirect to home
-  await this.page.waitForTimeout(10000);
+  await this.page.waitForTimeout(8000);
   
   // Verify we're logged in by checking URL or profile element
   const currentUrl = await this.page.url();
@@ -649,7 +649,7 @@ When('user clicks on profile toggle button', async function() {
   const profileToggleButton = this.page.locator('button.profile-toggle, button.profile.profile-toggle').first();
   
   // Verify the button is visible
-  await expect(profileToggleButton).toBeVisible({ timeout: 10000 });
+  await expect(profileToggleButton).toBeVisible({ timeout: 8000 });
   console.log("✓ Found profile toggle button");
   
   // Click on the profile toggle button

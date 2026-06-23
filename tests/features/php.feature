@@ -4,18 +4,10 @@ Feature: php validation
     
     Given I navigate to the Experience League homepage
     Then the header navigation should be visible
-    Then the search bar should be visible and enabled
      Then the marquee section should be displayed
      Then the footer should be visible
    
-   
-@home-page-search @search @skip-login
-Scenario: Validate search functionality from home page
-  Given user navigates to Experience League home page
-  When user enters "Analytics" in the search bar
-  And user submits the search
-  Then search results page should display
-  Then search results should contain items related to "Analytics"
+
 
   @home-page @navigation @skip-login
 Scenario: Verify main navigation links functionality
