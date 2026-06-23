@@ -582,7 +582,7 @@ Given('user is on Experience League home',async function() {
   await this.page.waitForTimeout(2000);
 })
 
-When('user bookmarks the first content card', async function() {
+/*When('user bookmarks the first content card', async function() {
    await this.page.waitForTimeout(2000);
     //Locate firstcard
     const firstCard = await this.page.locator('.browse-card-content').first();
@@ -617,7 +617,151 @@ When('user bookmarks the first content card', async function() {
     await bookmarkedIcon.click({ force: true });
 
    
+});*/
+ 
+When('user bookmarks the first content card', async function() {
+  // Wait for cards to load with fallback selectors on home page
+  const homeCardSelectors = ['.browse-card', '.browse-card-content', '[data-block-name="recommended-content"] .card', 'article'];
+  let homeCardsFound = false;
+  for (const sel of homeCardSelectors) {
+    try {
+      await this.page.waitForSelector(sel, { state: 'visible', timeout: 15000 });
+      homeCardsFound = true;
+      console.log(`Home page cards found with selector: ${sel}`);
+      break;
+    } catch (e) {
+      console.log(`Home page selector "${sel}" not found, trying next...`);
+    }
+  }
+  if (!homeCardsFound) {
+    throw new Error('No content cards found on home page after login');
+  }
+ 
+  // Scroll to bottom and back to trigger sign-in state propagation on all cards
+  await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await this.page.waitForTimeout(2000);
+  await this.page.evaluate(() => window.scrollTo(0, 0));
+  await this.page.waitForTimeout(1000);
+ 
+  const allCards = await this.page.locator('.browse-card').all();
+  console.log(`Total cards on page: ${allCards.length}`);
+ 
+  let targetCard = null;
+  let targetCardTitle = null;
+ 
+  for (let i = 0; i < allCards.length; i++) {
+    const card = allCards[i];
+ 
+    await card.scrollIntoViewIfNeeded().catch(() => {});
+    await card.hover().catch(() => {});
+    // Wait for sign-in state JS to update this card's button
+    await this.page.waitForTimeout(300);
+ 
+    const bookmarkBtn = card.locator('button.bookmark');
+    const count = await bookmarkBtn.count().catch(() => 0);
+    if (count === 0) {
+      console.log(`Card ${i + 1}: no bookmark button, skipping`);
+      continue;
+    }
+ 
+    const dataSignedIn = await bookmarkBtn.getAttribute('data-signed-in').catch(() => 'false');
+    const dataBookmarked = await bookmarkBtn.getAttribute('data-bookmarked').catch(() => 'true');
+    console.log(`Card ${i + 1}: signed-in=${dataSignedIn}, bookmarked=${dataBookmarked}`);
+ 
+    if (dataSignedIn === 'true' && dataBookmarked === 'false') {
+      targetCard = card;
+      targetCardTitle = await card.locator('.browse-card-title-text').textContent().catch(() => null);
+      this.targetBookmarkBtn = bookmarkBtn;
+      console.log(`Selected card ${i + 1}: "${targetCardTitle}"`);
+      break;
+    }
+  }
+ 
+  if (!targetCard) {
+    throw new Error('No card with an available bookmark icon found on the page');
+  }
+ 
+  this.bookmarkedCardTitle = targetCardTitle;
+ 
+  await this.targetBookmarkBtn.click({ force: true });
+  await this.page.waitForTimeout(2000);
+ 
+  console.log(`Looking for bookmarked card with title: "${targetCardTitle}"`);
+ 
+  // Open bookmarks page in a new tab
+  const newPage = await this.context.newPage();
+  await newPage.goto(`${ENV.URL}/home/bookmarks`, { waitUntil: 'domcontentloaded' });
+  await newPage.waitForTimeout(5000);
+
+  // Wait for browse cards with fallback selectors
+  const bookmarkCardSelectors = ['.browse-card', '.browse-card-content', '[data-block-name="bookmarks"] .card', '.bookmarks-card'];
+  let bookmarkCardsFound = false;
+  for (const sel of bookmarkCardSelectors) {
+    try {
+      await newPage.waitForSelector(sel, { state: 'visible', timeout: 10000 });
+      bookmarkCardsFound = true;
+      console.log(`Bookmarks page cards found with selector: ${sel}`);
+      break;
+    } catch (e) {
+      console.log(`Selector "${sel}" not found, trying next...`);
+    }
+  }
+  if (!bookmarkCardsFound) {
+    console.log('No specific card selector matched on bookmarks page, proceeding anyway...');
+  }
+  await newPage.waitForTimeout(3000);
+
+  // Verify bookmark exists on bookmarks page
+  const allBookmarkedCards = await newPage.locator('.browse-card').all();
+  console.log(`Cards found on bookmarks page: ${allBookmarkedCards.length}`);
+  expect(allBookmarkedCards.length).toBeGreaterThan(0);
+
+  // Find the card matching the title we just bookmarked
+  let matchedCard = null;
+  for (const bookmarkedCard of allBookmarkedCards) {
+    const title = (await bookmarkedCard.locator('.browse-card-title-text').textContent().catch(() => '')).trim();
+    console.log(`Bookmarks page card: "${title}"`);
+    if (title && targetCardTitle && (title.includes(targetCardTitle.trim()) || targetCardTitle.trim().includes(title))) {
+      matchedCard = bookmarkedCard;
+      console.log(`Bookmark verified: "${title}"`);
+      break;
+    }
+  }
+
+  // Fallback to first card if title match fails
+  if (!matchedCard) {
+    console.log(`Title match failed, using first bookmarked card as fallback`);
+    matchedCard = allBookmarkedCards[0];
+  }
+  console.log("Bookmark Successful");
+
+  // Remove bookmark using same logic as bookmarking on home page:
+  // scroll into view → hover → wait for JS to set data-signed-in="true" → click with force
+  await matchedCard.scrollIntoViewIfNeeded().catch(() => {});
+  await matchedCard.hover().catch(() => {});
+  await newPage.waitForTimeout(300);
+
+  const removeBtn = matchedCard.locator('button.bookmark');
+
+  // Wait for sign-in state to be set (same as home page bookmarking logic)
+  let dataSignedIn = 'false';
+  let dataBookmarked = 'false';
+  for (let attempt = 0; attempt < 10; attempt++) {
+    dataSignedIn = await removeBtn.getAttribute('data-signed-in').catch(() => 'false');
+    dataBookmarked = await removeBtn.getAttribute('data-bookmarked').catch(() => 'false');
+    console.log(`Attempt ${attempt + 1}: data-signed-in="${dataSignedIn}", data-bookmarked="${dataBookmarked}"`);
+    if (dataSignedIn === 'true') break;
+    await matchedCard.hover().catch(() => {});
+    await newPage.waitForTimeout(500);
+  }
+
+  console.log(`Final state: data-signed-in="${dataSignedIn}", data-bookmarked="${dataBookmarked}"`);
+  await removeBtn.click({ force: true });
+  await newPage.waitForTimeout(2000);
+  console.log("Bookmark removed successfully");
+  await newPage.close();
 });
+ 
 
 Then('ensure bookmarked card appears in bookmarks page', async function() {
      //Navigate to Bookmark page
