@@ -1,7 +1,7 @@
  ENV = {
  //URL: 'https://experienceleague.adobe.com/en',
- //EMAIL: 'Prodrel0605@adobetest.com',
- //PASSWORD: 'Test@123',
+// EMAIL: '⁠Rel17thjun@adobe.com',
+ //PASSWORD: 'Adobe@123',
     //URL: 'https://experienceleague.adobe.com/en',
  //EMAIL: 'Rel+Feb+25@adobetest.com',
   // PASSWORD: 'Siddu@143',

@@ -67,7 +67,7 @@ async function performLogin(world, email = ENV.EMAIL, password = ENV.PASSWORD) {
       console.log('✅ Login confirmed — profile element visible');
     } catch (e) {
       console.warn('⚠️  Profile element not found after login — waiting additional time for page to settle');
-      await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+      await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
     }
 
     // Extra buffer to allow any post-login JS initialization to complete
