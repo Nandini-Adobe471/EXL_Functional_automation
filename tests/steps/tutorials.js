@@ -2,22 +2,29 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
+// Import common mobile steps
+require('./common-mobile-steps');
 
 setDefaultTimeout(90 * 1000);
 
 Given('user navigates to Experience League tutorials page', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
+  // Only launch a new browser if one is not already open (single session per feature)
+  if (!this.page) {
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+    console.log("✓ Launched new browser session");
+  } else {
+    console.log("✓ Reusing existing browser session");
+  }
+
   // Navigate to the Experience League tutorials page
   await this.page.goto(`${ENV.URL}/docs/home-tutorials`);
-  
+
   // Wait for the page to fully load
   await this.page.waitForTimeout(5000);
-  
+
   console.log("✓ Successfully navigated to the Experience League tutorials page");
 });
 
@@ -39,12 +46,8 @@ Then('user should see {string} in the breadcrumb navigation', async function(exp
   console.log(`✓ Breadcrumb contains "${actualText.trim()}" as expected`);
   
   // Take a screenshot for verification
-  await this.page.screenshot({ path: 'tutorials-breadcrumb.png' });
+  await this.page.screenshot({ path: 'screenshots/tutorials-breadcrumb.png' });
   console.log("✓ Screenshot captured for verification");
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log("✓ Browser closed successfully");
-  }
+  // Browser cleanup is handled by the After hook in hooks.js
 });

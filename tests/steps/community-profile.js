@@ -1,7 +1,6 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
@@ -10,13 +9,10 @@ setDefaultTimeout(90 * 1000);
 let communitySectionVisible = false;
 
 Given('user logs in to Experience League for community profile', async function() {
-  // Use the common login function
-  await performLogin(this);
-  
-  // Wait for the page to load completely
-  await this.page.waitForTimeout(15000);
-  
-  // Verify we're on the Experience League page
+  if (!this.page) {
+    await performLogin(this);
+    await this.page.waitForTimeout(15000);
+  }
   const url = await this.page.url();
   console.log(`Current URL: ${url}`);
   console.log("✓ Successfully logged in to Experience League");
@@ -446,8 +442,9 @@ Given('user starts monitoring network requests for profile menu', async function
 
 // Modified login step that includes network monitoring
 Given('user logs in to Experience League for community profile with network monitoring', async function() {
-  // Use the common login function FIRST to create the page
-  await performLogin(this);
+  if (!this.page) {
+    await performLogin(this);
+  }
   
   // Now that page exists, set up network monitoring if flag is set
   if (this.monitorProfileMenuList) {

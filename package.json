@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run ensure-reports-dir && cucumber-js",
+    "test:feature": "npm run ensure-reports-dir && cucumber-js --profile single",
     "test:report": "npm run ensure-reports-dir && cucumber-js && node tests/support/generate-report.js && npx http-server ./reports -o /custom-report.html",
     "clean:reports": "rimraf reports && mkdir reports",
     "clean:screenshots": "node -e \"const fs = require('fs'); const path = require('path'); const reportsDir = path.join(process.cwd(), 'reports'); if (fs.existsSync(reportsDir)) { fs.readdirSync(reportsDir).filter(f => f.endsWith('.png')).forEach(f => fs.unlinkSync(path.join(reportsDir, f))); }\"",

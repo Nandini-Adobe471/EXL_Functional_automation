@@ -1,6 +1,5 @@
 const { When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 
 // Set a longer timeout for all steps
@@ -133,25 +132,11 @@ Then('user should verify carousel block is in full bleed with min-width {int}px'
       expect(hasRequiredWidth).toBeTruthy();
     }
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
   } catch (error) {
     console.error(`❌ Error checking carousel block width: ${error.message}`);
-    
-    // Take a screenshot of the error state
     await this.page.screenshot({ path: 'screenshots/certification-carousel-width-check-error.png' });
     console.log('✓ Error screenshot saved as screenshots/certification-carousel-width-check-error.png');
-    
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
-    throw error; // Re-throw the error to fail the test
+    throw error;
   }
 });
 
@@ -212,25 +197,11 @@ Then('user should verify number of panels matches number of navigation buttons',
       expect(countsMatch).toBeTruthy();
     }
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
   } catch (error) {
     console.error(`❌ Error checking panel and button counts: ${error.message}`);
-    
-    // Take a screenshot of the error state
     await this.page.screenshot({ path: 'screenshots/certification-carousel-panel-count-error.png' });
     console.log('✓ Error screenshot saved as screenshots/certification-carousel-panel-count-error.png');
-    
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
-    throw error; // Re-throw the error to fail the test
+    throw error;
   }
 });
 
@@ -392,24 +363,10 @@ Then('user should verify clicking each button loads the corresponding panel', as
     
     console.log('✓ Successfully verified all carousel navigation buttons');
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
   } catch (error) {
     console.error(`❌ Error verifying carousel navigation: ${error.message}`);
-    
-    // Take a screenshot of the error state
     await this.page.screenshot({ path: 'screenshots/certification-carousel-navigation-error.png' });
     console.log('✓ Error screenshot saved as screenshots/certification-carousel-navigation-error.png');
-    
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
-    throw error; // Re-throw the error to fail the test
+    throw error;
   }
 });

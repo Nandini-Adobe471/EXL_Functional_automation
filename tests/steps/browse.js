@@ -1,7 +1,6 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 // Import common mobile steps
 require('./common-mobile-steps');
@@ -9,8 +8,9 @@ require('./common-mobile-steps');
 setDefaultTimeout(90 * 1000);
 
 Given('user is on the PHP page', async function() {
-  // Use the common login function to log in
-  await performLogin(this);
+  if (!this.page) {
+    await performLogin(this);
+  }
 });
 
 When('user navigates to the browse page', async function() {
@@ -78,13 +78,13 @@ Then('verify first card displays with selected content type and product tag', as
 
 
 Given('user navigates to Experience League browse page filter section', async function() {
-  // Launch browser and navigate to the browse page
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Navigate to the browse page
+  if (!this.page) {
+    const { launchBrowser } = require('../commonFunctions/launchbrowser');
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
   await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForTimeout(2000);
 });
@@ -365,16 +365,14 @@ When('user navigates back to the browse page', async function() {
 });
 
 Given('user navigates to Experience League browse page', async function() {
-  // Launch browser and navigate to the browse page
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Navigate to the browse page
+  if (!this.page) {
+    const { launchBrowser } = require('../commonFunctions/launchbrowser');
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
   await this.page.goto(`${ENV.URL}/browse`);
-  
-  // Wait for the page to stabilize
   await this.page.waitForTimeout(2000);
 });
 
@@ -489,16 +487,14 @@ Then('the browse rail list items should be visible', async function() {
 
 
 Given('user navigates to Experience League browse pagea', async function() {
-  // Launch browser and navigate to the browse page
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Navigate to the browse page
- await this.page.goto(`${ENV.URL}/browse`);
-  
-  // Wait for the page to stabilize
+  if (!this.page) {
+    const { launchBrowser } = require('../commonFunctions/launchbrowser');
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
+  await this.page.goto(`${ENV.URL}/browse`);
   await this.page.waitForTimeout(2000);
 });
 
@@ -700,7 +696,7 @@ When('user clicks on a list item in the browse rail in mobile view', async funct
             console.log(`Clicking on mobile browse rail item: ${this.clickedMobileItemText.trim()}`);
             
             // Take a screenshot before clicking
-            await this.page.screenshot({ path: 'mobile-before-click.png' });
+            await this.page.screenshot({ path: 'screenshots/mobile-before-click.png' });
             
             // Click the item
             await item.click();
@@ -746,7 +742,7 @@ When('user clicks on a list item in the browse rail in mobile view', async funct
     }
     
     // Take a screenshot after clicking
-    await this.page.screenshot({ path: 'mobile-after-click.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-after-click.png' });
     
     // Assert that we clicked on an item
     expect(clicked).toBeTruthy();
@@ -754,7 +750,7 @@ When('user clicks on a list item in the browse rail in mobile view', async funct
     
   } catch (error) {
     console.error(`Error clicking on list item in mobile view: ${error.message}`);
-    await this.page.screenshot({ path: 'mobile-click-error.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-click-error.png' });
     throw error;
   }
 });
@@ -801,7 +797,7 @@ Then('the breadcrumb should be visible in mobile view', async function() {
     }
     
     // Take a screenshot for debugging
-    await this.page.screenshot({ path: 'mobile-breadcrumb.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-breadcrumb.png' });
     
     // Assert that breadcrumb is visible
     expect(breadcrumbFound).toBeTruthy();
@@ -809,7 +805,7 @@ Then('the breadcrumb should be visible in mobile view', async function() {
     
   } catch (error) {
     console.error(`Error checking for breadcrumb in mobile view: ${error.message}`);
-    await this.page.screenshot({ path: 'mobile-breadcrumb-error.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-breadcrumb-error.png' });
     throw error;
   }
 });
@@ -819,7 +815,7 @@ When('user clicks on the browse breadcrumb in mobile view', async function() {
     console.log('Attempting to find and click on breadcrumb in mobile view');
     
     // Take a screenshot to see the current state
-    await this.page.screenshot({ path: 'mobile-breadcrumb-state.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-breadcrumb-state.png' });
     
     // Try multiple approaches to find the breadcrumb
     let breadcrumbFound = false;
@@ -921,7 +917,7 @@ When('user clicks on the browse breadcrumb in mobile view', async function() {
     // If we found an element to click, click it
     if (breadcrumbFound && breadcrumbElement) {
       // Take a screenshot before clicking
-      await this.page.screenshot({ path: 'mobile-before-breadcrumb-click.png' });
+      await this.page.screenshot({ path: 'screenshots/mobile-before-breadcrumb-click.png' });
       
       // Click the element
       console.log('Clicking on found breadcrumb/navigation element');
@@ -931,7 +927,7 @@ When('user clicks on the browse breadcrumb in mobile view', async function() {
       await this.page.waitForTimeout(2000);
       
       // Take a screenshot after clicking
-      await this.page.screenshot({ path: 'mobile-after-breadcrumb-click.png' });
+      await this.page.screenshot({ path: 'screenshots/mobile-after-breadcrumb-click.png' });
     } else {
       // If we couldn't find any element to click, try to navigate back using browser history
       console.log('No breadcrumb element found, using browser history to navigate back');
@@ -941,7 +937,7 @@ When('user clicks on the browse breadcrumb in mobile view', async function() {
     
   } catch (error) {
     console.error(`Error clicking on breadcrumb in mobile view: ${error.message}`);
-    await this.page.screenshot({ path: 'mobile-breadcrumb-click-error.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-breadcrumb-click-error.png' });
     
     // Try to navigate back using browser history as a fallback
     console.log('Error occurred, trying to navigate back using browser history');
@@ -953,7 +949,7 @@ When('user clicks on the browse breadcrumb in mobile view', async function() {
 Then('user should navigate back to the browse page in mobile view', async function() {
   try {
     // Take a screenshot of the current state
-    await this.page.screenshot({ path: 'mobile-final-state.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-final-state.png' });
     
     // Get the current URL
     const currentUrl = this.page.url();
@@ -970,35 +966,23 @@ Then('user should navigate back to the browse page in mobile view', async functi
       console.log('Explicitly navigated to staging browse page');
       
       // Take another screenshot after navigation
-      await this.page.screenshot({ path: 'mobile-after-explicit-navigation.png' });
+      await this.page.screenshot({ path: 'screenshots/mobile-after-explicit-navigation.png' });
     }
     
     // Now verify we're on the staging browse page
     await expect(this.page).toHaveURL(`${ENV.URL}/browse`);
     console.log("✓ Successfully verified we're on the staging browse page in mobile view");
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await this.browser.close();
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error verifying navigation in mobile view: ${error.message}`);
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await this.browser.close();
-      console.log('Browser closed after error');
-    }
-    
     throw error;
   }
 });
 
 Given('user logs in to Experience Leaguee', async function() {
-  // Use the common login function
-  await performLogin(this);
+  if (!this.page) {
+    await performLogin(this);
+  }
   
   // Wait for the page to load
   await this.page.waitForTimeout(5000);
@@ -1034,7 +1018,7 @@ When('user gets the title of the first card in tabbed-cards-wrapper', async func
 
 When('user bookmarks the first card', async function() {
   /* Take a screenshot of the page to see what we're working with
- // await this.page.screenshot({ path: 'reports/browse-page.png' });
+ // await this.page.screenshot({ path: 'screenshots/reports/browse-page.png' });
   
   // Wait longer for the cards to fully load
   await this.page.waitForTimeout(5000);
@@ -1102,7 +1086,7 @@ When('user bookmarks the first card', async function() {
   await this.page.waitForTimeout(3000);
   
   // Take a screenshot after bookmarking
-  await this.page.screenshot({ path: 'reports/after-bookmark.png' });
+  await this.page.screenshot({ path: 'screenshots/reports/after-bookmark.png' });
   
   if (bookmarkClicked) {
     console.log(`Bookmarked card: ${this.cardTitle}`);
@@ -1127,7 +1111,7 @@ When('user navigates to bookmarks page', async function() {
   console.log("✓ Navigated to bookmarks page");
   
   // Take a screenshot of the bookmarks page
- // await this.page.screenshot({ path: 'reports/bookmarks-page.png' });
+ // await this.page.screenshot({ path: 'screenshots/reports/bookmarks-page.png' });
 });
 
 Then('user should see the bookmarked card with the same title', async function() {
@@ -1159,7 +1143,7 @@ When('user removes the bookmark from the card', async function() {
   const bookmarkIcon = await card.locator('.card-bookmark-icon');
   
   // Take a screenshot before removing bookmark
-  await this.page.screenshot({ path: 'reports/before-remove-bookmark.png' });
+  await this.page.screenshot({ path: 'screenshots/reports/before-remove-bookmark.png' });
   
   // Click the bookmark icon to remove the bookmark
   await bookmarkIcon.click();
@@ -1168,7 +1152,7 @@ When('user removes the bookmark from the card', async function() {
   await this.page.waitForTimeout(2000);
   
   // Take a screenshot after removing bookmark
-  await this.page.screenshot({ path: 'reports/after-remove-bookmark.png' });
+  await this.page.screenshot({ path: 'screenshots/reports/after-remove-bookmark.png' });
   
   console.log(`Removed bookmark from card: ${this.cardTitle}`);*/
 });
@@ -1205,7 +1189,7 @@ When('user navigates back to browse page', async function() {
   console.log(`✓ Card is available for bookmarking again: ${this.cardTitle}`);
   
   // Take a final screenshot
-  await this.page.screenshot({ path: 'reports/final-state.png' });
+  await this.page.screenshot({ path: 'screenshots/reports/final-state.png' });
   
   // Clean up - close the browser
   if (this.browser) {

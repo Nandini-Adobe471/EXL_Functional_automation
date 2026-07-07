@@ -1,20 +1,16 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
 
 
 Given('user is logged in to Experience League for certification validation', async function() {
-  // Use the common login function to log in
-  const result = await performLogin(this);
-  
-  // Wait for the page to stabilize
-  await this.page.waitForTimeout(4000);
-  
-  // Verify we're on the Experience League homepage
+  if (!this.page) {
+    await performLogin(this);
+    await this.page.waitForTimeout(4000);
+  }
   console.log("✓ Successfully logged in to Experience League");
 });
 
@@ -44,14 +40,9 @@ Then('user should see {string} text in the marquee eyebrow', async function(expe
   console.log(`✓ Marquee eyebrow text is "${actualText.trim()}" as expected`);
   
   // Take a screenshot for verification
-  await this.page.screenshot({ path: 'certification-page.png' });
+  await this.page.screenshot({ path: 'screenshots/certification-page.png' });
   console.log("✓ Screenshot captured for verification");
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log("✓ Browser closed successfully");
-  }
 });
 
 When('user clicks on the marquee-cta button', async function() {
@@ -71,7 +62,7 @@ Then('user should be redirected to certification.adobe.com', async function() {
   console.log("✓ Marquee CTA button href contains certification.adobe.com");
   
   // Take a screenshot for verification
-  await this.page.screenshot({ path: 'certification-page-marquee-cta.png' });
+  await this.page.screenshot({ path: 'screenshots/certification-page-marquee-cta.png' });
   console.log("✓ Screenshot captured for verification");
 });
 
@@ -92,7 +83,7 @@ Then('user is navigated to certification certifications page', async function() 
   console.log("✓ Primary CTA button href contains certification.adobe.com/certifications");
   
   // Take a screenshot for verification
-  await this.page.screenshot({ path: 'certification-page-primary-cta.png' });
+  await this.page.screenshot({ path: 'screenshots/certification-page-primary-cta.png' });
   console.log("✓ Screenshot captured for verification");
 });
 
@@ -113,6 +104,6 @@ Then('user is redirected to certification courses page', async function() {
   console.log("✓ Secondary CTA button href contains certification.adobe.com/courses");
   
   // Take a screenshot for verification
-  await this.page.screenshot({ path: 'certification-page-secondary-cta.png' });
+  await this.page.screenshot({ path: 'screenshots/certification-page-secondary-cta.png' });
   console.log("✓ Screenshot captured for verification");
 });

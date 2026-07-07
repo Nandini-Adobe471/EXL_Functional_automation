@@ -116,4 +116,55 @@ async function performLogout(page) {
   }
 }
 
-module.exports = { performLogin, performLogout };
+/**
+ * Performs login on an already-open page (no new browser launch).
+ * Used when the browser/page is already set up (e.g. shared session flow).
+ * @param {Object} page - Playwright page object
+ * @param {string} email
+ * @param {string} password
+ */
+async function performLoginOnPage(page, email = ENV.EMAIL, password = ENV.PASSWORD) {
+  try {
+    await page.waitForSelector('.marquee .marquee-cta a', { state: 'visible' });
+    await page.click('.marquee .marquee-cta a');
+    await page.waitForTimeout(2000);
+
+    const emailInput = page.locator('.EmailOrPhoneField__inputs .EmailOrPhoneField__textfield input');
+    await page.waitForTimeout(3000);
+    await emailInput.fill(email);
+    await page.waitForTimeout(2000);
+
+    await page.getByRole('button', { name: 'Continue' });
+    await page.click('button', { name: 'Continue' });
+    await page.waitForSelector('button', { name: 'Continue' }, { state: 'detached' });
+    await page.waitForTimeout(2000);
+
+    const passwordInput = page.locator('input[id="PasswordPage-PasswordField"]');
+    await passwordInput.waitFor({ state: 'visible' });
+    await passwordInput.fill(password);
+
+    await page.click('button[data-id="PasswordPage-ContinueButton"]');
+
+    await page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {
+      console.log('waitForNavigation timed out — page may have already navigated');
+    });
+
+    try {
+      await page.waitForSelector(
+        '.profile-button, .account, [data-toggle="account"], .nav-sign-in .profile-picture',
+        { state: 'visible', timeout: 20000 }
+      );
+      console.log('✅ Login confirmed — profile element visible');
+    } catch (e) {
+      console.warn('⚠️  Profile element not found after login — waiting additional time');
+      await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+    }
+
+    await page.waitForTimeout(3000);
+    console.log('Login successful (on existing page)');
+  } catch (error) {
+    console.error('Login failed (on existing page):', error.message);
+  }
+}
+
+module.exports = { performLogin, performLoginOnPage, performLogout };

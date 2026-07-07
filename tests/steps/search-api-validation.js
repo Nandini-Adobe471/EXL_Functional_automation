@@ -3,6 +3,8 @@ const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
 const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
+// Import common mobile steps
+require('./common-mobile-steps');
 
 setDefaultTimeout(180 * 1000);
 
@@ -16,14 +18,13 @@ const COVEO_URL_REGEX = /adobesystemsincorporatednonprod1\.org\.coveo\.com\/rest
  * API URL: https://adobesystemsincorporatednonprod1.org.coveo.com/rest/search/v2?organizationId=adobesystemsincorporatednonprod1
  */
 Given('user launches the application and logs in for search API validation', async function () {
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-
   this.coveoApiResponse = null;
   this.coveoApiResults = null;
   this.coveoTotalCount = null;
+
+  if (!this.page) {
+    await performLogin(this);
+  }
 
   // Register a context-level route intercept so it survives page navigations
   await this.context.route(COVEO_API_PATTERN, async (route) => {
@@ -44,7 +45,6 @@ Given('user launches the application and logs in for search API validation', asy
     await route.fulfill({ response });
   });
 
-  await performLogin(this);
   await this.page.waitForTimeout(3000);
   console.log('✓ Logged in. Context-level Coveo API interceptor is active.');
 });
@@ -466,9 +466,4 @@ Then('the total number of displayed results should match the API totalCount', as
     );
   }
 
-  // Close browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });

@@ -2,6 +2,8 @@ const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
+// Import common mobile steps
+require('./common-mobile-steps');
 
 // Set a longer timeout for all steps
 setDefaultTimeout(90 * 1000);
@@ -13,32 +15,32 @@ Given('user navigates to Experience League home page without logging in', async 
     this.page = page;
     this.browser = browser;
     this.context = context;
-    
+
     console.log('✓ Navigated to Experience League home page without logging in');
-    
-    // Wait for 5 seconds after launching the URL as requested
+
+    // Wait for 5 seconds after launching the URL
     console.log('Waiting for 5 seconds after page load...');
     await this.page.waitForTimeout(5000);
     console.log('✓ Completed 5-second wait after page load');
-    
+
     // Wait for the page to be fully loaded
     await this.page.waitForLoadState('domcontentloaded');
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForLoadState('load');
     console.log('✓ Page fully loaded after wait');
-    
+
     // Take a screenshot of the home page
     await this.page.screenshot({ path: 'screenshots/unauth-home-page.png' });
     console.log('✓ Screenshot saved as screenshots/unauth-home-page.png');
   } catch (error) {
     console.error(`❌ Error navigating to Experience League home page: ${error.message}`);
-    
+
     // Take a screenshot of the error state
     if (this.page) {
       await this.page.screenshot({ path: 'screenshots/unauth-home-page-error.png' });
       console.log('✓ Error screenshot saved as screenshots/unauth-home-page-error.png');
     }
-    
+
     throw error; // Re-throw the error to fail the test
   }
 });

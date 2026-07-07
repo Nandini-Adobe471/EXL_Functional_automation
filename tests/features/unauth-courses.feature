@@ -56,5 +56,5 @@ Scenario: Verify course breakdown section in course details page
   And the course breakdown section should be displayed
   And the course breakdown header should have a "Sign in to start" button
   And all course breakdown modules should be disabled
-  When user clicks on the "Sign in to start" button
+  When user clicks on the unauth sign in to start button
   Then user should be redirected to the sign-in page

@@ -8,10 +8,10 @@
  URL: 'https://experienceleague-stage.adobe.com/en',
  //URL: 'https://experienceleague-stage.adobe.com/en',
  //URL: 'https://experienceleague-stage.adobe.com/?adobeQA=aimNotification',
- EMAIL: 'gsnair+US+Team+VISA+hello+1@adobetest.com',
- PASSWORD: 'Bap@d0be',
-    //EMAIL: 'hcl40471@adobe.com',
-    //PASSWORD: 'Bap@Qaz0)wsxedcrfvtgb',
+ //EMAIL: 'gsnair+US+Team+VISA+hello+1@adobetest.com',
+ //PASSWORD: 'Bap@d0be',
+    EMAIL: 'hcl40471@adobe.com',
+    PASSWORD: 'Bap@Qaz0)wsxedcrfvtgb',
     TIMEOUT_1:1000   
 
  }

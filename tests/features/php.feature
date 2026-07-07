@@ -16,7 +16,7 @@ Scenario: Verify main navigation links functionality
     | Link Name    |
     | Tutorials       |
     | Documentation   |
-    | Perspective       |
+    | Perspectives       |
   Then each page should load successfully
   And each page should display relevant content
 

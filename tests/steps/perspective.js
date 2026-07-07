@@ -9,8 +9,9 @@ require('./common-mobile-steps');
 setDefaultTimeout(90 * 1000);
 
 Given('user logs in and lands on PHP page', async function() {
-  // Use the common login function to log in
-  await performLogin(this);
+  if (!this.page) {
+    await performLogin(this);
+  }
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(8000);
 });
@@ -125,7 +126,7 @@ When('user selects author type as {string} in mobile view', async function(autho
   } catch (error) {
     console.error(`Error in mobile author selection: ${error.message}`);
     // Take a screenshot for debugging
-    await this.page.screenshot({ path: 'mobile-filter-error.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-filter-error.png' });
     throw error;
   }
 });
@@ -148,31 +149,14 @@ Then('verify first card displays with {string} badge in mobile view', async func
   // Log the verification for debugging purposes
   console.log(`Verified first card displays with badge in mobile view: ${badgeText}`);
   
-  // Close the browser in the last scenario
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 Given('user logs in and lands on the home page for author validation', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Use the common login function to log in
-  await performLogin(this);
-  
-  // Navigate to the home page
-  //await this.page.goto(`${ENV.URL}`);
-  
+  if (!this.page) {
+    await performLogin(this);
+  }
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(8000);
-  
-  // Verify we're on the home page
-//  await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page for author validation");
 });
 
@@ -223,7 +207,7 @@ When('user clicks on a card with author information', async function() {
               }
               
               // Take a screenshot before clicking
-              await this.page.screenshot({ path: 'before-author-card-click.png' });
+              await this.page.screenshot({ path: 'screenshots/before-author-card-click.png' });
               
               // Click the card
               await card.click();
@@ -280,7 +264,7 @@ When('user clicks on a card with author information', async function() {
               }
               
               // Take a screenshot before clicking
-              await this.page.screenshot({ path: 'before-author-card-click.png' });
+              await this.page.screenshot({ path: 'screenshots/before-author-card-click.png' });
               
               // Click the card
               await card.click();
@@ -313,7 +297,7 @@ When('user clicks on a card with author information', async function() {
         }
         
         // Take a screenshot before clicking
-        await this.page.screenshot({ path: 'before-first-card-click.png' });
+        await this.page.screenshot({ path: 'screenshots/before-first-card-click.png' });
         
         // Click the first card
         await firstCard.click();
@@ -333,7 +317,7 @@ When('user clicks on a card with author information', async function() {
     
   } catch (error) {
     console.error(`Error clicking on card with author information: ${error.message}`);
-    await this.page.screenshot({ path: 'author-card-click-error.png' });
+    await this.page.screenshot({ path: 'screenshots/author-card-click-error.png' });
     throw error;
   }
 });
@@ -346,7 +330,7 @@ Then('user extracts author info text from article marquee', async function() {
     await this.page.waitForTimeout(2000);
     
     // Take a screenshot of the current state
-    await this.page.screenshot({ path: 'article-page-author.png' });
+    await this.page.screenshot({ path: 'screenshots/article-page-author.png' });
     
     // Define possible selectors for author info in article marquee
     const authorInfoSelectors = [
@@ -427,7 +411,7 @@ Then('user extracts author info text from article marquee', async function() {
     
   } catch (error) {
     console.error(`Error extracting author info text: ${error.message}`);
-    await this.page.screenshot({ path: 'author-info-extraction-error.png' });
+    await this.page.screenshot({ path: 'screenshots/author-info-extraction-error.png' });
     throw error;
   }
 });
@@ -465,7 +449,7 @@ When('user navigates to author bio page', async function() {
       console.log(`Navigated to author bio page: ${this.authorBioPageUrl}`);
       
       // Take a screenshot of the author bio page
-      await this.page.screenshot({ path: 'author-bio-page.png' });
+      await this.page.screenshot({ path: 'screenshots/author-bio-page.png' });
       
       return;
     }
@@ -508,7 +492,7 @@ When('user navigates to author bio page', async function() {
           console.log('No href found, trying to click the link');
           
           // Take a screenshot before clicking
-          await this.page.screenshot({ path: 'before-author-link-click.png' });
+          await this.page.screenshot({ path: 'screenshots/before-author-link-click.png' });
           
           // Click the author link
           await element.click();
@@ -541,11 +525,11 @@ When('user navigates to author bio page', async function() {
     console.log(`Navigated to author bio page: ${this.authorBioPageUrl}`);
     
     // Take a screenshot of the author bio page
-    await this.page.screenshot({ path: 'author-bio-page.png' });
+    await this.page.screenshot({ path: 'screenshots/author-bio-page.png' });
     
   } catch (error) {
     console.error(`Error navigating to author bio page: ${error.message}`);
-    await this.page.screenshot({ path: 'author-bio-navigation-error.png' });
+    await this.page.screenshot({ path: 'screenshots/author-bio-navigation-error.png' });
     throw error;
   }
 });
@@ -626,43 +610,19 @@ Then('author info from article should match author bio page', async function() {
     // Assert that the author info matches
     expect(authorInfoMatch).toBeTruthy();
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error comparing author info: ${error.message}`);
-    await this.page.screenshot({ path: 'author-info-comparison-error.png' });
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser);
-    }
-    
+    await this.page.screenshot({ path: 'screenshots/author-info-comparison-error.png' });
     throw error;
   }
 });
 
 Given('user logs in and lands on the home page', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Use the common login function to log in
-  await performLogin(this);
-  
-  // Navigate to the home page
-  //await this.page.goto(`${ENV.URL}`);
-  
+  if (!this.page) {
+    await performLogin(this);
+  }
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(8000);
-  
-  // Verify we're on the home page
-  //await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page");
 });
 
@@ -848,7 +808,7 @@ When('user clicks on a card from the authorable-card data block', async function
     
   } catch (error) {
     console.error(`Error clicking on card: ${error.message}`);
-    await this.page.screenshot({ path: 'card-click-error.png' });
+    await this.page.screenshot({ path: 'screenshots/card-click-error.png' });
     throw error;
   }
 });
@@ -866,7 +826,7 @@ When('user sets viewport to mobile size for breadcrumb validation', async functi
   await this.page.waitForTimeout(1000);
   
   // Take a screenshot after changing viewport
-  await this.page.screenshot({ path: 'mobile-viewport-changed.png' });
+  await this.page.screenshot({ path: 'screenshots/mobile-viewport-changed.png' });
   
   console.log('Viewport set to mobile size for breadcrumb validation: 390x844');
   console.log(`Staying on the current page: ${this.page.url()}`);
@@ -989,13 +949,13 @@ Then('the breadcrumb span text should match the page heading on redirected page'
       console.log("✓ Breadcrumb span text matches page heading");
     } else {
       console.error('Breadcrumb text is still empty after all attempts');
-      await this.page.screenshot({ path: 'breadcrumb-empty-error.png' });
+      await this.page.screenshot({ path: 'screenshots/breadcrumb-empty-error.png' });
       throw new Error('Breadcrumb text is empty - unable to validate against page heading');
     }
     
   } catch (error) {
     console.error(`Error checking breadcrumb and heading: ${error.message}`);
-    await this.page.screenshot({ path: 'breadcrumb-validation-error.png' });
+    await this.page.screenshot({ path: 'screenshots/breadcrumb-validation-error.png' });
     throw error;
   }
 });
@@ -1010,7 +970,7 @@ Then('the breadcrumb span text should match the page heading on redirected page 
     await this.page.waitForTimeout(2000);
     
     // Take a screenshot of the current state
-    await this.page.screenshot({ path: 'mobile-breadcrumb-validation.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-breadcrumb-validation.png' });
     
     // Find the page heading (h1)
     const heading = this.page.locator('h1').first();
@@ -1098,43 +1058,19 @@ Then('the breadcrumb span text should match the page heading on redirected page 
       expect(normalizedHeadingText.length > 0 && normalizedSpanText.length > 0).toBeTruthy();
     }
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error checking breadcrumb and heading in mobile view: ${error.message}`);
-    await this.page.screenshot({ path: 'mobile-breadcrumb-validation-error.png' });
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser);
-    }
-    
+    await this.page.screenshot({ path: 'screenshots/mobile-breadcrumb-validation-error.png' });
     throw error;
   }
 });
 
 Given('user logs in and lands on the home page for mini TOC validation', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Use the common login function to log in
-  await performLogin(this);
-  
-  // Navigate to the home page
-  //await this.page.goto(`${ENV.URL}`);
-  
+  if (!this.page) {
+    await performLogin(this);
+  }
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
-  
-  // Verify we're on the home page
-  //await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
   console.log("✓ Successfully logged in and landed on the home page for mini TOC validation");
 });
 
@@ -1195,7 +1131,7 @@ When('user clicks on the last card of an authorable card block', async function(
     }
     
     // Take a screenshot before clicking
-    await this.page.screenshot({ path: 'before-card-click.png' });
+    await this.page.screenshot({ path: 'screenshots/before-card-click.png' });
     
     // Click the last card
     await lastCard.click();
@@ -1214,11 +1150,11 @@ When('user clicks on the last card of an authorable card block', async function(
     // Check if there are more blocks to try
     if (this.currentBlockIndex < this.authorableCardBlocks.length) {
       console.log(`Trying next block (${this.currentBlockIndex + 1} of ${this.authorableCardBlocks.length})`);
-      await this.page.screenshot({ path: `block-${this.currentBlockIndex}-error.png` });
+      await this.page.screenshot({ path: `screenshots/block-${this.currentBlockIndex}-error.png` });
       throw error; // Re-throw to allow retry with next block
     } else {
       console.error('No more blocks to try');
-      await this.page.screenshot({ path: 'all-blocks-error.png' });
+      await this.page.screenshot({ path: 'screenshots/all-blocks-error.png' });
       throw new Error('Failed to find a suitable card in any block');
     }
   }
@@ -1232,7 +1168,7 @@ Then('the mini TOC should be checked for visibility', async function() {
     await this.page.waitForTimeout(2000);
     
     // Take a screenshot of the current state
-    await this.page.screenshot({ path: 'article-page.png' });
+    await this.page.screenshot({ path: 'screenshots/article-page.png' });
     
     // Define possible selectors for mini TOC
     const miniTocSelectors = [
@@ -1268,7 +1204,7 @@ Then('the mini TOC should be checked for visibility', async function() {
     
   } catch (error) {
     console.error(`Error checking mini TOC visibility: ${error.message}`);
-    await this.page.screenshot({ path: 'mini-toc-check-error.png' });
+    await this.page.screenshot({ path: 'screenshots/mini-toc-check-error.png' });
     throw error;
   }
 });
@@ -1317,7 +1253,7 @@ Then('if mini TOC is visible verify clicking on TOC items scrolls to respective 
       const scrollPositionAfter = await this.page.evaluate(() => window.scrollY);
       
       // Take a screenshot after clicking
-      await this.page.screenshot({ path: `toc-item-${i+1}-clicked.png` });
+      await this.page.screenshot({ path: `screenshots/toc-item-${i+1}-clicked.png` });
       
       // Verify that the page has scrolled
       const hasScrolled = scrollPositionAfter !== scrollPositionBefore;
@@ -1368,7 +1304,7 @@ Then('if mini TOC is visible verify clicking on TOC items scrolls to respective 
     
   } catch (error) {
     console.error(`Error verifying TOC item clicking: ${error.message}`);
-    await this.page.screenshot({ path: 'toc-item-click-error.png' });
+    await this.page.screenshot({ path: 'screenshots/toc-item-click-error.png' });
     throw error;
   }
 });
@@ -1377,13 +1313,6 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
   // Skip this step if mini TOC was found
   if (this.miniTocFound) {
     console.log('Mini TOC was found, no need to try another card');
-    
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
     return;
   }
   
@@ -1438,7 +1367,7 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
       }
       
       // Take a screenshot before clicking
-      await this.page.screenshot({ path: `before-card-click-block-${this.currentBlockIndex}.png` });
+      await this.page.screenshot({ path: `screenshots/before-card-click-block-${this.currentBlockIndex}.png` });
       
       // Click the last card
       await lastCard.click();
@@ -1513,7 +1442,7 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
             const scrollPositionAfter = await this.page.evaluate(() => window.scrollY);
             
             // Take a screenshot after clicking
-            await this.page.screenshot({ path: `toc-item-${i+1}-clicked-block-${this.currentBlockIndex}.png` });
+            await this.page.screenshot({ path: `screenshots/toc-item-${i+1}-clicked-block-${this.currentBlockIndex}.png` });
             
             // Verify that the page has scrolled
             const hasScrolled = scrollPositionAfter !== scrollPositionBefore;
@@ -1540,38 +1469,19 @@ Then('if mini TOC is not visible try another card from next authorable card bloc
       console.log("No more authorable card blocks to try");
     }
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error trying another card: ${error.message}`);
-    await this.page.screenshot({ path: 'try-another-card-error.png' });
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser);
-    }
-    
+    await this.page.screenshot({ path: 'screenshots/try-another-card-error.png' });
     throw error;
   }
 });
 
 Given('user logs in and lands on the home page for all cards mini TOC validation', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-
-  // Use the common login function to log in
-  await performLogin(this);
-
+  if (!this.page) {
+    await performLogin(this);
+  }
   // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
-
   console.log("✓ Successfully logged in and landed on the home page for all cards mini TOC validation");
 });
 
@@ -1825,47 +1735,19 @@ Then('for each perspective card link user validates mini TOC presence based on h
 
     console.log(`✓ Mini TOC validation complete. ${passed} passed, ${ignored} ignored (tab list pages), ${warned} warnings.`);
 
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-
   } catch (error) {
     console.error(`Error during mini TOC validation for all cards: ${error.message}`);
-    await this.page.screenshot({ path: 'mini-toc-all-cards-error.png' }).catch(() => {});
-
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser).catch(() => {});
-    }
-
+    await this.page.screenshot({ path: 'screenshots/mini-toc-all-cards-error.png' }).catch(() => {});
     throw error;
   }
 });
 
 Given('user logs in and lands on the home page for tag validation', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Use the common login function to log in
-  await performLogin(this);
-
-  await this.page.waitForTimeout(4000);
-//=======
-   await this.page.waitForTimeout(4000);
-////>>>>>> Stashed changes
-  // Navigate to the home page
-  await this.page.goto(`${ENV.URL}`);
-  
+  if (!this.page) {
+    await performLogin(this);
+  }
   // Wait for the page to fully load after login
-  await this.page.waitForTimeout(2000);
-  
-  // Verify we're on the home page
-  //await expect(this.page).toHaveURL(new RegExp(`.*${ENV.URL.replace(/https?:\/\//, '')}\/?$`));
+  await this.page.waitForTimeout(4000);
   console.log("✓ Successfully logged in and landed on the home page for tag validation");
 });
 
@@ -2021,7 +1903,7 @@ When('user stores the tag text from a card and clicks it', async function() {
     
   } catch (error) {
     console.error(`Error clicking on card with tag: ${error.message}`);
-    await this.page.screenshot({ path: 'card-tag-error.png' });
+    await this.page.screenshot({ path: 'screenshots/card-tag-error.png' });
     throw error;
   }
 });
@@ -2034,7 +1916,7 @@ Then('the card tag text should match the article tag products on redirected page
     await this.page.waitForTimeout(2000);
     
     // Take a screenshot of the current state
-    await this.page.screenshot({ path: 'article-tag-validation.png' });
+    await this.page.screenshot({ path: 'screenshots/article-tag-validation.png' });
     
     // Find the article tag products element
     const articleTagSelectors = [
@@ -2108,21 +1990,9 @@ Then('the card tag text should match the article tag products on redirected page
       expect(normalizedArticleTagText.length > 0 && normalizedCardTagText.length > 0).toBeTruthy();
     }
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error checking article tag products: ${error.message}`);
-    await this.page.screenshot({ path: 'article-tag-error.png' });
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser);
-    }
-    
+    await this.page.screenshot({ path: 'screenshots/article-tag-error.png' });
     throw error;
   }
 });

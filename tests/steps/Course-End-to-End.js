@@ -1,6 +1,5 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const { performLogin } = require('../commonFunctions/login');
 const ENV = require('../../config.js');
 
@@ -421,9 +420,4 @@ Then('user should see the completion date on the course card', async function() 
   // Take a screenshot showing the completion date
   await this.page.screenshot({ path: 'screenshots/course-completion-date.png' });
   
-  // Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });

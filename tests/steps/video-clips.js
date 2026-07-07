@@ -1,23 +1,22 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
+// Import common mobile steps
+require('./common-mobile-steps');
 
 // Set a longer timeout for all steps
 setDefaultTimeout(90 * 1000);
 
 // Step definitions for video clips feature
 Given('the user logs in to the application with valid credentials', async function() {
-  // Use the existing login functionality
-  const result = await performLogin(this);
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Wait for the page to fully load after login
-  await this.page.waitForTimeout(12000);
-  console.log('✓ Successfully logged in to the application');
+  // Session is already established by BeforeAll hook — just navigate to the base URL
+  if (!this.page) {
+    throw new Error('[Session] this.page is not set. Ensure hooks.js BeforeAll/Before ran correctly.');
+  }
+  await this.page.goto(ENV.URL);
+  // Wait for the page to fully load
+  await this.page.waitForTimeout(5000);
+  console.log('✓ Session already active — navigated to application home page');
 });
 
 When('the user modifies the URL to append {string}', async function(queryParam) {
@@ -145,7 +144,7 @@ When('the user clicks on the first video clip card', async function() {
 
 Then('the video clip content should open', async function() {
   // Take a screenshot of the video clip content
-  await this.page.screenshot({ path: 'video-clip-content.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clip-content.png' });
   console.log('✓ Screenshot of video clip content saved as video-clip-content.png');
   
   // Check for iframe to ensure video content is loaded
@@ -190,7 +189,7 @@ When('the user clicks on the watch full video button', async function() {
   this.newPage = newPage;
   
   // Take a screenshot of the new page
-  await this.newPage.screenshot({ path: 'video-clip-full-video-page.png' });
+  await this.newPage.screenshot({ path: 'screenshots/video-clip-full-video-page.png' });
   console.log('✓ Screenshot saved as video-clip-full-video-page.png');
 });
 
@@ -214,7 +213,7 @@ Then('a new window should open with the full video', async function() {
     }
     
     // Take a screenshot of the new page
-    await this.newPage.screenshot({ path: 'video-clip-full-video-verification.png' });
+    await this.newPage.screenshot({ path: 'screenshots/video-clip-full-video-verification.png' });
     console.log('✓ Screenshot saved as video-clip-full-video-verification.png');
     
     // Close the new page
@@ -224,7 +223,7 @@ Then('a new window should open with the full video', async function() {
     console.error(`❌ Error verifying new window: ${error.message}`);
     // Take a screenshot of the error state if possible
     if (this.newPage) {
-      await this.newPage.screenshot({ path: 'video-clip-full-video-error.png' });
+      await this.newPage.screenshot({ path: 'screenshots/video-clip-full-video-error.png' });
       console.log('✓ Error screenshot saved as video-clip-full-video-error.png');
       // Close the new page
       await this.newPage.close();
@@ -251,7 +250,7 @@ When('the user clicks on the activate miniplayer button', async function() {
   await this.page.waitForTimeout(3000);
   
   // Take a screenshot after activating the miniplayer
-  await this.page.screenshot({ path: 'video-clip-miniplayer-activated.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clip-miniplayer-activated.png' });
   console.log('✓ Screenshot saved as video-clip-miniplayer-activated.png');
 });
 
@@ -286,12 +285,12 @@ Then('the miniplayer should be activated', async function() {
     expect(miniplayerVisible).toBeTruthy();
     
     // Take a screenshot of the activated miniplayer
-    await this.page.screenshot({ path: 'video-clip-miniplayer-verification.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-miniplayer-verification.png' });
     console.log('✓ Screenshot saved as video-clip-miniplayer-verification.png');
   } catch (error) {
     console.error(`❌ Error verifying miniplayer: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: 'video-clip-miniplayer-error.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-miniplayer-error.png' });
     console.log('✓ Error screenshot saved as video-clip-miniplayer-error.png');
     throw error; // Re-throw the error to fail the test
   }
@@ -316,7 +315,7 @@ When('the user clicks on the expand video player button', async function() {
   await this.page.waitForTimeout(5000);
   
   // Take a screenshot after expanding the player
-  await this.page.screenshot({ path: 'video-clip-expanded-player.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clip-expanded-player.png' });
   console.log('✓ Screenshot saved as video-clip-expanded-player.png');
 });
 
@@ -344,12 +343,12 @@ Then('the MPC player should be visible', async function() {
     expect(iframeVisible).toBeTruthy();
     
     // Take a screenshot of the player with iframe
-    await this.page.screenshot({ path: 'video-clip-mpc-player-verification.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-mpc-player-verification.png' });
     console.log('✓ Screenshot saved as video-clip-mpc-player-verification.png');
   } catch (error) {
     console.error(`❌ Error verifying iframe visibility: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: 'video-clip-mpc-player-error.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-mpc-player-error.png' });
     console.log('✓ Error screenshot saved as video-clip-mpc-player-error.png');
     throw error; // Re-throw the error to fail the test
   }
@@ -373,7 +372,7 @@ When('the user clicks on the play button', async function() {
   await this.page.waitForTimeout(3000);
   
   // Take a screenshot after clicking play
-  await this.page.screenshot({ path: 'video-clip-playing.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clip-playing.png' });
   console.log('✓ Screenshot saved as video-clip-playing.png');*/
 });
 
@@ -399,12 +398,12 @@ Then('the video should be playing', async function() {
     expect(pauseButtonVisible).toBeTruthy();
     
     // Take a screenshot of the playing video
-    await this.page.screenshot({ path: 'video-clip-playing-verification.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-playing-verification.png' });
     console.log('✓ Screenshot saved as video-clip-playing-verification.png');
   } catch (error) {
     console.error(`❌ Error verifying video is playing: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: 'video-clip-playing-error.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-playing-error.png' });
     console.log('✓ Error screenshot saved as video-clip-playing-error.png');
     throw error; // Re-throw the error to fail the test
   }*/
@@ -428,7 +427,7 @@ When('the user clicks on the close player button', async function() {
   await this.page.waitForTimeout(3000);
   
   // Take a screenshot after closing the player
-  await this.page.screenshot({ path: 'video-clip-player-closed.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clip-player-closed.png' });
   console.log('✓ Screenshot saved as video-clip-player-closed.png');
 });
 
@@ -458,12 +457,12 @@ Then('the MPC player should not be visible', async function() {
     expect(videoVisible).toBeFalsy();
     
     // Take a screenshot to verify player is closed
-    await this.page.screenshot({ path: 'video-clip-player-not-visible-verification.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-player-not-visible-verification.png' });
     console.log('✓ Screenshot saved as video-clip-player-not-visible-verification.png');
   } catch (error) {
     console.error(`❌ Error verifying MPC player is not visible: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: 'video-clip-player-not-visible-error.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-player-not-visible-error.png' });
     console.log('✓ Error screenshot saved as video-clip-player-not-visible-error.png');
     throw error; // Re-throw the error to fail the test
   }
@@ -471,14 +470,9 @@ Then('the MPC player should not be visible', async function() {
 
 Then('the test should capture a screenshot for evidence', async function() {
   // Take a screenshot as evidence
-  await this.page.screenshot({ path: 'video-clips-section-visible.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clips-section-visible.png' });
   console.log('✓ Screenshot saved as video-clips-section-visible.png');
-  
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
+  // Browser is closed by AfterAll hook — do not close here
 });
 
 // Negative scenario steps
@@ -502,14 +496,9 @@ Then('the test should fail with {string} message', async function(errorMessage) 
 
 Then('the test should capture a screenshot of the error state', async function() {
   // Take a screenshot of the error state
-  await this.page.screenshot({ path: 'video-clips-error.png' });
+  await this.page.screenshot({ path: 'screenshots/video-clips-error.png' });
   console.log('✓ Screenshot saved as video-clips-error.png');
-  
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
+  // Browser is closed by AfterAll hook — do not close here
 });
 
 // Mobile specific steps
@@ -522,7 +511,7 @@ When('the user sets the viewport to mobile size for video clips', async function
   await this.page.waitForTimeout(2000);
   
   // Take a screenshot to verify mobile viewport
-  await this.page.screenshot({ path: 'mobile-viewport-video-clips.png' });
+  await this.page.screenshot({ path: 'screenshots/mobile-viewport-video-clips.png' });
   console.log('✓ Screenshot saved as mobile-viewport-video-clips.png');
 });
 
@@ -566,7 +555,7 @@ Then('only the close player button should be visible', async function() {
     expect(closeButtonVisible).toBeTruthy();
     
     // Take a screenshot to verify button visibility
-    await this.page.screenshot({ path: 'mobile-player-buttons-verification.png' });
+    await this.page.screenshot({ path: 'screenshots/mobile-player-buttons-verification.png' });
     console.log('✓ Screenshot saved as mobile-player-buttons-verification.png');
   } catch (error) {
     console.error(`❌ Error verifying close button visibility: ${error.message}`);
@@ -611,12 +600,12 @@ Then('the {string} button should be visible', async function(buttonText) {
     this[`${buttonText.replace(/\s+/g, '_').toLowerCase()}_selector`] = buttonSelector;
     
     // Take a screenshot to verify button visibility
-    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-visible.png` });
+    await this.page.screenshot({ path: `screenshots/${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-visible.png` });
     console.log(`✓ Screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-visible.png`);
   } catch (error) {
     console.error(`❌ Error verifying "${buttonText}" button visibility: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-error.png` });
+    await this.page.screenshot({ path: `screenshots/${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-error.png` });
     console.log(`✓ Error screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-error.png`);
     throw error; // Re-throw the error to fail the test
   }
@@ -656,12 +645,12 @@ Then('the {string} button should not be visible', async function(buttonText) {
     expect(buttonVisible).toBeFalsy();
     
     // Take a screenshot to verify button is not visible
-    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible.png` });
+    await this.page.screenshot({ path: `screenshots/${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible.png` });
     console.log(`✓ Screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible.png`);
   } catch (error) {
     console.error(`❌ Error verifying "${buttonText}" button is not visible: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: `${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible-error.png` });
+    await this.page.screenshot({ path: `screenshots/${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible-error.png` });
     console.log(`✓ Error screenshot saved as ${buttonText.replace(/\s+/g, '-').toLowerCase()}-button-not-visible-error.png`);
     throw error; // Re-throw the error to fail the test
   }
@@ -695,12 +684,12 @@ When('the user clicks on the {string} button', async function(buttonText) {
     await this.page.waitForTimeout(6000);
     
     // Take a screenshot after clicking the button
-    await this.page.screenshot({ path: `after-clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}.png` });
+    await this.page.screenshot({ path: `screenshots/after-clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}.png` });
     console.log(`✓ Screenshot saved as after-clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}.png`);
   } catch (error) {
     console.error(`❌ Error clicking on "${buttonText}" button: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: `clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}-error.png` });
+    await this.page.screenshot({ path: `screenshots/clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}-error.png` });
     console.log(`✓ Error screenshot saved as clicking-${buttonText.replace(/\s+/g, '-').toLowerCase()}-error.png`);
     throw error; // Re-throw the error to fail the test
   }
@@ -729,12 +718,12 @@ Then('the button text should change to {string}', async function(expectedButtonT
     expect(actualButtonText.trim()).toBe(expectedButtonText);
     
     // Take a screenshot to verify button text change
-    await this.page.screenshot({ path: `button-text-changed-to-${expectedButtonText.replace(/\s+/g, '-').toLowerCase()}.png` });
+    await this.page.screenshot({ path: `screenshots/button-text-changed-to-${expectedButtonText.replace(/\s+/g, '-').toLowerCase()}.png` });
     console.log(`✓ Screenshot saved as button-text-changed-to-${expectedButtonText.replace(/\s+/g, '-').toLowerCase()}.png`);
   } catch (error) {
     console.error(`❌ Error verifying button text change: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: `button-text-change-error.png` });
+    await this.page.screenshot({ path: `screenshots/button-text-change-error.png` });
     console.log(`✓ Error screenshot saved as button-text-change-error.png`);
     throw error; // Re-throw the error to fail the test
   }
@@ -763,12 +752,12 @@ Then('more video clip cards should be displayed', async function() {
     expect(currentCardCount).toBeGreaterThan(this.initialCardCount);
     
     // Take a screenshot to verify more cards are displayed
-    await this.page.screenshot({ path: 'more-video-clip-cards-displayed.png' });
+    await this.page.screenshot({ path: 'screenshots/more-video-clip-cards-displayed.png' });
     console.log('✓ Screenshot saved as more-video-clip-cards-displayed.png');
   } catch (error) {
     console.error(`❌ Error verifying more video clip cards: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: 'more-video-clip-cards-error.png' });
+    await this.page.screenshot({ path: 'screenshots/more-video-clip-cards-error.png' });
     console.log('✓ Error screenshot saved as more-video-clip-cards-error.png');
     throw error; // Re-throw the error to fail the test
   }
@@ -825,12 +814,12 @@ Then('the bookmark icon should not be visible in video clip cards', async functi
     }
     
     // Take a screenshot for evidence
-    await this.page.screenshot({ path: 'video-clip-cards-no-bookmark-icon.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-cards-no-bookmark-icon.png' });
     console.log('✓ Screenshot saved as video-clip-cards-no-bookmark-icon.png');
   } catch (error) {
     console.error(`❌ Error verifying absence of bookmark icon: ${error.message}`);
     // Take a screenshot of the error state
-    await this.page.screenshot({ path: 'video-clip-cards-bookmark-icon-error.png' });
+    await this.page.screenshot({ path: 'screenshots/video-clip-cards-bookmark-icon-error.png' });
     console.log('✓ Error screenshot saved as video-clip-cards-bookmark-icon-error.png');
     throw error; // Re-throw the error to fail the test
   }

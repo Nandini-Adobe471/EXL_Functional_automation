@@ -69,13 +69,13 @@ Then('check if the specific tabs block is visible', async function() {
       console.log(`ℹ️  Page H2 headings found: ${allH2s.length > 0 ? allH2s.join(' | ') : 'none'}`);
 
       console.log('⚠️ Tab block not available in this page');
-      await this.page.screenshot({ path: 'asset-doc-tabs-block-not-found.png' });
+      await this.page.screenshot({ path: 'screenshots/asset-doc-tabs-block-not-found.png' });
       console.log('✓ Screenshot saved as asset-doc-tabs-block-not-found.png');
       this.isTabsBlockVisible = false;
     }
   } catch (error) {
     console.error(`❌ Error verifying tabs block visibility: ${error.message}`);
-    await this.page.screenshot({ path: 'asset-doc-tabs-block-error.png' });
+    await this.page.screenshot({ path: 'screenshots/asset-doc-tabs-block-error.png' });
     console.log('✓ Error screenshot saved as asset-doc-tabs-block-error.png');
     this.isTabsBlockVisible = false;
   }
@@ -120,7 +120,7 @@ Then('if tabs block exists, verify it contains tab titles and panels', async fun
     console.log('✓ Screenshot saved as asset-doc-tab-titles-panels.png');
   } catch (error) {
     console.error(`❌ Error verifying tab titles and panels: ${error.message}`);
-    await this.page.screenshot({ path: 'asset-doc-tab-titles-panels-error.png' });
+    await this.page.screenshot({ path: 'screenshots/asset-doc-tab-titles-panels-error.png' });
     console.log('✓ Error screenshot saved as asset-doc-tab-titles-panels-error.png');
     throw error;
   }
@@ -161,7 +161,7 @@ Then('if tabs block exists, verify H2 tags under it are not in mini TOC', async 
     }
   } catch (error) {
     console.error(`❌ Error verifying H2 tags in mini TOC: ${error.message}`);
-    await this.page.screenshot({ path: 'asset-doc-mini-toc-error.png' });
+    await this.page.screenshot({ path: 'screenshots/asset-doc-mini-toc-error.png' });
     console.log('✓ Error screenshot saved as asset-doc-mini-toc-error.png');
 
     if (this.browser) {

@@ -1,25 +1,20 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
 
 Given('user navigates to the docs page', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Navigate to the docs page
+  if (!this.page) {
+    const { launchBrowser } = require('../commonFunctions/launchbrowser');
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
   await this.page.goto(`${ENV.URL}/docs`);
-  
-  // Wait for the page to fully load
   await this.page.waitForTimeout(3000);
-  
-  // Verify we're on the docs page
   await expect(this.page).toHaveURL(/.*\/docs.*/);
   console.log("✓ Successfully navigated to the docs page");
 });
@@ -269,11 +264,6 @@ Then('page should scroll to the respective section', async function() {
   expect(foundMatchingHeading).toBeTruthy();
   console.log(`✓ Verified section heading matches clicked link text: "${this.clickedLinkText}"`);
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 // Copy link and bookmark functionality step definitions
@@ -393,11 +383,6 @@ Then('the bookmark page should display a card with the saved h1 title', async fu
   expect(foundMatchingCard).toBeTruthy();
   console.log("✓ Bookmark page displays a card with the saved h1 title");
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 // Mobile TOC step definitions
@@ -451,11 +436,6 @@ Then('the table of contents dropdown should be expanded', async function() {
   await expect(tocDropdown).toBeVisible();
   console.log("✓ Table of contents dropdown popover is visible");
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 // Left rail toggle step definitions
@@ -510,11 +490,6 @@ Then('left rail should be hidden with closed', async function() {
     expect(classListAfter).toBe('section toc-container rail rail-left closed');
   }
   
-  // Clean up - close the browser
-  if (this.browser) {
-  //  await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 // Guide section step definitions
@@ -777,22 +752,17 @@ Then('right rail should be hidden with closed', async function() {
     expect(classListAfter).toBe('section doc-actions-container mini-toc-container rail rail-right closed');
   }
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 // Mobile view step definitions
 Given('user navigates to the docs page in mobile view', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Set viewport to mobile size (e.g., iPhone X)
+  if (!this.page) {
+    const { launchBrowser } = require('../commonFunctions/launchbrowser');
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
   await this.page.setViewportSize({ width: 375, height: 812 });
   console.log("✓ Set viewport to mobile size (375x812)");
   
@@ -878,10 +848,9 @@ Then('breadcrumb is displayed in mobile view', async function() {
 
 // Login step definition
 Given('user logs in to the system', async function() {
-  // Use the common login function to log in
-  const result = await performLogin(this);
-  
-  // Wait for the page to stabilize
+  if (!this.page) {
+    await performLogin(this);
+  }
   await this.page.waitForTimeout(8000);
   console.log("✓ Login completed");
   await this.page.goto(`${ENV.URL}/docs`);
@@ -890,10 +859,9 @@ Given('user logs in to the system', async function() {
 
 // Mobile login step definition
 Given('user logs in to the system in mobile view', async function() {
-  // Use the common login function to log in
-  const result = await performLogin(this);
-  
-  // Wait for the page to stabilize
+  if (!this.page) {
+    await performLogin(this);
+  }
   await this.page.waitForTimeout(8000);
   console.log("✓ Login completed");
   

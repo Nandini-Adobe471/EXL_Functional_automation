@@ -1,6 +1,5 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const { performLogin } = require('../commonFunctions/login');
 const ENV = require('../../config.js');
 
@@ -8,21 +7,20 @@ const ENV = require('../../config.js');
 setDefaultTimeout(60 * 1000);
 
 Given('user logs in to the application', async function() {
-  // Use the performLogin function to log in
-  const { page, browser, context } = await performLogin(this);
-  this.page = page;
-  this.browser = browser;
-  this.context = context;
-  
-  // Wait for the page to load after login
-  //await this.page.waitForLoadState('networkidle');
-  
+  // If this.page is already set (shared session via BeforeAll hook), skip login
+  if (!this.page) {
+    const { page, browser, context } = await performLogin(this);
+    this.page = page;
+    this.browser = browser;
+    this.context = context;
+  }
+
   // Additional wait to ensure everything is loaded
   await this.page.waitForTimeout(10000);
-  
+
   // Take a screenshot after login
   await this.page.screenshot({ path: 'screenshots/auth-after-login.png' });
-  
+
   // Set flag to keep browser open for subsequent steps
   this.keepBrowserOpen = true;
 });
@@ -174,12 +172,6 @@ Then('status filter dropdown values should match status values in course cards',
   }
   
   console.log('✓ Status filter dropdown values match status values in course cards');
-  
-  // Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log("✓ Browser closed successfully");
-  }
 });
 
 When('user clicks on a course card with {string} status', async function(statusText) {
@@ -367,12 +359,6 @@ Then('the remaining modules should have disabled {string} buttons', async functi
     expect(statusClass).toContain('disabled');
     console.log(`✓ Module card ${i+1} has disabled status text`);
   }
-  
-  // Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log("✓ Browser closed successfully");
-  }
 });
 
 // This step definition has been removed to avoid duplication
@@ -490,12 +476,6 @@ Then('the course should appear in the in-progress courses section', async functi
   const badgeClass = await statusBadge.getAttribute('class');
   expect(badgeClass).toContain('status-in-progress');
   console.log('✓ Status badge has the correct class for "In progress" status');
-  
-  // Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log("✓ Browser closed successfully");
-  }
 });
 
 When('user clicks on a course card with {string} status in the in-progress section', async function(statusText) {
@@ -737,12 +717,6 @@ Then('the step dropdown should be available with the current step selected', asy
   const stepOptionsCount = await this.page.locator('div.step-selector-container div.custom-filter-dropdown div.filter-dropdown-content div.custom-checkbox').count();
   expect(stepOptionsCount).toBeGreaterThan(0);
   console.log(`✓ Found ${stepOptionsCount} step options in the dropdown`);
-  
-  // Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log("✓ Browser closed successfully");
-  }
 });
 
 // New step definitions for module filter navigation and steps verification
@@ -1064,12 +1038,6 @@ Then('user should see appropriate navigation buttons', async function() {
     await this.page.screenshot({ path: 'screenshots/module-page-no-navigation.png' });
     console.log('✓ Screenshot captured of module page without navigation buttons');
   }
-  
-// Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });
 
 // Step definitions for module count verification
@@ -1309,12 +1277,6 @@ Then('the module count should be updated in the in-progress section', async func
   
   // Take a screenshot showing the updated module count in the in-progress section
   await this.page.screenshot({ path: 'screenshots/updated-module-count-in-progress.png' });
-  
-  // Clean up - close the browser only if not continuing with other steps
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });
 
 // Step definitions for module count verification have been implemented above
@@ -1471,12 +1433,6 @@ Then('user should verify course completion status', async function() {
   
   // Take a screenshot of the completion status
   await this.page.screenshot({ path: 'screenshots/course-completion-status.png' });
-  
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });
 
 // New step definitions for course completion with quiz skip scenario
@@ -1597,12 +1553,6 @@ Then('user should see the quiz scorecard with {string} message', async function(
   
   // Take a screenshot of the quiz scorecard
   await this.page.screenshot({ path: 'screenshots/quiz-scorecard.png' });
-  
-  // Clean up - close the browser if not continuing with other steps
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });
 
 // Step definitions for module completion status verification
@@ -1726,11 +1676,5 @@ Then('the next module should have enabled {string} button', async function(butto
     
     // Take a screenshot of the course breakdown section
     await this.page.screenshot({ path: 'screenshots/course-breakdown-all-completed.png' });
-  }
-  
-  // Clean up - close the browser
-  if (this.browser && !this.keepBrowserOpen) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
   }
 });

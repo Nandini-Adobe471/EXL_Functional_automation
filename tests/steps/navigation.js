@@ -3,12 +3,15 @@ const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
 const { closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
+// Import common mobile steps
+require('./common-mobile-steps');
 
 setDefaultTimeout(90 * 1000);
 
 Given('user is logged in to Experience League for navigation validation', async function() {
-  // Use the common login function to log in
-  const result = await performLogin(this);
+  if (!this.page) {
+    await performLogin(this);
+  }
   
   // Wait for the page to stabilize
   await this.page.waitForTimeout(4000);
@@ -144,7 +147,7 @@ Then('each navigation menu item should navigate to its targeted URL', { timeout:
         }
         
         // Take a screenshot for verification
-        await page.screenshot({ path: `navigation-${i}-${item.text.replace(/[^a-zA-Z0-9]/g, '-')}.png` });
+        await page.screenshot({ path: `screenshots/navigation-${i}-${item.text.replace(/[^a-zA-Z0-9]/g, '-')}.png` });
       } catch (navError) {
         console.error(`⚠️ Navigation timeout for "${item.text}": ${navError.message}`);
       }

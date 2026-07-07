@@ -1,116 +1,124 @@
 [
   {
-    "description": "",
+    "description": "  As a visitor\n  I want to access the Experience League home page without logging in\n  So that I can view the welcome content",
     "elements": [
       {
         "description": "",
-        "id": "search-functionality;verify-secondary-search-functionality",
+        "id": "unauthenticated-home-page-validation;verify-marquee-block-is-displayed-on-unauthenticated-home-page",
         "keyword": "Scenario",
-        "line": 3,
-        "name": "Verify secondary search functionality",
+        "line": 7,
+        "name": "Verify marquee block is displayed on unauthenticated home page",
         "steps": [
           {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 4,
-            "name": "user logs in and lands on the home page for search validation",
-            "match": {
-              "location": "tests\\steps\\search.js:11"
-            },
+            "keyword": "Before",
+            "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 68511902700
+              "duration": 410935899
             }
           },
           {
             "arguments": [],
-            "keyword": "And ",
-            "line": 5,
-            "name": "user clicks on the search picker icon",
+            "keyword": "Given ",
+            "line": 8,
+            "name": "user navigates to Experience League home page without logging in",
             "match": {
-              "location": "tests\\steps\\search.js:45"
+              "location": "tests\\steps\\unauth-home-page.js:11"
             },
             "result": {
               "status": "passed",
-              "duration": 3701109600
+              "duration": 6161969400
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 6,
-            "name": "user should land on search result page",
-            "match": {
-              "location": "tests\\steps\\search.js:59"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 22044599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 7,
-            "name": "header search is not visible",
-            "match": {
-              "location": "tests\\steps\\search.js:68"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4281399
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 8,
-            "name": "all filters in the left side are expanded",
-            "match": {
-              "location": "tests\\steps\\search.js:78"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2020546499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
             "line": 9,
-            "name": "search results are displayed",
+            "name": "user should see the marquee block",
             "match": {
-              "location": "tests\\steps\\search.js:106"
+              "location": "tests\\steps\\unauth-home-page.js:48"
             },
             "result": {
               "status": "passed",
-              "duration": 301222500
+              "duration": 49587099
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 10,
-            "name": "sort by option is displayed",
+            "name": "the marquee block should have the correct structure",
             "match": {
-              "location": "tests\\steps\\search.js:125"
+              "location": "tests\\steps\\unauth-home-page.js:103"
             },
             "result": {
               "status": "passed",
-              "duration": 7494800
+              "duration": 40043900
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 11,
-            "name": "result header contains columns \"Name, Content Type, Product, Updated\"",
+            "name": "the marquee eyebrow should contain \"WELCOME TO EXPERIENCE LEAGUE\"",
             "match": {
-              "location": "tests\\steps\\search.js:134"
+              "location": "tests\\steps\\unauth-home-page.js:143"
             },
             "result": {
               "status": "passed",
-              "duration": 93408299
+              "duration": 40894599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "the marquee title should contain \"Your home for free learning\"",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:184"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 30509799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the marquee description should be visible",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:225"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 21497999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "the sign in button should be visible and clickable",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:256"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 37580399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "the video background should be present",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:314"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 48603300
             }
           },
           {
@@ -118,36 +126,282 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 279984100
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 193100
+              "duration": 2098400
             }
           }
         ],
         "tags": [
           {
-            "name": "@search-php",
-            "line": 2
+            "name": "@unauth-home-page",
+            "line": 6
           },
           {
             "name": "@skip-login",
-            "line": 2
+            "line": 6
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "unauthenticated-home-page-validation;verify-featured-cards-section-is-displayed-on-unauthenticated-home-page",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Verify featured cards section is displayed on unauthenticated home page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 165873800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 19,
+            "name": "user navigates to Experience League home page without logging in",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6297139999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 20,
+            "name": "user should see the featured cards section",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:366"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 884494599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "the featured cards section should have the correct structure",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:461"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 47937700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "the featured cards title should contain \"Discover your learning path\"",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:506"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 72508900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "the featured cards description should be visible",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:551"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 115297899
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 510999
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@unauth-home-page-featurecard",
+            "line": 17
+          },
+          {
+            "name": "@skip-login",
+            "line": 17
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "unauthenticated-home-page-validation;verify-icon-block-container-section-is-displayed-on-unauthenticated-home-page",
+        "keyword": "Scenario",
+        "line": 27,
+        "name": "Verify icon block container section is displayed on unauthenticated home page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 191661000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 28,
+            "name": "user navigates to Experience League home page without logging in",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6411768099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "user should see the icon block container section",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1046"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 228916900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "the icon block container section should have the heading \"Everything you need for growth and learning\"",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1077"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 27504899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "the icon block container section should have 4 icon blocks",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1116"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16096100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "each icon block should have an image",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1150"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 113675800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 33,
+            "name": "each icon block should have a heading",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1188"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 58529500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 34,
+            "name": "each icon block should have a description",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1225"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 56271800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 35,
+            "name": "each icon block should have a link",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1262"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 121937200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "clicking on each icon block link should navigate to the correct page",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:1316"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11265462699
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 564400
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@unauth-home-page-iconblock",
+            "line": 26
+          },
+          {
+            "name": "@skip-login",
+            "line": 26
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "search-functionality",
+    "id": "unauthenticated-home-page-validation",
     "line": 1,
     "keyword": "Feature",
-    "name": "Search functionality",
+    "name": "Unauthenticated Home Page Validation",
     "tags": [],
-    "uri": "tests\\features\\search.feature"
+    "uri": "tests\\features\\unauth-home-page.feature"
   }
 ]

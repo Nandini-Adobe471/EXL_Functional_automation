@@ -1,6 +1,5 @@
 const { Given, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { chromium } = require('@playwright/test');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 
 setDefaultTimeout(120 * 1000);
 
@@ -11,27 +10,20 @@ const REVIEW_URL = 'https://experienceleague-review.adobe.com/';
 // Given
 // ─────────────────────────────────────────────────────────────────────────────
 Given('user launches the Experience League review home page', async function () {
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    // Ignore SSL errors common on review/stage environments
-    ignoreHTTPSErrors: true,
-  });
-  const page = await context.newPage();
-
-  this.browser = browser;
-  this.context = context;
-  this.page = page;
-
-  await page.goto(REVIEW_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  if (!this.page) {
+    const browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
+    this.browser = browser;
+    this.context = context;
+    this.page = page;
+  }
+  await this.page.goto(REVIEW_URL, { waitUntil: 'domcontentloaded', timeout: 60000 });
   console.log(`✓ Navigated to Experience League review home page: ${REVIEW_URL}`);
 
-  // Allow the page JavaScript (nav/footer blocks) to initialise
-  await page.waitForTimeout(5000);
-
-  // Scroll to the bottom to ensure footer is rendered
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await page.waitForTimeout(2000);
-
+  await this.page.waitForTimeout(5000);
+  await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await this.page.waitForTimeout(2000);
   console.log('✓ Page fully loaded and scrolled to bottom');
 });
 
@@ -54,11 +46,6 @@ Then('user checks each header link for a 404 response', async function () {
 Then('user reports all header links returning 404', async function () {
   await reportResults(this.page, this.header404Links, this.headerLinks, 'HEADER', 'screenshots/header-404-report.png');
 
-  // Close browser at the end of the header scenario
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -80,11 +67,6 @@ Then('user checks each footer link for a 404 response', async function () {
 Then('user reports all footer links returning 404', async function () {
   await reportResults(this.page, this.footer404Links, this.footerLinks, 'FOOTER', 'screenshots/footer-404-report.png');
 
-  // Close browser at the end of the footer scenario
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('✓ Browser closed successfully');
-  }
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

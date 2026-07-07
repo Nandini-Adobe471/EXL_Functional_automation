@@ -18,12 +18,14 @@ const NO_RESULTS_SELECTOR = 'div.events-search-no-results p.events-search-no-res
 Given('user launches the application and logs in for events validation', async function () {
   this.eventsTotalCount = null;
 
-  // performLogin internally calls launchBrowser() and sets this.page / this.browser / this.context
-  await performLogin(this);
+  // If this.page is already set (shared session via BeforeAll hook), skip login
+  if (!this.page) {
+    await performLogin(this);
+  }
 
-  // Register Coveo API intercept on the context AFTER login.
-  // The API fires on /events navigation (next step), so registering here is safe.
-  await this.context.route(COVEO_API_PATTERN, async (route) => {
+  // Register Coveo API intercept scoped to THIS PAGE only (not the shared context).
+  // Using page.route() ensures the intercept only fires for this tab's requests.
+  await this.page.route(COVEO_API_PATTERN, async (route) => {
     const response = await route.fetch();
     try {
       const body = await response.json();
@@ -41,7 +43,10 @@ Given('user launches the application and logs in for events validation', async f
 });
 
 Given('user is logged in and on the events page', async function () {
-  await performLogin(this);
+  // If this.page is already set (shared session via BeforeAll hook), skip login
+  if (!this.page) {
+    await performLogin(this);
+  }
   await this.page.goto(`${ENV.URL}/events`);
   await this.page.waitForTimeout(4000);
   console.log('✓ Logged in and on /events page.');

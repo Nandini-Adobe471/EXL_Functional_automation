@@ -1,7 +1,6 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 // Import common mobile steps
 require('./common-mobile-steps');
@@ -10,13 +9,13 @@ setDefaultTimeout(90 * 1000);
 
 // Mobile search step definitions
 Given('the user navigates to the mobile search page', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Navigate directly to the search page
+  if (!this.page) {
+    const { launchBrowser } = require('../commonFunctions/launchbrowser');
+    const result = await launchBrowser();
+    this.page = result.page;
+    this.browser = result.browser;
+    this.context = result.context;
+  }
   await this.page.goto(`${ENV.URL}`);
   
   // Set viewport to mobile size
@@ -259,11 +258,6 @@ Then('the mobile parent checkbox should be unchecked', async function() {
   await expect(this.parentCheckbox).toHaveAttribute('aria-checked', 'false');
   console.log('✓ The parent checkbox is unchecked in mobile view');
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
 
 // Step definitions for multiple filter selection scenario
@@ -416,12 +410,4 @@ Then('the {string} checkbox in {string} facet should be unchecked', async functi
   await expect(checkbox).toHaveAttribute('aria-checked', 'false');
   console.log(`✓ Verified "${checkboxValue}" checkbox in "${facetId}" facet is unchecked`);
   
-  // If this is the last check in the scenario, clean up
-  if (facetId === 'Product' && checkboxValue === 'Analytics') {
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-  }
 });

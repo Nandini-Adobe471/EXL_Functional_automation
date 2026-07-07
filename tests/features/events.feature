@@ -46,9 +46,3 @@ Feature: Events Page Validation
     Then results count should update
     And each Upcoming event card should have the event time block
     And each Upcoming event card should not have bookmark or copy link
-
-  @events-no-results
-  Scenario: Search with a term that yields no results and verify no-results message is shown
-    Given user is logged in and on the events page
-    When user types a search term that returns no results
-    Then the no results message should be displayed

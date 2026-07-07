@@ -1,56 +1,63 @@
-const { Before, After, Status } = require('@cucumber/cucumber');
-const { performLogin } = require('../commonFunctions/login');
-const { closeBrowser } = require('../commonFunctions/launchbrowser');
+const { Before, After, BeforeAll, AfterAll, Status } = require('@cucumber/cucumber');
+const { performLoginOnPage } = require('../commonFunctions/login');
+const {
+  launchSharedBrowser,
+  openNewTab,
+  closeSharedBrowser,
+} = require('../commonFunctions/launchbrowser');
 
-// Before hook to perform login before each scenario
-// Skip login for scenarios that already handle login
-Before({ tags: 'not @skip-login' }, async function() {
-  console.log('Performing login before scenario');
+// ─────────────────────────────────────────────────────────────────────────────
+// SHARED SESSION SETUP
+// - BeforeAll : Launch one browser window, log in once on the first tab
+// - Before    : Open a NEW TAB to the right in the same browser window
+//               Session is shared — no re-login for any scenario
+// - After     : Capture screenshot on failure — tab stays open (NOT closed)
+// - AfterAll  : Close the entire browser after all scenarios finish
+//
+// Run a single feature:
+//   npx cucumber-js --profile single tests/features/events.feature
+// ─────────────────────────────────────────────────────────────────────────────
+
+BeforeAll(async function () {
+  console.log('[Session] Launching shared browser and logging in once...');
   try {
-    // Default credentials are used from the performLogin function
-    const result = await performLogin(this);
-    // The world object is already updated in the performLogin function
-    console.log('Login completed successfully before scenario');
+    const { page, browser, context } = await launchSharedBrowser();
+    // Login on the first tab — cookies/session stored in sharedContext
+    await performLoginOnPage(page);
+    console.log('[Session] Login complete. All subsequent tabs will share this session.');
+    // Keep this login tab open — first scenario will open next to it
   } catch (error) {
-    console.error('Error during pre-scenario login:', error.message);
+    console.error('[Session] BeforeAll setup failed:', error.message);
   }
 });
 
-// Log when test fails but don't save screenshots
-After(async function(scenario) {
+// Open a new tab to the right for each scenario
+// Auth session is inherited automatically — no login step needed
+Before(async function () {
+  console.log('[Session] Opening new tab for scenario');
+  const { page, browser, context } = await openNewTab();
+  this.page = page;
+  this.browser = browser;
+  this.context = context;
+});
+
+// Capture screenshot on failure — do NOT close the tab
+After(async function (scenario) {
   if (scenario.result.status === Status.FAILED && this.page) {
-    // Log failure but don't save screenshot to file
-    console.log(`Test failed: ${scenario.pickle.name}`);
-    
-    // Optionally capture screenshot in memory for report data
-    // but don't save it to disk
+    console.log(`[Session] Test failed: ${scenario.pickle.name}`);
     try {
-      const screenshot = await this.page.screenshot({ 
-        fullPage: true 
-      });
-      
-      // Attach screenshot to report data (will be filtered out in the HTML report)
+      const screenshot = await this.page.screenshot({ fullPage: true });
       this.attach(screenshot, 'image/png');
     } catch (error) {
-      console.error('Error capturing screenshot:', error.message);
+      console.error('[Session] Error capturing screenshot:', error.message);
     }
   }
+  // Tab stays open — next scenario opens a new tab to the right
+  console.log('[Session] Scenario done. Tab remains open.');
 });
 
-// Close browser after each scenario completes
-After(async function() {
-  try {
-    // Only close the browser if it exists and if keepBrowserOpen flag is not set
-    if (this.browser && !this.keepBrowserOpen) {
-      console.log('Closing browser after scenario');
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    } else if (this.keepBrowserOpen) {
-      console.log('Browser kept open as requested by scenario');
-      // Reset the flag for the next scenario
-      this.keepBrowserOpen = false;
-    }
-  } catch (error) {
-    console.error('Error closing browser:', error.message);
-  }
+// Close the shared browser after ALL scenarios finish
+AfterAll(async function () {
+  console.log('[Session] All scenarios complete. Closing shared browser.');
+  await closeSharedBrowser();
 });

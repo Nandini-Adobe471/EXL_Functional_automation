@@ -1,28 +1,16 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 const { performLogin } = require('../commonFunctions/login');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 
 setDefaultTimeout(90 * 1000);
 
 Given('user logs in and lands on the home page for footer validation', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Use the common login function to log in
-  await performLogin(this);
-  
-  // Navigate to the home page
+  if (!this.page) {
+    await performLogin(this);
+  }
   await this.page.goto('https://experienceleague.adobe.com/');
-  
-  // Wait for the page to fully load after login
   await this.page.waitForTimeout(4000);
-  
-  // Verify we're on the home page
   await expect(this.page).toHaveURL(/.*experienceleague.adobe.com\/?$/);
   console.log("✓ Successfully logged in and landed on the home page for footer validation");
 });
@@ -39,12 +27,12 @@ When('user navigates to the footer fragment page', async function() {
     await this.page.waitForTimeout(2000);
     
     // Take a screenshot of the footer fragment page
-    await this.page.screenshot({ path: 'footer-fragment-page.png' });
+    await this.page.screenshot({ path: 'screenshots/footer-fragment-page.png' });
     
     console.log("✓ Successfully navigated to the footer fragment page");
   } catch (error) {
     console.error(`Error navigating to footer fragment page: ${error.message}`);
-    await this.page.screenshot({ path: 'footer-fragment-navigation-error.png' });
+    await this.page.screenshot({ path: 'screenshots/footer-fragment-navigation-error.png' });
     throw error;
   }
 });
@@ -69,7 +57,7 @@ Then('user should see footer breadcrumb', async function() {
     
   } catch (error) {
     console.error(`Error checking footer breadcrumb: ${error.message}`);
-    await this.page.screenshot({ path: 'footer-breadcrumb-error.png' });
+    await this.page.screenshot({ path: 'screenshots/footer-breadcrumb-error.png' });
     throw error;
   }
 });
@@ -95,7 +83,7 @@ Then('user should see footer item h2 tag texts', async function() {
     
   } catch (error) {
     console.error(`Error checking footer h2 tags: ${error.message}`);
-    await this.page.screenshot({ path: 'footer-h2-error.png' });
+    await this.page.screenshot({ path: 'screenshots/footer-h2-error.png' });
     throw error;
   }
 });
@@ -105,7 +93,7 @@ Then('user should see language selector', async function() {
     console.log('Checking for language selector');
     
     // Take a screenshot to help debug the language selector issue
-    await this.page.screenshot({ path: 'language-selector-debug.png' });
+    await this.page.screenshot({ path: 'screenshots/language-selector-debug.png' });
     
     // Log the HTML structure of the footer to help identify the language selector
     console.log('Analyzing footer HTML structure to locate language selector...');
@@ -209,7 +197,7 @@ Then('user should see language selector', async function() {
     
   } catch (error) {
     console.error(`Error checking language selector: ${error.message}`);
-    await this.page.screenshot({ path: 'language-selector-error.png' });
+    await this.page.screenshot({ path: 'screenshots/language-selector-error.png' });
     throw error;
   }
 });
@@ -251,7 +239,7 @@ Then('user should see social media links', async function() {
     
   } catch (error) {
     console.error(`Error checking social media links: ${error.message}`);
-    await this.page.screenshot({ path: 'social-media-links-error.png' });
+    await this.page.screenshot({ path: 'screenshots/social-media-links-error.png' });
     throw error;
   }
 });
@@ -293,7 +281,7 @@ Then('user should see footer copyright section', async function() {
     
   } catch (error) {
     console.error(`Error checking footer copyright section: ${error.message}`);
-    await this.page.screenshot({ path: 'footer-copyright-error.png' });
+    await this.page.screenshot({ path: 'screenshots/footer-copyright-error.png' });
     throw error;
   }
 });
@@ -306,7 +294,7 @@ When('user navigates to the main site', async function() {
   await this.page.waitForTimeout(2000);
   
   // Take a screenshot of the main site
-  await this.page.screenshot({ path: 'main-site.png' });
+  await this.page.screenshot({ path: 'screenshots/main-site.png' });
   
   console.log("✓ Successfully navigated to the main site");
 });
@@ -320,7 +308,7 @@ Then('user should see the same footer elements on main site', async function() {
     await this.page.waitForTimeout(1000);
     
     // Take a screenshot of the footer on the main site
-    await this.page.screenshot({ path: 'main-site-footer.png' });
+    await this.page.screenshot({ path: 'screenshots/main-site-footer.png' });
     
     // Check for footer breadcrumb
     const footerBreadcrumb = this.page.locator('.footer-breadcrumb, .breadcrumb, nav[aria-label="Breadcrumb"]');
@@ -459,21 +447,9 @@ Then('user should see the same footer elements on main site', async function() {
       console.log("✗ Some footer elements from fragment page are not present on main site");
     }
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error checking footer elements on main site: ${error.message}`);
-    await this.page.screenshot({ path: 'main-site-footer-error.png' });
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser);
-    }
-    
+    await this.page.screenshot({ path: 'screenshots/main-site-footer-error.png' });
     throw error;
   }
 });
@@ -559,20 +535,8 @@ Then('all list items in the footer should be clickable', async function() {
     // Assert that all list items with anchors are clickable
     expect(nonClickableItems).toBe(0);
     
-    // Clean up - close the browser
-    if (this.browser) {
-      await closeBrowser(this.browser);
-      console.log('Browser closed successfully');
-    }
-    
   } catch (error) {
     console.error(`Error checking footer list items: ${error.message}`);
-    
-    // Clean up even if there's an error
-    if (this.browser) {
-      await closeBrowser(this.browser);
-    }
-    
     throw error;
   }
 });
