@@ -3,7 +3,7 @@ Feature: Course End-to-End Flow
   I want to complete a course from start to finish
   So that I can learn new skills and receive a certificate of completion
 
-@course-end-to-end @skip-login
+@course-end-to-end
 Scenario: Complete a course end-to-end including certificate download
   Given user logs in to the application
   When user navigates to the courses page

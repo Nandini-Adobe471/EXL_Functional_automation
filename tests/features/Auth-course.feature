@@ -3,7 +3,7 @@ Feature: Authenticated Courses Page Validation
   I want to access the courses page
   So that I can view available courses information and filters
 
-@auth-courses-page-validation @skip-login
+@auth-courses-page-validation
 Scenario: Verify Courses page marquee container after login
   Given user logs in to the application
   When user navigates to the courses page
@@ -11,7 +11,7 @@ Scenario: Verify Courses page marquee container after login
   And the marquee should have the correct title and description
   And the authenticated marquee should have background with image
 
-@auth-courses-status-filter @skip-login
+@auth-courses-status-filter
 Scenario: Verify status filter functionality on courses page after login
   Given user logs in to the application
   When user navigates to the courses page
@@ -20,7 +20,7 @@ Scenario: Verify status filter functionality on courses page after login
   Then the status filter dropdown content should be visible
   And status filter dropdown values should match status values in course cards
 
-@auth-course-details @skip-login
+@auth-course-details
 Scenario: Verify course details page when clicking on a course card with Not started status
   Given user logs in to the application
   When user navigates to the courses page
@@ -32,7 +32,7 @@ Scenario: Verify course details page when clicking on a course card with Not sta
   And the first module should have "Start module" button and "Not started" status
   And the remaining modules should have disabled "Start module" buttons
 
-@auth-course-status-change @skip-login
+@auth-course-status-change
 Scenario: Verify course status changes from Not started to In progress after starting the course
   Given user logs in to the application
   When user navigates to the courses page
@@ -43,7 +43,7 @@ Scenario: Verify course status changes from Not started to In progress after sta
   Then the course status should be changed to "In progress"
   And the course should appear in the in-progress courses section
 
-@auth-inprogress-course @skip-login
+@auth-inprogress-course
 Scenario: Verify in-progress course navigation and module status
   Given user logs in to the application
   When user navigates to the courses page
@@ -57,7 +57,7 @@ Scenario: Verify in-progress course navigation and module status
   And the module info should display the correct module title
   And the step dropdown should be available with the current step selected
 
-@courses-module-filter-navigation @skip-login
+@courses-module-filter-navigation
 Scenario: Navigate through module filter dropdown and verify navigation buttons
   Given user logs in to the application
   When user navigates to the courses page
@@ -72,9 +72,7 @@ Scenario: Navigate through module filter dropdown and verify navigation buttons
   Then user should be redirected to the selected step page
   And user should see appropriate navigation buttons
 
-
-
-@auth-course-module-count @skip-login
+@auth-course-module-count
 Scenario: Verify module count updates after completing a module
   Given user logs in to the application
   When user navigates to the courses page

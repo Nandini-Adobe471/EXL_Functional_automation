@@ -7,16 +7,11 @@ const ENV = require('../../config.js');
 setDefaultTimeout(60 * 1000);
 
 Given('user logs in to the application', async function() {
-  // If this.page is already set (shared session via BeforeAll hook), skip login
-  if (!this.page) {
-    const { page, browser, context } = await performLogin(this);
-    this.page = page;
-    this.browser = browser;
-    this.context = context;
-  }
-
-  // Additional wait to ensure everything is loaded
-  await this.page.waitForTimeout(10000);
+  // this.page is set by the Before hook (shared authenticated session).
+  // The shared browser is lazily initialised and logged in on first use.
+  // Just wait for the page to be fully ready.
+  await this.page.waitForLoadState('domcontentloaded');
+  await this.page.waitForTimeout(5000);
 
   // Take a screenshot after login
   await this.page.screenshot({ path: 'screenshots/auth-after-login.png' });

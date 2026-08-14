@@ -1,7 +1,5 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
-const ENV = require('../../config.js');
 // Import common mobile steps
 require('./common-mobile-steps');
 
@@ -10,12 +8,7 @@ setDefaultTimeout(90 * 1000);
 
 Given('user navigates to Experience League home page without logging in', async function() {
   try {
-    // Launch the browser and navigate to the Experience League home page
-    const { page, browser, context } = await launchBrowser();
-    this.page = page;
-    this.browser = browser;
-    this.context = context;
-
+    // this.page is already set by the Before hook via openUnauthTab()
     console.log('✓ Navigated to Experience League home page without logging in');
 
     // Wait for 5 seconds after launching the URL

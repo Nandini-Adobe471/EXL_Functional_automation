@@ -343,8 +343,8 @@ When('user clicks on {string} link', async function(linkText) {
   // Set flag to keep browser open for subsequent steps
   this.keepBrowserOpen = true;
   
-  // Find and click on the Achievements and Awards link from the profile rail block (excluding hidden overlay)
-  const awardsLink = this.page.locator('div.profile-rail.block a[href="/en/home/awards"]');
+  // Find and click on the Achievements and Awards link — exclude the hidden overlay
+  const awardsLink = this.page.locator('div.profile-rail.block ul.profile-rail-links:not(.jump-to-list) a[href="/en/home/awards"]').first();
   await expect(awardsLink).toBeVisible();
   console.log(`✓ Found "${linkText}" link`);
   

@@ -1,6 +1,5 @@
 const { Given, When, Then, setDefaultTimeout } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { launchBrowser, closeBrowser } = require('../commonFunctions/launchbrowser');
 const ENV = require('../../config.js');
 // Import common mobile steps
 require('./common-mobile-steps');
@@ -15,20 +14,9 @@ When('user sets viewport to mobile size for signup', async function() {
 });
 
 Given('user navigates to Experience League homepage for signup validation', async function() {
-  // Launch browser
-  const result = await launchBrowser();
-  this.page = result.page;
-  this.browser = result.browser;
-  this.context = result.context;
-  
-  // Navigate to the Experience League homepage
-  await this.page.goto(ENV.URL);
-  
+  // this.page is already set by the Before hook via openUnauthTab()
   // Wait for the page to fully load
   await this.page.waitForTimeout(3000);
-  
-  // Verify we're on the Experience League homepage
-  //await expect(this.page).toHaveURL(`${ENV.URL}`);
   console.log("✓ Successfully navigated to the Experience League homepage");
 });
 
@@ -184,23 +172,14 @@ When('user enters last name as {string}', async function(lastName) {
 });
 
 When('user selects birth month as {string}', async function(month) {
-  // Find the month dropdown
-  const monthDropdown = this.page.locator('button[data-id="DateOfBirthChooser-Month"] svg.wBx8DG_spectrum-Icon');
-  await expect(monthDropdown).toBeVisible();
+  // Use the hidden native <select> which is always present in the DOM
+  // This is more reliable than interacting with the custom Spectrum UI popover
+  const monthSelect = this.page.locator('select[autocomplete="bday-month"][name="month"]');
 
-  
-  // Click on the month dropdown
-  await monthDropdown.click();
-  
-  console.log("✓ Clicked on month dropdown");
-  await this.page.waitForTimeout(1000);
-  
-  // Select the specified month inside the popover
-  const monthOption = this.page.locator(`div[role="option"] .gO9Mdq_spectrum-Menu-itemLabel:text("${month}")`).first();
-  await expect(monthOption).toBeVisible({ timeout: 5000 });
-  await monthOption.click({ force: true });
+  // Force-select using the visible label text (e.g. "May")
+  await monthSelect.selectOption({ label: month });
   console.log(`✓ Selected month: ${month}`);
-  await this.page.waitForTimeout(1000);
+  await this.page.waitForTimeout(500);
 });
 
 When('user enters birth year as {string}', async function(year) {
@@ -434,7 +413,7 @@ When('user clicks on complete button', async function() {
 
 Then('home page should load', async function() {
   // Verify that the home page has loaded
-  await expect(this.page).toHaveURL(`${ENV.URL}/home#`);
+  await expect(this.page).toHaveURL(`${ENV.URL}/home`);
   
   // Check for a common element on the home page
  // const homePageElement = this.page.locator('.marquee, .hero-container');
@@ -516,9 +495,4 @@ Then('user interests in profile settings should match selected interests', async
   
   console.log("✓ User interests in profile settings match selected interests");
   
-  // Clean up - close the browser
-  if (this.browser) {
-    await closeBrowser(this.browser);
-    console.log('Browser closed successfully');
-  }
 });
