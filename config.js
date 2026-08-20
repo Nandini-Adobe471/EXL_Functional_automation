@@ -10,8 +10,8 @@
  //URL: 'https://experienceleague-stage.adobe.com/?adobeQA=aimNotification',
  //EMAIL: 'gsnair+US+Team+VISA+hello+1@adobetest.com',
  //PASSWORD: 'Bap@d0be',
-    EMAIL: 'hcl40471@adobe.com',
-    PASSWORD: 'Bap@Qaz0)wsxedcrfvtgb',
+    EMAIL: 'testadobe010187@gmail.com',
+    PASSWORD: 'Adobetest@123',
     TIMEOUT_1:1000   
 
  }

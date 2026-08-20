@@ -1,121 +1,125 @@
 [
   {
-    "description": "",
+    "description": "  As a visitor\n  I want to access the Experience League home page without logging in\n  So that I can view the welcome content",
     "elements": [
       {
         "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-sees-adobe-logo-and-experience-league-brand",
+        "id": "unauthenticated-home-page-validation;verify-marquee-block-is-displayed-on-unauthenticated-home-page",
         "keyword": "Scenario",
-        "line": 5,
-        "name": "Authenticated user sees Adobe logo and Experience League brand",
+        "line": 7,
+        "name": "Verify marquee block is displayed on unauthenticated home page",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
             "result": {
-              "status": "passed",
-              "duration": 42497750099
+              "status": "failed",
+              "duration": 14181799,
+              "error_message": "browserType.launch: Executable doesn't exist at C:\\Users\\hcl40471\\AppData\\Local\\ms-playwright\\chromium-1179\\chrome-win\\chrome.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝\n    at launchUnauthBrowser (C:\\Users\\hcl40471\\Desktop\\EXLM Automation - new\\tests\\commonFunctions\\launchbrowser.js:79:34)\n    at openUnauthTab (C:\\Users\\hcl40471\\Desktop\\EXLM Automation - new\\tests\\commonFunctions\\launchbrowser.js:91:11)\n    at World.<anonymous> (C:\\Users\\hcl40471\\Desktop\\EXLM Automation - new\\tests\\support\\hooks.js:34:46)"
             }
           },
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 6,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3031719600
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 7,
-            "name": "the Adobe logo should be visible in the header",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:53"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 59038300
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
             "line": 8,
-            "name": "the Experience League brand link should be visible in the header",
+            "name": "user navigates to Experience League home page without logging in",
             "match": {
-              "location": "tests\\steps\\header-navigation.js:62"
+              "location": "tests\\steps\\unauth-home-page.js:11"
             },
             "result": {
-              "status": "passed",
-              "duration": 17310799
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 534599
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-logo",
-            "line": 4
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-does-not-see-sign-in-link",
-        "keyword": "Scenario",
-        "line": 11,
-        "name": "Authenticated user does not see Sign In link",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 81519799
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
             "arguments": [],
-            "keyword": "Given ",
+            "keyword": "Then ",
+            "line": 9,
+            "name": "user should see the marquee block",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:43"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "the marquee block should have the correct structure",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:98"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "the marquee eyebrow should contain \"WELCOME TO EXPERIENCE LEAGUE\"",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:142"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
             "line": 12,
-            "name": "user is logged in and on the Experience League home page",
+            "name": "the marquee title should contain \"Your home for free learning\"",
             "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
+              "location": "tests\\steps\\unauth-home-page.js:184"
             },
             "result": {
-              "status": "passed",
-              "duration": 3033588400
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
             "arguments": [],
-            "keyword": "Then ",
+            "keyword": "And ",
             "line": 13,
-            "name": "the Sign In link should not be visible for authenticated user",
+            "name": "the marquee description should be visible",
             "match": {
-              "location": "tests\\steps\\header-navigation.js:72"
+              "location": "tests\\steps\\unauth-home-page.js:226"
             },
             "result": {
-              "status": "passed",
-              "duration": 30047299
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "the sign in button should be visible and clickable",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:258"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "the video background should be present",
+            "match": {
+              "location": "tests\\steps\\unauth-home-page.js:317"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
@@ -123,1245 +127,28 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 492299
+              "duration": 365999
             }
           }
         ],
         "tags": [
           {
-            "name": "@header-navigation",
-            "line": 1
+            "name": "@unauth-home-page",
+            "line": 6
           },
           {
-            "name": "@header-auth-no-sign-in",
-            "line": 10
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-sees-profile-picture-toggle-in-header",
-        "keyword": "Scenario",
-        "line": 16,
-        "name": "Authenticated user sees profile picture toggle in header",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 77426999
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 17,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3030156999
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 18,
-            "name": "the profile toggle button with profile picture should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:79"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 69902900
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 19,
-            "name": "the sign-in container should have class \"signed-in\"",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:89"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 28282299
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 220199
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-profile-toggle",
-            "line": 15
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-can-open-profile-menu",
-        "keyword": "Scenario",
-        "line": 22,
-        "name": "Authenticated user can open profile menu",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 75572800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 23,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3026683399
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 24,
-            "name": "user clicks the profile toggle button",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:102"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 608453399
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 25,
-            "name": "the profile dropdown menu should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:110"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 9574399
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 26,
-            "name": "the profile menu should contain \"My learning profile\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:116"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 18253600
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 27,
-            "name": "the profile menu should contain \"Bookmarked content\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:116"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 9093499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 28,
-            "name": "the profile menu should contain \"Sign out\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:116"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 8561000
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 176100
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-profile-menu",
-            "line": 21
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-profile-menu-shows-community-section",
-        "keyword": "Scenario",
-        "line": 31,
-        "name": "Authenticated user profile menu shows Community section",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 79474699
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 32,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3027047500
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 33,
-            "name": "user clicks the profile toggle button",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:102"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 595527499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 34,
-            "name": "the profile dropdown menu should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:110"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 10151200
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 35,
-            "name": "the profile menu Community section should contain \"My Community profile\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:125"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 15632599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 36,
-            "name": "the profile menu Community section should contain \"Private messages\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:125"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 8650000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 37,
-            "name": "the profile menu Community section should contain \"Account settings\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:125"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 8616699
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 163999
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-profile-menu-community",
-            "line": 30
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-sees-product-grid-(app-switcher)-button",
-        "keyword": "Scenario",
-        "line": 40,
-        "name": "Authenticated user sees product grid (app switcher) button",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 78318599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 41,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3031865800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 42,
-            "name": "the product grid button should be visible in the header",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:136"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 22331599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 43,
-            "name": "the product grid container should have class \"signed-in\"",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:142"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 18004999
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 146899
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-product-grid",
-            "line": 39
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-can-open-product-grid-dropdown",
-        "keyword": "Scenario",
-        "line": 46,
-        "name": "Authenticated user can open product grid dropdown",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 75866200
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 47,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3024886699
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 48,
-            "name": "user clicks the product grid button",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:153"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 604997300
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 49,
-            "name": "the product grid dropdown should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:161"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5402700
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 50,
-            "name": "the product grid dropdown should contain \"Adobe Experience Cloud\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:167"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 11353799
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 51,
-            "name": "the product grid dropdown should contain \"Adobe Document Cloud\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:167"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 8137900
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 183599
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-product-grid-dropdown",
-            "line": 45
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-sees-premium-learning-in-desktop-navigation",
-        "keyword": "Scenario",
-        "line": 54,
-        "name": "Authenticated user sees Premium Learning in desktop navigation",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 78397599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 55,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3024711800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 56,
-            "name": "the desktop navigation should contain \"Premium Learning\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:311"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 26097700
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 221999
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-premium-learning",
-            "line": 53
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-sees-all-main-navigation-items",
-        "keyword": "Scenario",
-        "line": 59,
-        "name": "Authenticated user sees all main navigation items",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 79466700
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 60,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3027747099
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 61,
-            "name": "the main navigation should contain \"Learn by Product\" menu item",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:286"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 56654999
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 62,
-            "name": "the main navigation should contain \"Documentation\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:303"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 13534799
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 63,
-            "name": "the main navigation should contain \"AI Training\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:303"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 9922299
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 64,
-            "name": "the main navigation should contain \"Events\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:303"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 40271800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 65,
-            "name": "the main navigation should contain \"Community\" menu item",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:286"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 6448999
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 66,
-            "name": "the main navigation should contain \"Support\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:303"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 8415699
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 216899
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-nav-items",
-            "line": 58
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-mobile-drawer-contains-premium-learning",
-        "keyword": "Scenario",
-        "line": 69,
-        "name": "Authenticated user mobile drawer contains Premium Learning",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 81260800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 70,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3033382100
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 71,
-            "name": "user clicks the hamburger menu button",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:321"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1245943100
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 72,
-            "name": "the mobile navigation drawer should be open",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:332"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 16364900
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 73,
-            "name": "the mobile drawer body should contain \"Premium Learning\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:341"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 11233699
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 415000
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-mobile-premium-learning",
-            "line": 68
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-can-open-language-selector",
-        "keyword": "Scenario",
-        "line": 76,
-        "name": "Authenticated user can open language selector",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 93194600
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 77,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3029535100
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 78,
-            "name": "the language selector button should be visible in the header",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:181"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 22910900
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 79,
-            "name": "user clicks the language selector button",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:187"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 619903200
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 80,
-            "name": "the language selector popover should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:195"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 7583700
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 81,
-            "name": "the language selector should contain English option",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:201"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 12515100
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 272899
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-language-selector",
-            "line": 75
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-can-expand-learn-by-product-dropdown",
-        "keyword": "Scenario",
-        "line": 84,
-        "name": "Authenticated user can expand Learn by Product dropdown",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 84598599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 85,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3033330300
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 86,
-            "name": "user clicks the \"Learn by Product\" nav toggle",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:212"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 734503499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 87,
-            "name": "the Learn by Product dropdown content should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:223"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 12756499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 88,
-            "name": "the dropdown should contain product \"Analytics\"",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:231"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 10605599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 89,
-            "name": "the dropdown should contain product \"Experience Manager\"",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:231"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4255300
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 90,
-            "name": "the dropdown should contain product \"Journey Optimizer\"",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:231"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4992799
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 173099
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-learn-by-product",
-            "line": 83
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;authenticated-user-can-expand-a-product-sub-menu-to-see-content-links",
-        "keyword": "Scenario",
-        "line": 93,
-        "name": "Authenticated user can expand a product sub-menu to see content links",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 81116899
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 94,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3022061799
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 95,
-            "name": "user clicks the \"Learn by Product\" nav toggle",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:212"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 728196700
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 96,
-            "name": "user clicks the \"Analytics\" product item toggle",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:243"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 561139599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 97,
-            "name": "the Analytics sub-menu should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:257"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 11272799
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 98,
-            "name": "the Analytics sub-menu should contain a \"Tutorials\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:266"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 11573800
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 99,
-            "name": "the Analytics sub-menu should contain a \"Documentation\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:266"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 7609700
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 100,
-            "name": "the Analytics sub-menu should contain an \"Events\" link",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:275"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 11545399
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 210399
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-product-sub-menu",
-            "line": 92
-          }
-        ],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "header-navigation---authenticated-user;clicking-premium-learning-redirects-authenticated-user-to-/premium/home-and-header-is-functional",
-        "keyword": "Scenario",
-        "line": 103,
-        "name": "Clicking Premium Learning redirects authenticated user to /premium/home and header is functional",
-        "steps": [
-          {
-            "keyword": "Before",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 80562000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 104,
-            "name": "user is logged in and on the Experience League home page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:40"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 3022346099
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 105,
-            "name": "user clicks the \"Premium Learning\" link in the desktop navigation",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:350"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4196163499
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 106,
-            "name": "the user should be redirected to the premium learning page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:362"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1362999
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 107,
-            "name": "the header should be visible on the premium learning page",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:371"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1921402900
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 108,
-            "name": "user clicks the \"Learn by Product\" nav toggle",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:212"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 661583599
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 109,
-            "name": "the Learn by Product dropdown content should be visible",
-            "match": {
-              "location": "tests\\steps\\header-navigation.js:223"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 7334000
-            }
-          },
-          {
-            "keyword": "After",
-            "hidden": true,
-            "result": {
-              "status": "passed",
-              "duration": 347099
-            }
-          }
-        ],
-        "tags": [
-          {
-            "name": "@header-navigation",
-            "line": 1
-          },
-          {
-            "name": "@header-auth-premium-learning-redirect",
-            "line": 102
+            "name": "@skip-login",
+            "line": 6
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "header-navigation---authenticated-user",
-    "line": 2,
+    "id": "unauthenticated-home-page-validation",
+    "line": 1,
     "keyword": "Feature",
-    "name": "Header Navigation - Authenticated User",
-    "tags": [
-      {
-        "name": "@header-navigation",
-        "line": 1
-      }
-    ],
-    "uri": "tests\\features\\header-navigation.feature"
+    "name": "Unauthenticated Home Page Validation",
+    "tags": [],
+    "uri": "tests\\features\\unauth-home-page.feature"
   }
 ]

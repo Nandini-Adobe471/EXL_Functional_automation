@@ -110,10 +110,9 @@ Then('search results are displayed', async function() {
 });
 
 Then('sort by option is displayed', async function() {
-  // Check if sort by option is displayed
-  const sortByOption = this.page.locator('.text-on-background.flex.flex-wrap.items-center');
-  
-  // Verify sort by option is visible
+  // Scoped to the real Coveo Atomic sort component instead of a generic Tailwind
+  // utility-class selector, which could match an unrelated element and still "pass".
+  const sortByOption = this.page.locator('atomic-sort-dropdown');
   await expect(sortByOption).toBeVisible();
   console.log("✓ Sort by option is displayed");
 });
@@ -255,12 +254,16 @@ Then('user should land on search result page in mobile view', async function() {
 When('user navigates back to home page in mobile view', async function() {
   // Navigate back to the home page
   await this.page.goto(`${ENV.URL}`);
-  
+
   // Wait for the page to load
   await this.page.waitForTimeout(3000);
-  
-  // Verify we're on the home page
-  await expect(this.page).toHaveURL(`${ENV.URL}/home`);
+
+  // This scenario runs in an unauthenticated tab (@skip-login): live-verified the
+  // unauth root stays at "/" — the "/" -> "/en/home" redirect only happens for signed-in
+  // users (confirmed elsewhere this session, e.g. UA-04). The original assertion here
+  // expected "/home" unconditionally, which could never match what was actually navigated
+  // to for an unauthenticated visitor.
+  await expect(this.page).toHaveURL(/\/(en\/home)?$/);
   console.log("✓ Navigated back to home page in mobile view");
 });
 
@@ -354,11 +357,12 @@ Then('search results are displayed with pagination', async function() {
 });
 
 Then('default results per page should be {string}', async function(expectedCount) {
-  // Find the results per page dropdown
-  const resultsPerPageDropdown = this.page.locator('atomic-results-per-page >> input:first-child');
+  // atomic-results-per-page renders each choice as <input type="radio" value="{n}">.
+  // :first-child only happened to equal the default because exlm never overrides
+  // Coveo's `initial-choice` attribute (so it defaults to choices[0]) — reading the
+  // actually-:checked radio is correct regardless of that configuration.
+  const resultsPerPageDropdown = this.page.locator('atomic-results-per-page >> input:checked');
   await expect(resultsPerPageDropdown).toBeVisible();
-   //console.log(`✓ Default results per page is "${await resultsPerPageDropdown.getAttribute('value')}"`);
-  // Get the currently selected value
   const selectedValue = await resultsPerPageDropdown.getAttribute('value');
   expect(selectedValue.trim()).toBe(expectedCount);
   console.log(`✓ Default results per page is "${expectedCount}"`);
@@ -373,21 +377,16 @@ Then('default results per page should be {string}', async function(expectedCount
 });
 
 When('user changes results per page to {string}', async function(newCount) {
-  // Find and click the results per page dropdown
-  const resultsPerPageDropdown = this.page.locator('atomic-results-per-page >> input:nth-of-type(2)');
-  await resultsPerPageDropdown.click();
-  console.log("✓ Clicked on results per page dropdown");
-  
-  // Wait for dropdown options to appear
-  await this.page.waitForTimeout(2000);
-  
-  /* / Find and click the option with the specified count
-  const option = this.page.locator(`.results-per-page-option:has-text("${newCount}")`);
-  await option.click();
+  // Select by the option's own `value` attribute instead of a hardcoded position
+  // (`nth-of-type(2)`) — the previous version ignored the newCount parameter entirely
+  // and would click whatever happened to be in that position regardless of what was asked.
+  const resultsPerPageOption = this.page.locator(`atomic-results-per-page >> input[value="${newCount}"]`);
+  await expect(resultsPerPageOption).toBeVisible({ timeout: 10000 });
+  await resultsPerPageOption.click();
   console.log(`✓ Selected ${newCount} results per page`);
-  
-  // Wait for the page to reload with new results count
-  await this.page.waitForTimeout(3000);*/
+
+  // Wait for the page to reload with the new results count
+  await this.page.waitForTimeout(3000);
 });
 
 Then('number of results displayed should be {string}', async function(expectedCount) {
@@ -408,263 +407,38 @@ Then('number of results displayed should be {string}', async function(expectedCo
 });
 
 When('user navigates to page {string}', async function(pageNumber) {
-  // Find the pagination controls
-  const paginationControls = this.page.locator('atomic-pager >> [aria-label="Pagination"] input:nth-of-type(2)');
-  
-  // Find and click the specified page number
- // const pageItem = paginationControls.locator(`.page-item:has-text("${pageNumber}")`);
-  await paginationControls.click();
-  console.log(`✓ Clicked on page ${pageNumber}`);
-  
+  // atomic-pager has no text input at all — each page number is a
+  // <input type="radio" value="{page}"> inside div[role="radiogroup"]. Playwright's
+  // .fill() explicitly rejects radio inputs, so the previous fill+Enter approach would
+  // have thrown at runtime rather than silently doing nothing; a plain click is correct
+  // and sufficient (it fires the pager's own onChecked handler).
+  const pageRadio = this.page.locator(`atomic-pager [role="radiogroup"] input[type="radio"][value="${pageNumber}"]`);
+  await expect(pageRadio).toBeVisible({ timeout: 10000 });
+  await pageRadio.click();
+  console.log(`✓ Selected page ${pageNumber} in the pagination control`);
+
   // Wait for the page to load
   await this.page.waitForTimeout(3000);
 });
 
 Then('page {string} should be active in pagination', async function(pageNumber) {
-  // Find the pagination controls
-  const paginationControls = this.page.locator('atomic-pager >> input:nth-of-type(2)');
-  
-  // Check if the specified page is active
-  const activePageText = await paginationControls.getAttribute ('value');
-  await console.log(`Active page text: ${activePageText}`);
-  //const activePageText = await activePage.textContent();
+  // Read whichever radio is actually :checked, rather than assuming a fixed position.
+  const activePageRadio = this.page.locator('atomic-pager [role="radiogroup"] input:checked');
+  const activePageText = await activePageRadio.getAttribute('value');
+  console.log(`Active page value: ${activePageText}`);
   expect(activePageText).toBe(pageNumber);
   console.log(`✓ Page ${pageNumber} is active in pagination`);
-  
-  // Verify the URL contains the page parameter
+
+  // firstResult = (page - 1) * resultsPerPage. The scenario sets resultsPerPage to 25
+  // beforehand, so this is derived from the actual pageNumber argument instead of a
+  // hardcoded "firstResult=25&numberOfResults=25" string that would "pass" for any page.
+  const resultsPerPage = 25;
+  const expectedFirstResult = (parseInt(pageNumber, 10) - 1) * resultsPerPage;
   const url = this.page.url();
-  expect(url).toContain("firstResult=25&numberOfResults=25");
-  console.log(`✓ URL contains page=${pageNumber}`);
+  expect(url).toContain(`firstResult=${expectedFirstResult}`);
+  console.log(`✓ URL reflects page ${pageNumber} (firstResult=${expectedFirstResult})`);
 });
 
-
-Given('user navigates to Experience League homepage', async function() {
-  if (!this.page) {
-    await performLogin(this);
-  }
-  await this.page.goto('https://experienceleague-stage.adobe.com/');
-  await this.page.waitForTimeout(3000);
-  console.log("✓ Successfully navigated to Experience League homepage");
-});
-
-When('user clicks on search picker', async function() {
-  // Find and click the search picker button
-  const searchPickerButton = this.page.locator('.search-picker-button');
-  await expect(searchPickerButton).toBeVisible();
-  await searchPickerButton.click();
-  console.log("✓ Clicked on search picker");
-  
-  // Wait for dropdown to appear
-  await this.page.waitForTimeout(1000);
-});
-
-Then('dropdown should open with list of values', async function() {
-  // Check if dropdown is visible
-  const dropdown = this.page.locator('.search-picker-popover.search-picker-popover-visible');
-  await expect(dropdown).toBeVisible();
-  console.log("✓ Search picker dropdown is visible");
-  
-  // Check if dropdown has items
-  const dropdownItems = dropdown.locator('.search-picker-label');
-  const count = await dropdownItems.count();
-  expect(count).toBeGreaterThan(0);
-  console.log(`✓ Search picker dropdown has ${count} items`);
-  
-  // Verify at least one dropdown item is visible without printing all values
-  const firstItem = dropdownItems.first();
-  await expect(firstItem).toBeVisible();
-});
-
-When('user navigates to {string}', async function(pageName) {
-  // Launch browser if not already launched
-  if (!this.page) {
-    const result = await launchBrowser();
-    this.page = result.page;
-    this.browser = result.browser;
-    this.context = result.context;
-  }
-  
-  // Construct the URL
-  const url = `https://experienceleague-stage.adobe.com/en/${pageName}`;
-  console.log(`✓ Navigating directly to: ${url}`);
-  
-  // Navigate to the URL
-  await this.page.goto(url);
-  
-  // Wait for the page to load
-  await this.page.waitForTimeout(5000);
-  
-  // Verify we're on the correct page
-  await expect(this.page).toHaveURL(new RegExp(`.*experienceleague-stage.adobe.com/en/${pageName}.*`));
-  console.log(`✓ Successfully navigated to ${pageName} page`);
-});
-
-Then('search picker should show {string}', async function(expectedValue) {
-  // Find the search picker label
-  const searchPickerLabel = this.page.locator('.search-picker-button .search-picker-label');
-  await expect(searchPickerLabel).toBeVisible();
-  
-  // Get the text of the search picker label
-  const labelText = await searchPickerLabel.textContent();
-  
-  // Verify the search picker shows the expected value
-  expect(labelText.trim()).toBe(expectedValue);
-  console.log(`✓ Search picker shows correct value: "${labelText.trim()}" (expected: "${expectedValue}")`);
-});
-
-// Search Content Type Step Definitions
-When('user clicks on search input', async function() {
-  // Find the search input
-  const searchInput = this.page.locator('.search-input, input[type="search"], [placeholder*="Search"]').first();
-  await expect(searchInput).toBeVisible();
-  
-  // Click on the search input
-  await searchInput.click();
-  console.log("✓ Clicked on search input");
-  
-  // Store the search input for later use
-  this.searchInput = searchInput;
-});
-
-When('user enters {string} and presses enter', async function(searchText) {
-  try {
-    // Make sure the search input is defined
-    if (!this.searchInput) {
-      console.error("❌ Search input is not defined. Make sure 'user clicks on search input' step was executed successfully.");
-      
-      // Try to find the search input again as a fallback
-      const searchInput = this.page.locator('.search-input, input[type="search"], [placeholder*="Search"]').first();
-      await expect(searchInput).toBeVisible();
-      this.searchInput = searchInput;
-      console.log("✓ Found search input as fallback");
-    }
-    
-    // Clear the search input first to ensure it's empty
-    await this.searchInput.clear();
-    console.log("✓ Cleared search input");
-    
-    // Wait a moment
-    await this.page.waitForTimeout(1000);
-    
-    // Fill the search input with the search text
-    await this.searchInput.fill(searchText);
-    
-    // Verify the text was entered correctly
-    const enteredText = await this.searchInput.inputValue();
-    console.log(`✓ Entered search text: "${searchText}" (actual value: "${enteredText}")`);
-    
-    // Wait a moment
-    await this.page.waitForTimeout(1000);
-    
-    // Press Enter key
-    await this.searchInput.press('Enter');
-    console.log("✓ Pressed Enter key");
-    
-    // Wait for navigation
-    await this.page.waitForTimeout(5000);
-  } catch (error) {
-    console.error(`❌ Error entering search text: ${error.message}`);
-    throw error;
-  }
-});
-
-Then('user should land on search results page', async function() {
-  // Verify we're on the search results page
-  //await expect(this.page).toHaveURL(/.*\/search.*/);
-  console.log("✓ Landed on search results page");
-  
-  // Wait for search results to load
-  await this.page.waitForTimeout(2000);
-});
-
-Then('search results should contain content type {string}', async function(expectedContentType) {
-  
-  const atomicSearchResults = this.page.locator('atomic-query-summary >> .result-query');
-    await expect(atomicSearchResults).toBeVisible();
- await this.page.waitForTimeout(2000);
-    //const filterBreadBox = this.page.locator('atomic-search-interface >> atomic-query-summary >> atomic-breadbox >> [part="breadcrumb-list-container"]').first().getAttribute("data-facetkey");
-    const filterBreadBox = this.page.locator('atomic-breadbox >> div ul li.breadcrumb:first-child').first();
-    const facetKeyValue = await filterBreadBox.getAttribute("data-facetkey");
-    await this.page.waitForTimeout(2000);
-    await console.log(`Filter breadbox data-facetkey: ${facetKeyValue}`);
-    await console.log(`Expected content type: ${expectedContentType}`);
-    await expect(facetKeyValue.toLowerCase()).toBe(expectedContentType.toLowerCase());
- 
-});
-
-Then('content type filter should have {string} selected', async function(expectedContentType) {
-  await this.page.waitForTimeout(2000);  
-  await this.page.locator('atomic-facet-manager >> button[data-expanded="false"].facet-show-more-btn').first().click();
-
-  const checkboxLocator = this.page.locator('atomic-facet-manager >>  atomic-facet >> button[aria-checked="true"][role="checkbox"].value-checkbox');
-   await this.page.waitForTimeout(2000);
-  
-  // await expect(checkboxLocator).toBeVisible();
-  console.log(`✓ Content type filter has "${expectedContentType}" selected`);
-  const isChecked = await checkboxLocator.getAttribute('aria-checked');
-  console.log(`Checkbox is checked: ${isChecked}`);
-//const isContentType = await checkboxLocator.getAttribute('aria-label');
-const checkedButtonId = await this.page.locator('button[aria-checked="true"]').getAttribute('id');
-const spanTitle = await this.page.locator(`label[for="${checkedButtonId}"] span[title]`).getAttribute('title');
-console.log(spanTitle); 
-//const isContentType = await this.page.locator('atomic-facet >> label[for="facet-value-iaei2"].group.items-center.ripple-parent.ripple-relative >> span[title]').getAttribute('title');
-  //console.log(`Content type of the checkbox: ${isContentType}`);
-
-if (isChecked === 'true' && spanTitle==expectedContentType) {
-    console.log('Checkbox is checked and the title is "Tutorial"');
-} else {
-    console.log('Checkbox is not checked or the title is not "Tutorial"');
-}
-  
-  
-  
-  
-  
-  
-  /*try {
-    // Wait for filters to load
-    await this.page.waitForTimeout(2000);
-    
-    // Handle Shadow DOM for content type filter
-    // First, find the atomic-facet element for content type
-    const contentTypeFacet = this.page.locator('atomic-facet[field="contenttype"]');
-    await expect(contentTypeFacet).toBeVisible();
-    
-    // Use evaluateHandle to access shadow DOM content and check if the expected content type is selected
-    const isSelected = await this.page.evaluate((expectedType) => {
-      // Get all facet value elements in the shadow DOM
-      const facetValues = document.querySelectorAll('atomic-facet[field="contenttype"] atomic-facet-value');
-      
-      // Check if any facet value with the expected content type is selected
-      for (const facetValue of facetValues) {
-        const valueText = facetValue.textContent || '';
-        if (valueText.includes(expectedType)) {
-          // Check if it's selected (has the 'selected' attribute or class)
-          return facetValue.hasAttribute('selected') || 
-                 facetValue.classList.contains('selected') || 
-                 facetValue.getAttribute('aria-selected') === 'true';
-        }
-      }
-      
-      return false;
-    }, expectedContentType);
-    
-    // Assert that the expected content type is selected
-    expect(isSelected).toBeTruthy();
-    console.log(`✓ Content type filter has "${expectedContentType}" selected`);
-  } catch (error) {
-    console.error(`Error checking content type filter selection: ${error.message}`);
-    
-    // Alternative approach if the above fails
-    console.log("Trying alternative approach to check content type filter selection");
-    
-    // Check if the URL contains the content type filter parameter
-    const url = this.page.url();
-    const contentTypeParam = encodeURIComponent(expectedContentType.toLowerCase());
-    expect(url).toContain(contentTypeParam);
-    console.log(`✓ URL contains content type filter parameter for "${expectedContentType}"`);
-  }*/
-});
 
 Given('the user navigates to the search results page for only facet test', async function() {
   if (!this.page) {
@@ -794,8 +568,13 @@ Then('the only button should be visible', async function() {
   await specificChildFacet.hover();
   await this.page.waitForTimeout(2000);
 
-  // Find the "only" button within this facet (third span element)
-  const onlyButton = specificChildFacet.locator('span').nth(2);
+  // Use the real, non-positional part attribute (confirmed present in exlm's own
+  // atomic-search-facet.js source) instead of guessing "the third span element". Uses the
+  // CSS "~=" (contains-token) matcher, not "=" (exact match): live-verified the part
+  // attribute becomes multi-valued ("only-facet-btn only-facet-visible") once hover
+  // actually triggers, so an exact-match selector stops matching at the exact moment the
+  // button becomes interactable.
+  const onlyButton = specificChildFacet.locator('[part~="only-facet-btn"]');
   await expect(onlyButton).toBeVisible({ timeout: 10000 });
 
   // Store the only button for later use
@@ -805,12 +584,16 @@ Then('the only button should be visible', async function() {
 });
 
 When('the user clicks the only button', async function() {
-  /*/ Click the only button using force: true to ensure it clicks even if not perfectly visible
-  await this.page.locator(`atomic-facet#facetProduct >> ul li[data-contenttype="Experience Manager|6.5 LTS"] span[part="only-facet-btn"]`).evaluate(el => el.click({ force: true }) );
+  // Previously entirely commented out (a silent no-op) — the "only" button was never
+  // actually clicked, so every assertion after this step was checking state that no click
+  // had changed. Uses the same button located (and hovered) by the previous step, rather
+  // than a hardcoded child value ("Experience Manager|6.5 LTS") that doesn't match this
+  // account's real data (only one child, "Screens", exists live).
+  await this.onlyButton.click({ force: true });
   console.log('✓ Clicked the only button');
-  
+
   // Wait for the UI to update
-  await this.page.waitForTimeout(2000);*/
+  await this.page.waitForTimeout(2000);
 });
 
 Then('only that child should be selected', async function() {

@@ -19,9 +19,9 @@ When('user navigates to the footer fragment page', async function() {
   try {
     console.log('Navigating to the footer fragment page');
     
-    // Navigate to the footer fragment page
-    // Using the standard pattern for Adobe Experience League fragment URLs
-    await this.page.goto('https://experienceleague.adobe.com/fragments/footer');
+    // Navigate to the footer fragment page. The previous URL (/fragments/footer) 404s
+    // live — confirmed via audit; the real, working fragment path is below.
+    await this.page.goto('https://experienceleague.adobe.com/en/global-fragments/footer');
     
     // Wait for the page to load completely
     await this.page.waitForTimeout(2000);
@@ -186,13 +186,8 @@ Then('user should see language selector', async function() {
       console.log("✗ Language selector not found with any of the attempted selectors");
       console.log("This might be a legitimate failure if the language selector is missing,");
       console.log("or it might mean we need to update our selectors to match the actual implementation.");
-      
-      // For now, we'll pass the test even if we don't find the language selector
-      // This allows development to continue while the issue is investigated
-      console.log("Temporarily allowing test to pass for development purposes");
-      languageSelectorFound = true;
     }
-    
+
     expect(languageSelectorFound).toBeTruthy();
     
   } catch (error) {
@@ -446,7 +441,11 @@ Then('user should see the same footer elements on main site', async function() {
     } else {
       console.log("✗ Some footer elements from fragment page are not present on main site");
     }
-    
+
+    // This step previously logged the comparison but never asserted anything, so it
+    // always passed regardless of what was actually found.
+    expect(allElementsPresent).toBeTruthy();
+
   } catch (error) {
     console.error(`Error checking footer elements on main site: ${error.message}`);
     await this.page.screenshot({ path: 'screenshots/main-site-footer-error.png' });
@@ -534,9 +533,45 @@ Then('all list items in the footer should be clickable', async function() {
     
     // Assert that all list items with anchors are clickable
     expect(nonClickableItems).toBe(0);
-    
+
   } catch (error) {
     console.error(`Error checking footer list items: ${error.message}`);
     throw error;
   }
+});
+
+// ─── Footer legal links / social icon destinations ─────────────────────────
+// Selectors taken from the real exlm blocks/footer source: .footer-copyrights
+// (legal links), .social .footer-social-icon-item-wrapper (social icons).
+
+async function verifyFooterLinkDestination(page, linkText, expectedUrlFragment) {
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(1000);
+
+  const link = page.locator('footer a, div.footer a, .footer-copyrights a').filter({ hasText: linkText }).first();
+  await expect(link, `Footer should have a "${linkText}" link`).toBeVisible({ timeout: 10000 });
+
+  const href = await link.getAttribute('href');
+  expect(href, `"${linkText}" link should have a valid href`).toBeTruthy();
+  expect(href.toLowerCase()).toContain(expectedUrlFragment.toLowerCase());
+  console.log(`✓ Footer "${linkText}" link points to a destination matching "${expectedUrlFragment}" (href="${href}")`);
+}
+
+Then('the footer {string} link should navigate to the correct privacy policy destination', async function(linkText) {
+  await verifyFooterLinkDestination(this.page, linkText, 'privacy');
+});
+
+Then('the footer {string} link should navigate to the correct terms destination', async function(linkText) {
+  await verifyFooterLinkDestination(this.page, linkText, 'terms');
+});
+
+Then('a footer social icon should link to its correct external profile', async function() {
+  await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await this.page.waitForTimeout(1000);
+
+  const socialIcon = this.page.locator('.social a.footer-social-icon-item-wrapper, .social a').first();
+  await expect(socialIcon).toBeVisible({ timeout: 10000 });
+  const href = await socialIcon.getAttribute('href');
+  expect(href).toMatch(/facebook|twitter|x\.com|linkedin|instagram|youtube/i);
+  console.log(`✓ Footer social icon links to a recognized external profile (href="${href}")`);
 });

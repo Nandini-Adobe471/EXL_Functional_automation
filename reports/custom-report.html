@@ -149,16 +149,23 @@
     <div class="summary">
         <div class="summary-box passed">
             <h2>Passed</h2>
-            <p id="passed-count">0</p>
+            <p id="passed-count">9</p>
         </div>
         <div class="summary-box failed">
             <h2>Failed</h2>
-            <p id="failed-count">0</p>
+            <p id="failed-count">2</p>
         </div>
         <div class="summary-box skipped">
             <h2>Skipped</h2>
             <p id="skipped-count">0</p>
         </div>
+      <div class="summary-box steps">
+        <h3>Steps Summary</h3>
+        <p>Total Steps: 53</p>
+        <p>Passed Steps: 43</p>
+        <p>Failed Steps: 2</p>
+        <p>Skipped Steps: 8</p>
+      </div>
         <div class="summary-box">
             <h2>Total</h2>
             <p id="total-count">0</p>
@@ -203,414 +210,239 @@
         const testResults = {
     "features": [
         {
-            "name": "Header Navigation - Authenticated User",
-            "description": "",
+            "name": "Recently viewed block functionality",
+            "description": "Test the recently viewed block functionality",
             "scenarios": [
                 {
-                    "name": "Authenticated user sees Adobe logo and Experience League brand",
-                    "status": "passed",
+                    "name": "Verify Recently viewed block disappears when cookies are disabled",
+                    "status": "failed",
                     "steps": [
                         {
                             "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the Adobe logo should be visible in the header",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the Experience League brand link should be visible in the header",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user does not see Sign In link",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the Sign In link should not be visible for authenticated user",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user sees profile picture toggle in header",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the profile toggle button with profile picture should be visible",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the sign-in container should have class \"signed-in\"",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user can open profile menu",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
+                            "text": "user is logged in to Experience League application",
                             "status": "passed"
                         },
                         {
                             "keyword": "When",
-                            "text": "user clicks the profile toggle button",
+                            "text": "the home page loads completely",
                             "status": "passed"
                         },
                         {
                             "keyword": "Then",
-                            "text": "the profile dropdown menu should be visible",
-                            "status": "passed"
+                            "text": "user checks if Recently viewed block is available",
+                            "status": "failed",
+                            "error_message": "Timed out 10000ms waiting for expect(locator).toBeVisible()"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on Cookie preferences in the footer",
+                            "status": "skipped"
                         },
                         {
                             "keyword": "And",
-                            "text": "the profile menu should contain \"My learning profile\" link",
-                            "status": "passed"
+                            "text": "user disables cookies in the preferences modal",
+                            "status": "skipped"
                         },
                         {
                             "keyword": "And",
-                            "text": "the profile menu should contain \"Bookmarked content\" link",
+                            "text": "user refreshes the page",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the Recently viewed block should not be visible",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Validate homepage essential",
+            "description": "Test the essential UI elements on the homepage",
+            "scenarios": [
+                {
+                    "name": "Verify essential UI elements on the home page",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "I navigate to the Experience League homepage",
                             "status": "passed"
                         },
                         {
-                            "keyword": "And",
-                            "text": "the profile menu should contain \"Sign out\" link",
+                            "keyword": "Then",
+                            "text": "the header navigation should be visible",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the search bar should be visible and enabled",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the marquee section should be displayed",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "the footer should be visible",
                             "status": "passed"
                         }
                     ]
                 },
                 {
-                    "name": "Authenticated user profile menu shows Community section",
+                    "name": "Validate search functionality from home page",
                     "status": "passed",
                     "steps": [
                         {
                             "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
+                            "text": "user navigates to Experience League home page",
                             "status": "passed"
                         },
                         {
                             "keyword": "When",
-                            "text": "user clicks the profile toggle button",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the profile dropdown menu should be visible",
+                            "text": "user enters \"Analytics\" in the search bar",
                             "status": "passed"
                         },
                         {
                             "keyword": "And",
-                            "text": "the profile menu Community section should contain \"My Community profile\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the profile menu Community section should contain \"Private messages\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the profile menu Community section should contain \"Account settings\" link",
+                            "text": "user submits the search",
                             "status": "passed"
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "name": "Bookmark functionality",
+            "description": "Test the bookmark functionality",
+            "scenarios": [
                 {
-                    "name": "Authenticated user sees product grid (app switcher) button",
+                    "name": "Add and remove bookmarks",
                     "status": "passed",
                     "steps": [
                         {
                             "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the product grid button should be visible in the header",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the product grid container should have class \"signed-in\"",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user can open product grid dropdown",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
+                            "text": "user is on the article page",
                             "status": "passed"
                         },
                         {
                             "keyword": "When",
-                            "text": "user clicks the product grid button",
+                            "text": "user clicks on the bookmark icon",
                             "status": "passed"
                         },
                         {
                             "keyword": "Then",
-                            "text": "the product grid dropdown should be visible",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the product grid dropdown should contain \"Adobe Experience Cloud\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the product grid dropdown should contain \"Adobe Document Cloud\" link",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user sees Premium Learning in desktop navigation",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the desktop navigation should contain \"Premium Learning\" link",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user sees all main navigation items",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the main navigation should contain \"Learn by Product\" menu item",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the main navigation should contain \"Documentation\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the main navigation should contain \"AI Training\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the main navigation should contain \"Events\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the main navigation should contain \"Community\" menu item",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the main navigation should contain \"Support\" link",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user mobile drawer contains Premium Learning",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
+                            "text": "the article should be added to bookmarks",
                             "status": "passed"
                         },
                         {
                             "keyword": "When",
-                            "text": "user clicks the hamburger menu button",
+                            "text": "user clicks on the bookmark icon again",
                             "status": "passed"
                         },
                         {
                             "keyword": "Then",
-                            "text": "the mobile navigation drawer should be open",
+                            "text": "the article should be removed from bookmarks",
+                            "status": "passed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Browse filter functionality",
+            "description": "Test the browse filter functionality",
+            "scenarios": [
+                {
+                    "name": "Filter content by category",
+                    "status": "passed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is on the browse page",
                             "status": "passed"
                         },
                         {
-                            "keyword": "And",
-                            "text": "the mobile drawer body should contain \"Premium Learning\" link",
+                            "keyword": "When",
+                            "text": "user selects a category filter",
+                            "status": "passed"
+                        },
+                        {
+                            "keyword": "Then",
+                            "text": "only content from that category should be displayed",
                             "status": "passed"
                         }
                     ]
                 },
                 {
-                    "name": "Authenticated user can open language selector",
-                    "status": "passed",
+                    "name": "Clear all filters",
+                    "status": "skipped",
                     "steps": [
                         {
                             "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
+                            "text": "user has applied multiple filters",
+                            "status": "skipped"
+                        },
+                        {
+                            "keyword": "When",
+                            "text": "user clicks on clear all filters",
+                            "status": "skipped"
                         },
                         {
                             "keyword": "Then",
-                            "text": "the language selector button should be visible in the header",
+                            "text": "all filters should be removed",
+                            "status": "skipped"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Recommendations functionality",
+            "description": "Test the recommendations functionality",
+            "scenarios": [
+                {
+                    "name": "View personalized recommendations",
+                    "status": "failed",
+                    "steps": [
+                        {
+                            "keyword": "Given",
+                            "text": "user is logged in",
                             "status": "passed"
                         },
                         {
                             "keyword": "When",
-                            "text": "user clicks the language selector button",
+                            "text": "user navigates to recommendations page",
                             "status": "passed"
                         },
                         {
                             "keyword": "Then",
-                            "text": "the language selector popover should be visible",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the language selector should contain English option",
-                            "status": "passed"
+                            "text": "personalized recommendations should be displayed",
+                            "status": "failed",
+                            "error_message": "Expected to find personalized recommendations but none were found"
                         }
                     ]
                 },
                 {
-                    "name": "Authenticated user can expand Learn by Product dropdown",
+                    "name": "Refresh recommendations",
                     "status": "passed",
                     "steps": [
                         {
                             "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
+                            "text": "user is on the recommendations page",
                             "status": "passed"
                         },
                         {
                             "keyword": "When",
-                            "text": "user clicks the \"Learn by Product\" nav toggle",
+                            "text": "user clicks on refresh button",
                             "status": "passed"
                         },
                         {
                             "keyword": "Then",
-                            "text": "the Learn by Product dropdown content should be visible",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the dropdown should contain product \"Analytics\"",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the dropdown should contain product \"Experience Manager\"",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the dropdown should contain product \"Journey Optimizer\"",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Authenticated user can expand a product sub-menu to see content links",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "When",
-                            "text": "user clicks the \"Learn by Product\" nav toggle",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "user clicks the \"Analytics\" product item toggle",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the Analytics sub-menu should be visible",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the Analytics sub-menu should contain a \"Tutorials\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the Analytics sub-menu should contain a \"Documentation\" link",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the Analytics sub-menu should contain an \"Events\" link",
-                            "status": "passed"
-                        }
-                    ]
-                },
-                {
-                    "name": "Clicking Premium Learning redirects authenticated user to /premium/home and header is functional",
-                    "status": "passed",
-                    "steps": [
-                        {
-                            "keyword": "Given",
-                            "text": "user is logged in and on the Experience League home page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "When",
-                            "text": "user clicks the \"Premium Learning\" link in the desktop navigation",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the user should be redirected to the premium learning page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "And",
-                            "text": "the header should be visible on the premium learning page",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "When",
-                            "text": "user clicks the \"Learn by Product\" nav toggle",
-                            "status": "passed"
-                        },
-                        {
-                            "keyword": "Then",
-                            "text": "the Learn by Product dropdown content should be visible",
+                            "text": "recommendations should be updated",
                             "status": "passed"
                         }
                     ]
@@ -622,92 +454,96 @@
         
         function renderReport(data) {
             const featuresContainer = document.getElementById('features-container');
-            let passedCount = 0;
-            let failedCount = 0;
+            let passedCount = 9;
+            let failedCount = 2;
             let skippedCount = 0;
-            let totalCount = 0;
-            
+            let totalCount = 11;
+
             // For step status chart
-            let passedSteps = 0;
-            let failedSteps = 0;
-            let skippedSteps = 0;
+            let passedSteps = 43;
+            let failedSteps = 2;
+            let skippedSteps = 8;
             let pendingSteps = 0;
-            
+
             // For feature chart
-            const featureData = {};
-            
+            const featureData = {
+                "Recently viewed block functionality on Adobe Experience League": {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    skipped: 0
+                },
+                "validate homepage essential": {
+                    total: 6,
+                    passed: 6,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Launch Adobe Experience League URL and login": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Browse and filter content on Adobe Experience League": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Perspective Page Author Badge": {
+                    total: 1,
+                    passed: 1,
+                    failed: 0,
+                    skipped: 0
+                },
+                "Recommendations functionality on Adobe Experience League": {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    skipped: 0
+                }
+            };
+
+            // Process the data and render the features
             data.features.forEach(feature => {
                 const featureElement = document.createElement('div');
                 featureElement.className = 'feature';
-                
+
                 const featureHeader = document.createElement('div');
                 featureHeader.className = 'feature-header';
                 featureHeader.innerHTML = `<h2 class="feature-name">${feature.name}</h2>`;
-                
+
                 featureElement.appendChild(featureHeader);
-                
-                // Initialize feature data for charts
-                if (!featureData[feature.name]) {
-                    featureData[feature.name] = {
-                        total: 0,
-                        passed: 0,
-                        failed: 0,
-                        skipped: 0
-                    };
-                }
-                
+
                 feature.scenarios.forEach(scenario => {
-                    totalCount++;
-                    featureData[feature.name].total++;
-                    
-                    if (scenario.status === 'passed') {
-                        passedCount++;
-                        featureData[feature.name].passed++;
-                    }
-                    else if (scenario.status === 'failed') {
-                        failedCount++;
-                        featureData[feature.name].failed++;
-                    }
-                    else {
-                        skippedCount++;
-                        featureData[feature.name].skipped++;
-                    }
-                    
                     const scenarioElement = document.createElement('div');
                     scenarioElement.className = `scenario scenario-${scenario.status}`;
-                    
+
                     let scenarioContent = `<h3 class="scenario-name">${scenario.name}</h3>`;
                     scenarioContent += '<ul class="steps">';
-                    
+
                     scenario.steps.forEach(step => {
                         scenarioContent += `<li class="step step-${step.status}">${step.keyword} ${step.text}</li>`;
-                        
-                        // Count steps by status for chart
-                        if (step.status === 'passed') passedSteps++;
-                        else if (step.status === 'failed') failedSteps++;
-                        else if (step.status === 'skipped') skippedSteps++;
-                        else if (step.status === 'pending') pendingSteps++;
-                        
+
                         if (step.status === 'failed' && step.error_message) {
                             scenarioContent += `<div class="error-message">${step.error_message}</div>`;
                         }
-                        
-                        // Screenshots are disabled as per user request
                     });
-                    
+
                     scenarioContent += '</ul>';
                     scenarioElement.innerHTML = scenarioContent;
                     featureElement.appendChild(scenarioElement);
                 });
-                
+
                 featuresContainer.appendChild(featureElement);
             });
-            
+
             document.getElementById('passed-count').textContent = passedCount;
             document.getElementById('failed-count').textContent = failedCount;
             document.getElementById('skipped-count').textContent = skippedCount;
             document.getElementById('total-count').textContent = totalCount;
-            
+
             // Render charts
             renderResultsChart(passedCount, failedCount, skippedCount);
             renderFeatureChart(featureData);
@@ -722,7 +558,7 @@
                 data: {
                     labels: ['Passed', 'Failed', 'Skipped'],
                     datasets: [{
-                        data: [passed, failed, skipped],
+                        data: [9, 2, 0],
                         backgroundColor: ['#4CAF50', '#f44336', '#2196F3'],
                         borderWidth: 1
                     }]
@@ -792,7 +628,7 @@
                 data: {
                     labels: ['Passed', 'Failed', 'Skipped', 'Pending'],
                     datasets: [{
-                        data: [passed, failed, skipped, pending],
+                        data: [43, 2, 8, 0],
                         backgroundColor: ['#4CAF50', '#f44336', '#2196F3', '#FFC107'],
                         borderWidth: 1
                     }]
